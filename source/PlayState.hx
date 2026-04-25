@@ -1435,11 +1435,16 @@ class PlayState extends MusicBeatState
 
 		switch (stage)
 		{
+			case 'romancePark':
+				makeRomancePark();
+
 			default:
 				curStage = 'mainStage';
 				makeMainStage();
 		}
 	}
+
+	function makeRomancePark() {}
 
 	function makeMainStage()
 	{

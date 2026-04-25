@@ -33,7 +33,7 @@ class LoadingState extends MusicBeatState
 		{
 			case 0: 'tutorial';
 
-			default: 'week${storyWeek}';
+			default: 'day${storyWeek}';
 		}
 	}
 
