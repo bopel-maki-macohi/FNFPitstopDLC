@@ -662,71 +662,15 @@ class PlayState extends MusicBeatState
 	override public function update(elapsed:Float)
 	{
 		// do this BEFORE super.update() so songPosition is accurate
-		if (startingSong)
-		{
-			if (startedCountdown)
-			{
-				Conductor.songPosition += FlxG.elapsed * 1000;
-				if (Conductor.songPosition >= 0)
-					startSong();
-			}
-		}
-		else
-		{
-			Conductor.songPosition = FlxG.sound.music.time + Conductor.offset; // 20 is THE MILLISECONDS??
-
-			if (!paused)
-			{
-				songTime += FlxG.game.ticks - previousFrameTime;
-				previousFrameTime = FlxG.game.ticks;
-
-				// Interpolation type beat
-				if (Conductor.lastSongPos != Conductor.songPosition)
-				{
-					songTime = (songTime + Conductor.songPosition) / 2;
-					Conductor.lastSongPos = Conductor.songPosition;
-				}
-			}
-		}
+		updateConductor();
 
 		super.update(elapsed);
 
-		scoreTxt.text = "Score:" + songScore;
+		updateUI();
 
-		if (controls.PAUSE && startedCountdown && canPause)
-		{
-			persistentUpdate = false;
-			persistentDraw = true;
-			paused = true;
+		handlePausing();
 
-			// 1 / 1000 chance for Gitaroo Man easter egg
-			if (FlxG.random.bool(0.1))
-				FlxG.switchState(() -> new GitarooPause());
-			else
-			{
-				var boyfriendPos = boyfriend.getScreenPosition();
-				var pauseSubState = new PauseSubState(boyfriendPos.x, boyfriendPos.y);
-				openSubState(pauseSubState);
-				pauseSubState.camera = camHUD;
-				boyfriendPos.put();
-			}
-
-			#if discord_rpc
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
-			#end
-		}
-
-		if (FlxG.keys.justPressed.SEVEN)
-		{
-			FlxG.switchState(() -> new ChartingState());
-
-			#if discord_rpc
-			DiscordClient.changePresence("Chart Editor", null, null, true);
-			#end
-		}
-
-		if (FlxG.keys.justPressed.NINE)
-			iconP1.swapOldIcon();
+		handleDebugKeys();
 
 		var iconOffset:Int = 26;
 
@@ -738,31 +682,6 @@ class PlayState extends MusicBeatState
 
 		iconP1.animation.curAnim.curFrame = (healthBar.percent < 20) ? 1 : 0;
 		iconP2.animation.curAnim.curFrame = (healthBar.percent > 80) ? 1 : 0;
-
-		#if debug
-		if (FlxG.keys.justPressed.ONE)
-			endSong();
-		if (FlxG.keys.justPressed.EIGHT)
-		{
-			/*
-				8 for opponent char
-				SHIFT+8 for player char
-				CTRL+SHIFT+8 for gf 
-			 */
-
-			if (FlxG.keys.pressed.SHIFT)
-				if (FlxG.keys.pressed.CONTROL)
-					FlxG.switchState(() -> new AnimationDebug(gf.curCharacter));
-				else
-					FlxG.switchState(() -> new AnimationDebug(SONG.player1));
-			else
-				FlxG.switchState(() -> new AnimationDebug(SONG.player2));
-		}
-		if (FlxG.keys.justPressed.PAGEUP)
-			changeSection(1);
-		if (FlxG.keys.justPressed.PAGEDOWN)
-			changeSection(-1);
-		#end
 
 		if (generatedMusic && SONG.notes[Std.int(curStep / 16)] != null)
 		{
@@ -802,47 +721,9 @@ class PlayState extends MusicBeatState
 
 		// better streaming of shit
 
-		if (!inCutscene && !_exiting)
+		if (!inCutscene && !_exiting && health <= 0 && !practiceMode)
 		{
-			// RESET = Quick Game Over Screen
-			if (controls.RESET)
-			{
-				health = 0;
-				trace("RESET = True");
-			}
-
-			#if CAN_CHEAT // brandon's a pussy
-			if (controls.CHEAT)
-			{
-				health += 1;
-				trace("User is cheating!");
-			}
-			#end
-
-			if (health <= 0 && !practiceMode)
-			{
-				// boyfriend.stunned = true;
-
-				persistentUpdate = false;
-				persistentDraw = false;
-				paused = true;
-
-				vocals.stop();
-				FlxG.sound.music.stop();
-
-				// unloadAssets();
-
-				deathCounter += 1;
-
-				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-
-				// FlxG.switchState(() -> new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-
-				#if discord_rpc
-				// Game Over doesn't get his own variable because it's only used here
-				DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
-				#end
-			}
+			gameOver();
 		}
 
 		while (unspawnNotes[0] != null && unspawnNotes[0].strumTime - Conductor.songPosition < 1800 / SONG.speed)
@@ -861,6 +742,146 @@ class PlayState extends MusicBeatState
 			keyShit();
 	}
 
+	function updateConductor()
+	{
+		if (startingSong)
+		{
+			if (startedCountdown)
+			{
+				Conductor.songPosition += FlxG.elapsed * 1000;
+				if (Conductor.songPosition >= 0)
+					startSong();
+			}
+		}
+		else
+		{
+			Conductor.songPosition = FlxG.sound.music.time + Conductor.offset; // 20 is THE MILLISECONDS??
+
+			if (!paused)
+			{
+				songTime += FlxG.game.ticks - previousFrameTime;
+				previousFrameTime = FlxG.game.ticks;
+
+				// Interpolation type beat
+				if (Conductor.lastSongPos != Conductor.songPosition)
+				{
+					songTime = (songTime + Conductor.songPosition) / 2;
+					Conductor.lastSongPos = Conductor.songPosition;
+				}
+			}
+		}
+	}
+
+	function updateUI()
+	{
+		scoreTxt.text = "Score:" + songScore;
+	}
+
+	function handlePausing()
+	{
+		if (controls.PAUSE && startedCountdown && canPause)
+		{
+			persistentUpdate = false;
+			persistentDraw = true;
+			paused = true;
+
+			// 1 / 1000 chance for Gitaroo Man easter egg
+			if (FlxG.random.bool(0.1))
+				FlxG.switchState(() -> new GitarooPause());
+			else
+			{
+				var boyfriendPos = boyfriend.getScreenPosition();
+				var pauseSubState = new PauseSubState(boyfriendPos.x, boyfriendPos.y);
+				openSubState(pauseSubState);
+				pauseSubState.camera = camHUD;
+				boyfriendPos.put();
+			}
+
+			#if discord_rpc
+			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			#end
+		}
+	}
+
+	function handleDebugKeys()
+	{
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			FlxG.switchState(() -> new ChartingState());
+
+			#if discord_rpc
+			DiscordClient.changePresence("Chart Editor", null, null, true);
+			#end
+		}
+
+		if (FlxG.keys.justPressed.NINE)
+			iconP1.swapOldIcon();
+
+		#if debug
+		if (FlxG.keys.justPressed.ONE)
+			endSong();
+		if (FlxG.keys.justPressed.EIGHT)
+		{
+			/*
+				8 for opponent char
+				SHIFT+8 for player char
+				CTRL+SHIFT+8 for gf 
+			 */
+
+			if (FlxG.keys.pressed.SHIFT)
+				if (FlxG.keys.pressed.CONTROL)
+					FlxG.switchState(() -> new AnimationDebug(gf.curCharacter));
+				else
+					FlxG.switchState(() -> new AnimationDebug(SONG.player1));
+			else
+				FlxG.switchState(() -> new AnimationDebug(SONG.player2));
+		}
+
+		// nope.
+		// if (FlxG.keys.justPressed.PAGEUP)
+		// 	changeSection(1);
+		// if (FlxG.keys.justPressed.PAGEDOWN)
+		// 	changeSection(-1);
+		#end
+
+		if (!inCutscene && !_exiting)
+		{
+			// RESET = Quick Game Over Screen
+			if (controls.RESET)
+			{
+				health = 0;
+				trace("RESET = True");
+			}
+
+			#if CAN_CHEAT // brandon's a pussy
+			if (controls.CHEAT)
+			{
+				health += 1;
+				trace("User is cheating!");
+			}
+			#end
+		}
+	}
+
+	function gameOver()
+	{
+		persistentUpdate = false;
+		persistentDraw = false;
+		paused = true;
+
+		vocals.stop();
+		FlxG.sound.music.stop();
+
+		deathCounter += 1;
+
+		openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+
+		#if discord_rpc
+		// Game Over doesn't get his own variable because it's only used here
+		DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+		#end
+	}
+
 	function scrollNotes()
 	{
 		notes.forEachAlive(function(daNote:Note)
@@ -871,46 +892,18 @@ class PlayState extends MusicBeatState
 			else
 				daNote.visible = daNote.active = true;
 
-			var strumLineMid = strumLine.y + Note.swagWidth / 2;
+			var notePos:Float = strumLine.y;
+			var notePosOffsetsies:Float = (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed, 2));
 
 			if (PreferencesMenu.getPref('downscroll'))
-			{
-				daNote.y = (strumLine.y + (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed, 2)));
-
-				if (daNote.isSustainNote)
-				{
-					if (daNote.animation.curAnim.name.endsWith("end") && daNote.prevNote != null)
-						daNote.y += daNote.prevNote.height;
-					else
-						daNote.y += daNote.height / 2;
-
-					if ((!daNote.mustPress || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit)))
-						&& daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= strumLineMid)
-					{
-						// clipRect is applied to graphic itself so use frame Heights
-						var swagRect:FlxRect = new FlxRect(0, 0, daNote.frameWidth, daNote.frameHeight);
-
-						swagRect.height = (strumLineMid - daNote.y) / daNote.scale.y;
-						swagRect.y = daNote.frameHeight - swagRect.height;
-						daNote.clipRect = swagRect;
-					}
-				}
-			}
+				notePos += notePosOffsetsies;
 			else
-			{
-				daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed, 2)));
+				notePos -= notePosOffsetsies;
 
-				if (daNote.isSustainNote
-					&& (!daNote.mustPress || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit)))
-					&& daNote.y + daNote.offset.y * daNote.scale.y <= strumLineMid)
-				{
-					var swagRect:FlxRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
+			daNote.y = notePos;
 
-					swagRect.y = (strumLineMid - daNote.y) / daNote.scale.y;
-					swagRect.height -= swagRect.y;
-					daNote.clipRect = swagRect;
-				}
-			}
+			if (daNote.isSustainNote)
+				scrollNotesSustainClipRect(daNote);
 
 			if (!daNote.mustPress && daNote.wasGoodHit)
 			{
@@ -962,6 +955,43 @@ class PlayState extends MusicBeatState
 		});
 	}
 
+	function scrollNotesSustainClipRect(daNote:Note)
+	{
+		var strumLineMid = strumLine.y + Note.swagWidth / 2;
+
+		var swagRect:FlxRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
+		var baseClipRectCondition:Bool = (!daNote.mustPress || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit)));
+		var susnoteYOffset = daNote.offset.y * daNote.scale.y;
+
+		if (PreferencesMenu.getPref('downscroll'))
+		{
+			if (daNote.animation.curAnim.name.endsWith("end") && daNote.prevNote != null)
+				daNote.y += daNote.prevNote.height;
+			else
+				daNote.y += daNote.height / 2;
+
+			swagRect = new FlxRect(0, 0, daNote.frameWidth, daNote.frameHeight);
+		}
+
+		if (baseClipRectCondition)
+		{
+			if (PreferencesMenu.getPref('downscroll') && daNote.y - susnoteYOffset + daNote.height >= strumLineMid)
+			{
+				// clipRect is applied to graphic itself so use frame Heights
+
+				swagRect.height = (strumLineMid - daNote.y) / daNote.scale.y;
+				swagRect.y = daNote.frameHeight - swagRect.height;
+				daNote.clipRect = swagRect;
+			}
+			else if (!PreferencesMenu.getPref('downscroll') && daNote.y + susnoteYOffset <= strumLineMid)
+			{
+				swagRect.y = (strumLineMid - daNote.y) / daNote.scale.y;
+				swagRect.height -= swagRect.y;
+				daNote.clipRect = swagRect;
+			}
+		}
+	}
+
 	function killCombo():Void
 	{
 		if (combo > 5 && gf.animOffsets.exists('sad'))
@@ -972,27 +1002,6 @@ class PlayState extends MusicBeatState
 			displayCombo();
 		}
 	}
-
-	#if debug
-	function changeSection(sec:Int):Void
-	{
-		FlxG.sound.music.pause();
-
-		var daBPM:Float = SONG.bpm;
-		var daPos:Float = 0;
-		for (i in 0...(Std.int(curStep / 16 + sec)))
-		{
-			if (SONG.notes[i].changeBPM)
-			{
-				daBPM = SONG.notes[i].bpm;
-			}
-			daPos += 4 * (1000 * 60 / daBPM);
-		}
-		Conductor.songPosition = FlxG.sound.music.time = daPos;
-		updateCurStep();
-		resyncVocals();
-	}
-	#end
 
 	function endSong():Void
 	{
@@ -1096,9 +1105,6 @@ class PlayState extends MusicBeatState
 			songScore += score;
 
 		var ratingPath:String = daRating;
-
-		if (curStage.startsWith('school'))
-			ratingPath = "weeb/pixelUI/" + ratingPath + "-pixel";
 
 		rating.loadGraphic(Paths.image(ratingPath));
 		rating.x = FlxG.width * 0.55 - 40;
