@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="bgPersons.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="bf person titlecard0000" x="4" y="4" width="108" height="213"/>
+	<SubTexture name="bg person crewmate0000" x="120" y="4" width="134" height="163"/>
+	<SubTexture name="bg person ender0000" x="262" y="4" width="128" height="232"/>
+	<SubTexture name="bg person regular0000" x="398" y="4" width="73" height="113"/>
+	<SubTexture name="bg person ringmaster0000" x="479" y="4" width="153" height="281"/>
+	<SubTexture name="bg person school shooter0000" x="640" y="4" width="102" height="157"/>
+	<SubTexture name="bg person short0000" x="750" y="4" width="72" height="69"/>
+	<SubTexture name="bg person tall0000" x="830" y="4" width="77" height="148"/>
+	<SubTexture name="bg person the funny one0000" x="4" y="293" width="134" height="292"/>
+</TextureAtlas>
