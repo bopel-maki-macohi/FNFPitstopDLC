@@ -90,21 +90,21 @@ class Paths
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
-	static public function songFile(file:String, song:String, ?difficulty:Int)
+	static public function songFile(file:String, song:String, ?difficulty:Int = 1)
 	{
 		var songSuffix = '';
 
 		// if (difficulty > 2) songSuffix = '-erect';
 
-		return 'assets/songs/${song.toLowerCase()}$songSuffix/$file.$SOUND_EXT';
+		return 'songs:assets/songs/${song.toLowerCase()}$songSuffix/$file.$SOUND_EXT';
 	}
 
-	inline static public function voices(song:String, ?difficulty:Int)
+	inline static public function voices(song:String, ?difficulty:Int = 1)
 	{
 		return songFile('Voices', song, difficulty);
 	}
 
-	inline static public function inst(song:String, ?difficulty:Int)
+	inline static public function inst(song:String, ?difficulty:Int = 1)
 	{
 		return songFile('Inst', song, difficulty);
 	}

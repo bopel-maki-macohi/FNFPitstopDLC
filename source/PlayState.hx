@@ -133,8 +133,8 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
-		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
+		FlxG.sound.cache(Paths.inst(PlayState.SONG.song, storyDifficulty));
+		FlxG.sound.cache(Paths.voices(PlayState.SONG.song, storyDifficulty));
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new SwagCamera();
@@ -1054,7 +1054,7 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 
 		if (!paused)
-			FlxG.sound.playMusic(Paths.inst(SONG.song), 1, false);
+			FlxG.sound.playMusic(Paths.inst(SONG.song, storyDifficulty), 1, false);
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 
@@ -1077,7 +1077,7 @@ class PlayState extends MusicBeatState
 		curSong = songData.song;
 
 		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(SONG.song));
+			vocals = new FlxSound().loadEmbedded(Paths.voices(SONG.song, storyDifficulty));
 		else
 			vocals = new FlxSound();
 
