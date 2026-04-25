@@ -162,16 +162,10 @@
 	<haxedef name="CAN_CHEAT" if="switch debug"/>
 	
 	<!-- <haxedef name="CLEAR_INPUT_SAVE"/> -->
-	
-	<section if="newgrounds">
-		<!-- Enables Ng.core.verbose -->
-		<!-- <haxedef name="NG_VERBOSE" /> -->
-		
-		<!-- Enables a NG debug session, so medals don't permently unlock -->
-		<!-- <haxedef name="NG_DEBUG" /> -->
-		
-		<!-- pretends that the saved session Id was expired, forcing the reconnect prompt -->
-		<!-- <haxedef name="NG_FORCE_EXPIRED_SESSION" if="debug" /> -->
-	</section>
+
+	<haxedef name="openfl-enable-handle-error" />
+	<define name="HXCPP_CHECK_POINTER" />
+	<define name="HXCPP_STACK_LINE" />
+	<define name="HXCPP_STACK_TRACE" />
 	
 </project>
