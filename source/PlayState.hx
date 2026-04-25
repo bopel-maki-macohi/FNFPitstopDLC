@@ -128,6 +128,7 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm);
 
 		backgroundSprites = new FlxTypedGroup<BGSprite>();
+		midgroundSprites = new FlxTypedGroup<BGSprite>();
 		foregroundSprites = new FlxTypedGroup<BGSprite>();
 
 		#if discord_rpc
