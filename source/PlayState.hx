@@ -1,5 +1,6 @@
 package;
 
+import pitstop.macros.DefineUtil;
 import pitstop.play.props.RomanceParkPerson;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.addons.display.FlxBackdrop;
@@ -1513,7 +1514,10 @@ class PlayState extends MusicBeatState
 			var person:RomanceParkPerson = new RomanceParkPerson(grass.x -= (grass.width * 10), grass.y, 1, 1);
 			person.y += person.height * 0.1;
 
-			final personMoveTime:Float = FlxG.random.float(5, 30) * (i + 1);
+			var personMoveTime:Float = FlxG.random.float(5, 30) * (i + 1);
+
+			if (DefineUtil.isDefined('SHORTEN_PERSON_MOVE_TIME'))
+				personMoveTime *= .25;
 
 			function movePerson(targetX:Float, onUpdate:FlxTween->Void = null)
 			{
