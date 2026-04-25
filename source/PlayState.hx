@@ -754,9 +754,6 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		if (FlxG.keys.justPressed.NINE)
-			iconP1.swapOldIcon();
-
 		#if debug
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
