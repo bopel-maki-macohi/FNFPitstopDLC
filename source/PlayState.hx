@@ -1472,7 +1472,7 @@ class PlayState extends MusicBeatState
 		defaultCamZoom = 0.8;
 		RomanceParkPerson.SEEN_PEOPLE = [];
 
-		var sky:FlxBackdrop = new FlxBackdrop(Paths.image('sky'), XY);
+		var sky:FlxBackdrop = new FlxBackdrop(Paths.image('sky'), XY, -320);
 
 		sky.scale.set(2, 2);
 		sky.updateHitbox();
