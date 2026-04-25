@@ -1551,7 +1551,7 @@ class PlayState extends MusicBeatState
 					person.y -= person.height * 0.4;
 			}
 
-			var personMoveTime:Float = FlxG.random.float(15, 30) * (FlxG.random.int(5, i) + 1);
+			var personMoveTime:Float = FlxG.random.float(4, 8) * (FlxG.random.int(5, i) + 1);
 
 			if (DefineUtil.isDefined('SHORTEN_PERSON_MOVE_TIME'))
 			{
