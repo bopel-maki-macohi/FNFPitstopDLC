@@ -76,14 +76,9 @@
 	
 	<assets path="assets/songs"    library="songs"    unless="web"/>
 	<assets path="assets/shared"   library="shared"   unless="web"/>
+	
 	<assets path="assets/tutorial" library="tutorial" unless="web"/>
 	<assets path="assets/week1"    library="week1"    unless="web"/>
-	<assets path="assets/week2"    library="week2"    unless="web"/>
-	<assets path="assets/week3"    library="week3"    unless="web"/>
-	<assets path="assets/week4"    library="week4"    unless="web"/>
-	<assets path="assets/week5"    library="week5"    unless="web"/>
-	<assets path="assets/week6"    library="week6"    unless="web"/>
-	<assets path="assets/week7"    library="week7"    unless="web"/>
 	
 	<!-- <assets path='example_mods' rename='mods' embed='false'/> -->
 
