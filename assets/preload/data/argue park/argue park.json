@@ -1,0 +1,23 @@
+{
+	"song": {
+		"song": "Argue Park",
+		"notes": [
+			{
+				"altAnim": false,
+				"bpm": 150,
+				"changeBPM": false,
+				"lengthInSteps": 16,
+				"mustHitSection": true,
+				"sectionNotes": [],
+				"typeOfSection": 0
+			}
+		],
+		"bpm": 194.487,
+		"needsVoices": false,
+		"player1": "bf",
+		"player2": "dad",
+		"speed": 1,
+		"validScore": false,
+		"stage": "romancePark"
+	}
+}
