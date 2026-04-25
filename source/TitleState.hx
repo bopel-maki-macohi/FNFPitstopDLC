@@ -1,7 +1,6 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxGame;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
@@ -11,25 +10,11 @@ import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxAssets.FlxGraphicAsset;
-import flixel.system.FlxAssets;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import lime.app.Application;
-import lime.ui.Window;
 import openfl.Assets;
-import openfl.display.Sprite;
-import openfl.events.AsyncErrorEvent;
-import openfl.events.AsyncErrorEvent;
-import openfl.events.Event;
-import openfl.events.MouseEvent;
-import openfl.events.NetStatusEvent;
-import openfl.media.Video;
-import openfl.net.NetConnection;
-import openfl.net.NetStream;
-import shaderslmfao.BuildingShaders.BuildingShader;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
 import ui.PreferencesMenu;
@@ -38,11 +23,6 @@ using StringTools;
 
 #if discord_rpc
 import Discord.DiscordClient;
-#end
-#if desktop
-import sys.FileSystem;
-import sys.io.File;
-import sys.thread.Thread;
 #end
 
 class TitleState extends MusicBeatState
@@ -63,10 +43,6 @@ class TitleState extends MusicBeatState
 	var swagShader:ColorSwap;
 	var alphaShader:BuildingShaders;
 	var thingie:FlxSprite;
-
-	var video:Video;
-	var netStream:NetStream;
-	private var overlay:Sprite;
 
 	override public function create():Void
 	{
@@ -95,48 +71,12 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 		Highscore.load();
 
-		if (FlxG.save.data.seenVideo != null)
-		{
-			VideoState.seenVideo = FlxG.save.data.seenVideo;
-		}
-
 		#if FREEPLAY
 		FlxG.switchState(() -> new FreeplayState());
 		#elseif ANIMATE
 		FlxG.switchState(() -> new CutsceneAnimTestState());
 		#elseif CHARTING
 		FlxG.switchState(() -> new ChartingState());
-		/* 
-			#elseif web
-
-
-			if (!initialized)
-			{
-
-				video = new Video();
-				FlxG.stage.addChild(video);
-
-				var netConnection = new NetConnection();
-				netConnection.connect(null);
-
-				netStream = new NetStream(netConnection);
-				netStream.client = {onMetaData: client_onMetaData};
-				netStream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, netStream_onAsyncError);
-				netConnection.addEventListener(NetStatusEvent.NET_STATUS, netConnection_onNetStatus);
-				// netStream.addEventListener(NetStatusEvent.NET_STATUS) // netStream.play(Paths.file('music/kickstarterTrailer.mp4'));
-
-				overlay = new Sprite();
-				overlay.graphics.beginFill(0, 0.5);
-				overlay.graphics.drawRect(0, 0, 1280, 720);
-				overlay.addEventListener(MouseEvent.MOUSE_DOWN, overlay_onMouseDown);
-
-				overlay.buttonMode = true;
-				// FlxG.stage.addChild(overlay);
-
-			}
-		 */
-
-		// netConnection.addEventListener(MouseEvent.MOUSE_DOWN, overlay_onMouseDown);
 		#else
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
@@ -152,42 +92,6 @@ class TitleState extends MusicBeatState
 			DiscordClient.shutdown();
 		});
 		#end
-	}
-
-	private function client_onMetaData(metaData:Dynamic)
-	{
-		video.attachNetStream(netStream);
-
-		video.width = video.videoWidth;
-		video.height = video.videoHeight;
-		// video.
-	}
-
-	private function netStream_onAsyncError(event:AsyncErrorEvent):Void
-	{
-		trace("Error loading video");
-	}
-
-	private function netConnection_onNetStatus(event:NetStatusEvent):Void
-	{
-		if (event.info.code == 'NetStream.Play.Complete')
-		{
-			// netStream.dispose();
-			// FlxG.stage.removeChild(video);
-
-			startIntro();
-		}
-
-		trace(event.toString());
-	}
-
-	private function overlay_onMouseDown(event:MouseEvent):Void
-	{
-		netStream.soundTransform.volume = 0.2;
-		netStream.soundTransform.pan = -1;
-		// netStream.play(Paths.file('music/kickstarterTrailer.mp4'));
-
-		FlxG.stage.removeChild(overlay);
 	}
 
 	var logoBl:FlxSprite;
@@ -304,9 +208,6 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		else
 			initialized = true;
-
-		if (FlxG.sound.music != null)
-			FlxG.sound.music.onComplete = function() FlxG.switchState(() -> new VideoState());
 
 		startedIntro = true;
 		// credGroup.add(credTextShit);
