@@ -62,6 +62,8 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
+		FlxSprite.defaultAntialiasing = true;
+
 		// DEBUG BULLSHIT
 
 		super.create();
