@@ -86,9 +86,9 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.seenCutscene = false;
 			FlxG.sound.music.stop();
 
-			if (PlayState.isStoryMode)
-				FlxG.switchState(() -> new StoryMenuState());
-			else
+			// if (PlayState.isStoryMode)
+			// 	FlxG.switchState(() -> new StoryMenuState());
+			// else
 				FlxG.switchState(() -> new FreeplayState());
 		}
 
