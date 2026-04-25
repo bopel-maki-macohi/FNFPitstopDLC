@@ -688,6 +688,7 @@ class ChartingState extends MusicBeatState
 
 		addLine('Song: ${_song.song}');
 		addLine('Difficulty: ${difficultyDropDown.selectedLabel.toLowerCase()}');
+		addLine('Stage: ${stageDropDown.selectedLabel.toLowerCase()}');
 
 		addLine('\n');
 		addLine('Time: $songTime / $songLength');
