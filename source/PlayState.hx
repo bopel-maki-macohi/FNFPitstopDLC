@@ -1886,13 +1886,7 @@ class PlayState extends MusicBeatState
 				transIn = FlxTransitionableState.defaultTransIn;
 				transOut = FlxTransitionableState.defaultTransOut;
 
-				switch (PlayState.storyWeek)
-				{
-					case 7:
-						FlxG.switchState(() -> new VideoState());
-					default:
-						FlxG.switchState(() -> new StoryMenuState());
-				}
+				FlxG.switchState(() -> new StoryMenuState());
 
 				// if ()
 				StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
@@ -1900,7 +1894,6 @@ class PlayState extends MusicBeatState
 				if (SONG.validScore)
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 
-				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
 				FlxG.save.flush();
 			}
 			else
