@@ -147,7 +147,7 @@ class PlayState extends MusicBeatState
 
 		boyfriend = new Character(770, 450, SONG.player1);
 
-		makeStage('stage');
+		makeStage(SONG.stage ?? 'stage');
 
 		add(backgroundSprites);
 
@@ -1433,9 +1433,12 @@ class PlayState extends MusicBeatState
 
 	public function makeStage(stage:String)
 	{
+		curStage = stage;
+
 		switch (stage)
 		{
 			default:
+				curStage = 'stage';
 				makeMainStage();
 		}
 	}
@@ -1443,7 +1446,6 @@ class PlayState extends MusicBeatState
 	function makeMainStage()
 	{
 		defaultCamZoom = 0.9;
-		curStage = 'stage';
 
 		var stageBack:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 

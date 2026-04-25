@@ -9,6 +9,8 @@ using StringTools;
 
 typedef SwagSong =
 {
+	var ?stage:String;
+
 	var song:String;
 	var notes:Array<SwagSection>;
 	var bpm:Float;

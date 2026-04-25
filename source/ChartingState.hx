@@ -90,7 +90,10 @@ class ChartingState extends MusicBeatState
 
 		leftIcon = new HealthIcon('bf');
 		rightIcon = new HealthIcon('dad');
-		
+
+		leftIcon.scrollFactor.set(1, 1);
+		rightIcon.scrollFactor.set(1, 1);
+
 		leftIcon.gameplayScalingStuff = rightIcon.gameplayScalingStuff = false;
 
 		leftIcon.setGraphicSize(0, 45);
@@ -174,6 +177,7 @@ class ChartingState extends MusicBeatState
 	}
 
 	var difficultyDropDown:FlxUIDropDownMenu;
+	var stageDropDown:FlxUIDropDownMenu;
 
 	function addSongUI():Void
 	{
@@ -255,6 +259,15 @@ class ChartingState extends MusicBeatState
 			reloadSongFunc();
 		});
 		difficultyDropDown.selectedLabel = diffs[diffs.indexOf(CoolUtil.difficultyArray[PlayState.storyDifficulty])];
+
+		var stageList = CoolUtil.coolTextFile(Paths.txt('stageList'));
+
+		stageDropDown = new FlxUIDropDownMenu(difficultyDropDown.x, difficultyDropDown.y + difficultyDropDown.height + 10,
+			FlxUIDropDownMenu.makeStrIdLabelArray(stageList, true), function(stage:String)
+		{
+			_song.stage = stageList[Std.parseInt(stage)];
+		});
+		stageDropDown.selectedLabel = _song.stage ?? 'stage';
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
