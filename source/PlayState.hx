@@ -143,10 +143,8 @@ class PlayState extends MusicBeatState
 		dad = new Character(100, 100, SONG.player2);
 		camPos = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
-		setStartingCamPos(SONG.player2);
-
 		boyfriend = new Character(770, 450, SONG.player1);
-
+		
 		makeStage(SONG.stage ?? 'stage');
 
 		add(backgroundSprites);
@@ -159,6 +157,8 @@ class PlayState extends MusicBeatState
 		add(boyfriend);
 
 		add(foregroundSprites);
+
+		initSongShits(SONG);
 
 		Conductor.songPosition = -5000;
 
@@ -368,7 +368,7 @@ class PlayState extends MusicBeatState
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
-		curSong = songData.song;
+		curSong = songData.song.toLowerCase();
 
 		vocals = new FlxSound();
 		if (SONG.needsVoices)
@@ -638,7 +638,7 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("beatShit", curBeat);
 		FlxG.watch.addQuick("stepShit", curStep);
 
-		if (curSong == 'Fresh')
+		if (curSong == 'fresh')
 			switch (curBeat)
 			{
 				case 16:
@@ -652,7 +652,7 @@ class PlayState extends MusicBeatState
 					gfSpeed = 1;
 			}
 
-		if (curSong == 'Bopeebo')
+		if (curSong == 'bopeebo')
 			switch (curBeat)
 			{
 				case 128, 129, 130:
@@ -1398,10 +1398,10 @@ class PlayState extends MusicBeatState
 				dad.dance();
 		}
 
-		if (curBeat % 8 == 7 && curSong == 'Bopeebo')
+		if (curBeat % 8 == 7 && curSong == 'bopeebo')
 			boyfriend.playAnim('hey', true);
 
-		if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
+		if (curBeat % 16 == 15 && curSong == 'tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
 		{
 			boyfriend.playAnim('hey', true);
 			dad.playAnim('cheer', true);
@@ -1412,9 +1412,9 @@ class PlayState extends MusicBeatState
 		foregroundSprites.forEach((spr) -> spr.dance());
 	}
 
-	function setStartingCamPos(player2:String)
+	function initSongShits(song:SwagSong)
 	{
-		switch (player2)
+		switch (song.player2)
 		{
 			case 'gf':
 				dad.setPosition(gf.x, gf.y);
@@ -1426,6 +1426,13 @@ class PlayState extends MusicBeatState
 				}
 			case 'dad':
 				camPos.x += 400;
+		}
+
+		switch (curSong)
+		{
+			case 'argue park':
+				camPos.x = 640;
+				camPos.y = 360;
 		}
 	}
 
