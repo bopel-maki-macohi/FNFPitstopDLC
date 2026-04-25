@@ -107,9 +107,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		FlxG.sound.cache(Paths.inst(PlayState.SONG.song, storyDifficulty));
-		FlxG.sound.cache(Paths.voices(PlayState.SONG.song, storyDifficulty));
-
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new SwagCamera();
 		camHUD = new FlxCamera();
@@ -123,6 +120,10 @@ class PlayState extends MusicBeatState
 
 		if (SONG == null)
 			SONG = Song.loadFromJson('tutorial');
+
+		FlxG.sound.cache(Paths.inst(PlayState.SONG.song, storyDifficulty));
+		if (SONG.needsVoices)
+			FlxG.sound.cache(Paths.voices(PlayState.SONG.song, storyDifficulty));
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
