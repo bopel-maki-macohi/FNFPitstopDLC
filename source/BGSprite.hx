@@ -32,12 +32,18 @@ class BGSprite extends FlxSprite
 		}
 
 		scrollFactor.set(parX, parY);
-		antialiasing = true;
 	}
 
 	public function dance():Void
 	{
 		if (idleAnim != null)
 			animation.play(idleAnim);
+	}
+
+	override function setGraphicSize(width:Float = 0.0, height:Float = 0.0)
+	{
+		super.setGraphicSize(width, height);
+
+		updateHitbox();
 	}
 }

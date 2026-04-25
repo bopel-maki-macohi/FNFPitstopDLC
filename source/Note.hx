@@ -112,7 +112,6 @@ class Note extends FlxSprite
 
 				setGraphicSize(Std.int(width * 0.7));
 				updateHitbox();
-				antialiasing = true;
 
 				// colorSwap.colorToReplace = 0xFFF9393F;
 				// colorSwap.newColor = 0xFF00FF00;

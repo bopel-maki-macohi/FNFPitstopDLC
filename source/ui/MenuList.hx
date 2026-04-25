@@ -227,7 +227,6 @@ class MenuItem extends FlxSprite
 	{
 		super(x, y);
 		
-		antialiasing = true;
 		setData(name, callback);
 		idle();
 	}

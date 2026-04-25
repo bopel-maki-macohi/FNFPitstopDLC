@@ -36,7 +36,7 @@ class PlayState extends MusicBeatState
 
 	private var dad:Character;
 	private var gf:Character;
-	private var boyfriend:Boyfriend;
+	private var boyfriend:Character;
 
 	private var notes:FlxTypedGroup<Note>;
 	private var unspawnNotes:Array<Note> = [];
@@ -72,6 +72,8 @@ class PlayState extends MusicBeatState
 
 	public static var seenCutscene:Bool = false;
 
+	var backgroundSprites:FlxTypedGroup<BGSprite>;
+	var midgroundSprites:FlxTypedGroup<BGSprite>;
 	var foregroundSprites:FlxTypedGroup<BGSprite>;
 
 	var talking:Bool = true;
@@ -125,34 +127,8 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
+		backgroundSprites = new FlxTypedGroup<BGSprite>();
 		foregroundSprites = new FlxTypedGroup<BGSprite>();
-
-		switch (SONG.song.toLowerCase())
-		{
-			case 'tutorial':
-				dialogue = ["Hey you're pretty cute.", 'Use the arrow keys to keep up \nwith me singing.'];
-			case 'bopeebo':
-				dialogue = [
-					'HEY!',
-					"You think you can just sing\nwith my daughter like that?",
-					"If you want to date her...",
-					"You're going to have to go \nthrough ME first!"
-				];
-			case 'fresh':
-				dialogue = ["Not too shabby boy.", ""];
-			case 'dadbattle':
-				dialogue = [
-					"gah you think you're hot stuff?",
-					"If you can beat me here...",
-					"Only then I will even CONSIDER letting you\ndate my daughter!"
-				];
-			case 'senpai':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai/senpaiDialogue'));
-			case 'roses':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('roses/rosesDialogue'));
-			case 'thorns':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
-		}
 
 		#if discord_rpc
 		initDiscord();
@@ -161,30 +137,19 @@ class PlayState extends MusicBeatState
 		defaultCamZoom = 0.9;
 		curStage = 'stage';
 
-		var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
-		add(bg);
+		var stageBack:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 
-		var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
+		var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
 		stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-		stageFront.updateHitbox();
-		stageFront.antialiasing = true;
-		stageFront.scrollFactor.set(0.9, 0.9);
-		stageFront.active = false;
-		add(stageFront);
 
-		var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
+		var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
 		stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-		stageCurtains.updateHitbox();
-		stageCurtains.antialiasing = true;
-		stageCurtains.scrollFactor.set(1.3, 1.3);
-		stageCurtains.active = false;
 
-		add(stageCurtains);
+		backgroundSprites.add(stageBack);
+		backgroundSprites.add(stageFront);
+		backgroundSprites.add(stageCurtains);
 
 		var gfVersion:String = 'gf';
-
-		if (SONG.song.toLowerCase() == 'stress')
-			gfVersion = 'pico-speaker';
 
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
@@ -207,12 +172,16 @@ class PlayState extends MusicBeatState
 				camPos.x += 400;
 		}
 
-		boyfriend = new Boyfriend(770, 450, SONG.player1);
+		boyfriend = new Character(770, 450, SONG.player1);
 
 		// REPOSITIONING PER STAGE
 		switch (curStage) {}
 
+		add(backgroundSprites);
+
 		add(gf);
+
+		add(midgroundSprites);
 
 		add(dad);
 		add(boyfriend);
@@ -525,7 +494,6 @@ class PlayState extends MusicBeatState
 
 			babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
 
-			babyArrow.antialiasing = true;
 			babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 
 			babyArrow.x += Note.swagWidth * Math.abs(i);
@@ -1469,6 +1437,8 @@ class PlayState extends MusicBeatState
 			dad.playAnim('cheer', true);
 		}
 
+		backgroundSprites.forEach((spr) -> spr.dance());
+		midgroundSprites.forEach((spr) -> spr.dance());
 		foregroundSprites.forEach((spr) -> spr.dance());
 	}
 }
