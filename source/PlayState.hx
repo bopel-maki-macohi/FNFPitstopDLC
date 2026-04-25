@@ -144,7 +144,7 @@ class PlayState extends MusicBeatState
 		camPos = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
 		boyfriend = new Character(770, 450, SONG.player1);
-		
+
 		makeStage(SONG.stage ?? 'stage');
 
 		add(backgroundSprites);
@@ -623,7 +623,7 @@ class PlayState extends MusicBeatState
 		iconP1.animation.curAnim.curFrame = (healthBar.percent < 20) ? 1 : 0;
 		iconP2.animation.curAnim.curFrame = (healthBar.percent > 80) ? 1 : 0;
 
-		if (generatedMusic && SONG.notes[Std.int(curStep / 16)] != null)
+		if (generatedMusic && SONG.notes[Std.int(curStep / 16)] != null && useDefaultCameraStuffs)
 		{
 			cameraRightSide = SONG.notes[Std.int(curStep / 16)].mustHitSection;
 			cameraMovement();
@@ -1431,10 +1431,14 @@ class PlayState extends MusicBeatState
 		switch (curSong)
 		{
 			case 'argue park':
+				useDefaultCameraStuffs = false;
+
 				camPos.x = 640;
 				camPos.y = 360;
 		}
 	}
+
+	public var useDefaultCameraStuffs:Bool = true;
 
 	public function makeStage(stage:String)
 	{
@@ -1451,7 +1455,10 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function makeRomancePark() {}
+	function makeRomancePark()
+	{
+		defaultCamZoom = 0.9;
+	}
 
 	function makeMainStage()
 	{
