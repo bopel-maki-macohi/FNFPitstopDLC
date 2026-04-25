@@ -34,7 +34,6 @@ class PlayerSettings
 		
 		#if CLEAR_INPUT_SAVE
 		FlxG.save.data.controls = null;
-		FlxG.save.flush();
 		#end
 		
 		var useDefault = true;
@@ -118,8 +117,6 @@ class PlayerSettings
 				playerData.pad = padData;
 			}
 		}
-		
-		FlxG.save.flush();
 	}
 	
 	static public function init():Void

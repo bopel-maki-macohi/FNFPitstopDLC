@@ -979,8 +979,6 @@ class PlayState extends MusicBeatState
 
 				if (SONG.validScore)
 					Highscore.saveWeekScore(LoadingState.getWeekTitleShit(storyWeek), campaignScore, storyDifficulty);
-
-				FlxG.save.flush();
 			}
 			else
 			{

@@ -52,7 +52,6 @@ class Highscore
 		// Reminder that I don't need to format this song, it should come formatted!
 		songScores.set(formattedSong, score);
 		FlxG.save.data.songScores = songScores;
-		FlxG.save.flush();
 		#end
 	}
 

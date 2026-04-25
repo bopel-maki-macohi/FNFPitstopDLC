@@ -1,5 +1,6 @@
 package;
 
+import lime.app.Application;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
@@ -68,10 +69,19 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		FlxG.save.bind('funkinDLC', 'PitstopCrew');
-		PreferencesMenu.initPrefs();
-		PlayerSettings.init();
-		Highscore.load();
+		if (!FlxG.save.isBound)
+		{
+			FlxG.save.bind('funkinDLC', 'PitstopCrew');
+
+			PreferencesMenu.initPrefs();
+			PlayerSettings.init();
+			Highscore.load();
+
+			Application.current.onExit.add(l ->
+			{
+				FlxG.save.flush();
+			});
+		}
 
 		#if FREEPLAY
 		FlxG.switchState(() -> new FreeplayState());
