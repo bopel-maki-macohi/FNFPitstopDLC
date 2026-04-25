@@ -975,7 +975,7 @@ class PlayState extends MusicBeatState
 
 			if (storyPlaylist.length <= 0)
 			{
-				FlxG.switchState(() -> new StoryMenuState());
+				// FlxG.switchState(() -> new StoryMenuState());
 
 				if (SONG.validScore)
 					Highscore.saveWeekScore(LoadingState.getWeekTitleShit(storyWeek), campaignScore, storyDifficulty);

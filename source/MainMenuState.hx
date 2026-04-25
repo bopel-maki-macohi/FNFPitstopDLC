@@ -45,9 +45,7 @@ class MainMenuState extends MusicBeatState
 		transOut = FlxTransitionableState.defaultTransOut;
 
 		if (!FlxG.sound.music.playing)
-		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		}
 
 		persistentUpdate = persistentDraw = true;
 
@@ -84,9 +82,9 @@ class MainMenuState extends MusicBeatState
 		});
 
 		menuItems.enabled = false; // disable for intro
-		menuItems.createItem('story mode', function() startExitState(new StoryMenuState()));
+		
+		// menuItems.createItem('story mode', function() startExitState(new StoryMenuState()));
 		menuItems.createItem('freeplay', function() startExitState(new FreeplayState()));
-		// addMenuItem('options', function () startExitState(new OptionMenu()));
 		menuItems.createItem('options', function() startExitState(new OptionsState()));
 
 		// center vertically
