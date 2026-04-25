@@ -19,7 +19,7 @@ import openfl.Assets;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
 import ui.PreferencesMenu;
-import macros.DefineUtil;
+import pitstop.macros.DefineUtil;
 
 using StringTools;
 
