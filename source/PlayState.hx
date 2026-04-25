@@ -135,48 +135,19 @@ class PlayState extends MusicBeatState
 		initDiscord();
 		#end
 
-		defaultCamZoom = 0.9;
-		curStage = 'stage';
-
-		var stageBack:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
-
-		var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
-		stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-
-		var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
-		stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-
-		backgroundSprites.add(stageBack);
-		backgroundSprites.add(stageFront);
-		backgroundSprites.add(stageCurtains);
-
 		var gfVersion:String = 'gf';
 
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
 
 		dad = new Character(100, 100, SONG.player2);
-
 		camPos = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
-		switch (SONG.player2)
-		{
-			case 'gf':
-				dad.setPosition(gf.x, gf.y);
-				gf.visible = false;
-				if (isStoryMode)
-				{
-					camPos.x += 600;
-					tweenCamIn();
-				}
-			case 'dad':
-				camPos.x += 400;
-		}
+		setStartingCamPos(SONG.player2);
 
 		boyfriend = new Character(770, 450, SONG.player1);
 
-		// REPOSITIONING PER STAGE
-		switch (curStage) {}
+		makeStage('stage');
 
 		add(backgroundSprites);
 
@@ -1441,5 +1412,53 @@ class PlayState extends MusicBeatState
 		backgroundSprites.forEach((spr) -> spr.dance());
 		midgroundSprites.forEach((spr) -> spr.dance());
 		foregroundSprites.forEach((spr) -> spr.dance());
+	}
+
+	function setStartingCamPos(player2:String)
+	{
+		switch (player2)
+		{
+			case 'gf':
+				dad.setPosition(gf.x, gf.y);
+				gf.visible = false;
+				if (isStoryMode)
+				{
+					camPos.x += 600;
+					tweenCamIn();
+				}
+			case 'dad':
+				camPos.x += 400;
+		}
+	}
+
+	public function makeStage(stage:String)
+	{
+		switch (stage)
+		{
+			default:
+				makeMainStage();
+		}
+	}
+
+	function makeMainStage()
+	{
+		defaultCamZoom = 0.9;
+		curStage = 'stage';
+
+		var stageBack:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
+
+		var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
+		stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+
+		var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
+		stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+
+		backgroundSprites.add(stageBack);
+		backgroundSprites.add(stageFront);
+		backgroundSprites.add(stageCurtains);
+
+		gf.setPosition(400, 130);
+		dad.setPosition(100, 100);
+		boyfriend.setPosition(770, 450);
 	}
 }
