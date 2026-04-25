@@ -1457,7 +1457,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var tweensList:Array<FlxTween> = [];
-	
+
 	public var useDefaultCameraStuffs:Bool = true;
 
 	public function makeStage(stage:String)
@@ -1521,20 +1521,43 @@ class PlayState extends MusicBeatState
 
 		for (i in 0...peopleCount)
 		{
-			var person:RomanceParkPerson = new RomanceParkPerson(grass.x - (grass.width * 2), grass.y, 1, 1);
+			var person:RomanceParkPerson = new RomanceParkPerson(grass.x - (grass.width * 2), grass.y * 1.1, 1, 1);
+			// trace('$i : ${person.person}');
 
 			switch (person.person)
 			{
 				case short:
-					person.y -= person.height * 0.1;
+					person.y += person.height * 0.05;
+
+				case jax:
+					person.y -= person.height * 1.1;
+
+				case caine:
+					person.y -= person.height * 0.7;
+
+				case regular:
+					person.y -= person.height * 0.2;
+
+				case enderman:
+					person.y += person.height * 0.2;
+
+				case invincible:
+					person.y += person.height * 0.2;
+
+				case pico:
+					person.y -= person.height * 0.55;
+
 				default:
 					person.y -= person.height * 0.4;
 			}
 
-			var personMoveTime:Float = FlxG.random.float(15, 30) * (i + 1);
+			var personMoveTime:Float = FlxG.random.float(15, 30) * (FlxG.random.int(5, i) + 1);
 
 			if (DefineUtil.isDefined('SHORTEN_PERSON_MOVE_TIME'))
-				personMoveTime *= .5;
+			{
+				personMoveTime = 2 * i;
+				FlxG.camera.zoom = .2;
+			}
 
 			function movePerson(targetX:Float, onUpdate:FlxTween->Void = null)
 			{
@@ -1544,7 +1567,10 @@ class PlayState extends MusicBeatState
 						romancePark_bgPeople.remove(person);
 						person.destroy();
 					},
-					onUpdate: onUpdate
+					onUpdate: t ->
+					{
+						onUpdate(t);
+					}
 				});
 				twn.onCancel = t ->
 				{

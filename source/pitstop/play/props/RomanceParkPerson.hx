@@ -7,13 +7,12 @@ enum abstract RomanceParkPersonID(String) from String to String
 	var invincible = 'bf person titlecard';
 	var amongUs = 'bg person crewmate';
 	var enderman = 'bg person ender';
+	var regular = 'bg person regular';
 	var caine = 'bg person ringmaster';
 	var pico = 'bg person school shooter';
-	var jax = 'bg person the funny one';
-
-	var regular = 'bg person regular';
 	var short = 'bg person short';
 	var tall = 'bg person tall';
+	var jax = 'bg person the funny one';
 }
 
 class RomanceParkPerson extends BGSprite
@@ -57,7 +56,7 @@ class RomanceParkPerson extends BGSprite
 			}
 		}
 
-		if (this.animation.curAnim == null)
+		if (person == null)
 		{
 			person = regular;
 			this.animation.play(RomanceParkPersonID.regular);
