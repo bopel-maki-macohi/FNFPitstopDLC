@@ -1438,7 +1438,7 @@ class PlayState extends MusicBeatState
 		switch (stage)
 		{
 			default:
-				curStage = 'stage';
+				curStage = 'mainStage';
 				makeMainStage();
 		}
 	}

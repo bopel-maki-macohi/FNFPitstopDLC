@@ -267,7 +267,7 @@ class ChartingState extends MusicBeatState
 		{
 			_song.stage = stageList[Std.parseInt(stage)];
 		});
-		stageDropDown.selectedLabel = _song.stage ?? 'stage';
+		stageDropDown.selectedLabel = _song.stage ?? 'mainStage';
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
