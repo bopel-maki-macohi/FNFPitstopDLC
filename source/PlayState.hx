@@ -1511,7 +1511,7 @@ class PlayState extends MusicBeatState
 
 		for (i in 0...peopleCount)
 		{
-			var person:RomanceParkPerson = new RomanceParkPerson(grass.x -= (grass.width * 10), grass.y, 1, 1);
+			var person:RomanceParkPerson = new RomanceParkPerson(grass.x -= (grass.width * 2), grass.y, 1, 1);
 			person.y += person.height * 0.1;
 
 			var personMoveTime:Float = FlxG.random.float(15, 30) * (i + 1);
