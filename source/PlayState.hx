@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.display.FlxBackdrop;
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.*;
@@ -72,9 +73,9 @@ class PlayState extends MusicBeatState
 
 	public static var seenCutscene:Bool = false;
 
-	var backgroundSprites:FlxTypedGroup<BGSprite>;
-	var midgroundSprites:FlxTypedGroup<BGSprite>;
-	var foregroundSprites:FlxTypedGroup<BGSprite>;
+	var backgroundSprites:FlxTypedGroup<FlxSprite>;
+	var midgroundSprites:FlxTypedGroup<FlxSprite>;
+	var foregroundSprites:FlxTypedGroup<FlxSprite>;
 
 	var talking:Bool = true;
 	var songScore:Int = 0;
@@ -129,9 +130,9 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		backgroundSprites = new FlxTypedGroup<BGSprite>();
-		midgroundSprites = new FlxTypedGroup<BGSprite>();
-		foregroundSprites = new FlxTypedGroup<BGSprite>();
+		backgroundSprites = new FlxTypedGroup<FlxSprite>();
+		midgroundSprites = new FlxTypedGroup<FlxSprite>();
+		foregroundSprites = new FlxTypedGroup<FlxSprite>();
 
 		#if discord_rpc
 		initDiscord();
@@ -1404,9 +1405,18 @@ class PlayState extends MusicBeatState
 			dad.playAnim('cheer', true);
 		}
 
-		backgroundSprites.forEach((spr) -> spr.dance());
-		midgroundSprites.forEach((spr) -> spr.dance());
-		foregroundSprites.forEach((spr) -> spr.dance());
+		for (spriteGroup in [backgroundSprites, midgroundSprites, foregroundSprites])
+		{
+			spriteGroup.forEach((spr) ->
+			{
+				if (Std.isOfType(spr, BGSprite))
+				{
+					final bgSprite:BGSprite = cast spr;
+					if (bgSprite != null)
+						bgSprite.dance();
+				}
+			});
+		}
 	}
 
 	function initSongShits(song:SwagSong)
@@ -1456,7 +1466,7 @@ class PlayState extends MusicBeatState
 	{
 		defaultCamZoom = 0.8;
 
-		var sky:BGSprite = new BGSprite('sky', 0, 0, .1, .1);
+		var sky:FlxBackdrop = new FlxBackdrop(Paths.image('sky'), XY);
 
 		sky.scale.set(2, 2);
 		sky.updateHitbox();
@@ -1465,25 +1475,27 @@ class PlayState extends MusicBeatState
 
 		backgroundSprites.add(sky);
 
+		sky.velocity.set(25, 0);
+
 		var bgGrass:BGSprite = new BGSprite('bgGrass', 0, 0, .2, .2);
+		var grass:BGSprite = new BGSprite('grass', 0, 0, .8, .8);
+		var bench:BGSprite = new BGSprite('bench', 0, 0, .9, .9);
 
-		bgGrass.scale.set(1.2, 1.2);
-		bgGrass.updateHitbox();
+		for (bgSprite in [bgGrass, grass, bench])
+		{
+			bgSprite.scale.set(1.2, 1.2);
+			bgSprite.updateHitbox();
 
-		bgGrass.screenCenter();
+			bgSprite.screenCenter();
+		}
+
 		bgGrass.y = FlxG.height - (bgGrass.height * 1.3);
+		grass.y = FlxG.height - (grass.height * 0.5);
+		bench.y = FlxG.height - (bench.height * 0.75);
 
 		backgroundSprites.add(bgGrass);
-
-		var grass:BGSprite = new BGSprite('grass', 0, 0, .8, .8);
-
-		grass.scale.set(1.2, 1.2);
-		grass.updateHitbox();
-
-		grass.screenCenter();
-		grass.y = FlxG.height - (grass.height * 0.5);
-
 		backgroundSprites.add(grass);
+		backgroundSprites.add(bench);
 	}
 
 	function makeMainStage()
