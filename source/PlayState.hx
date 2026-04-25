@@ -1525,7 +1525,7 @@ class PlayState extends MusicBeatState
 			var personMoveTime:Float = FlxG.random.float(15, 30) * (i + 1);
 
 			if (DefineUtil.isDefined('SHORTEN_PERSON_MOVE_TIME'))
-				personMoveTime *= .25;
+				personMoveTime *= .5;
 
 			function movePerson(targetX:Float, onUpdate:FlxTween->Void = null)
 			{
