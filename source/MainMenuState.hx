@@ -89,14 +89,6 @@ class MainMenuState extends MusicBeatState
 		menuItems.createItem('story mode', function() startExitState(new StoryMenuState()));
 		menuItems.createItem('freeplay', function() startExitState(new FreeplayState()));
 		// addMenuItem('options', function () startExitState(new OptionMenu()));
-		#if CAN_OPEN_LINKS
-		var hasPopupBlocker = #if web true #else false #end;
-
-		if (VideoState.seenVideo)
-			menuItems.createItem('kickstarter', selectDonate, hasPopupBlocker);
-		else
-			menuItems.createItem('donate', selectDonate, hasPopupBlocker);
-		#end
 		menuItems.createItem('options', function() startExitState(new OptionsState()));
 
 		// center vertically

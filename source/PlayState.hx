@@ -1813,7 +1813,7 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(() -> new StoryMenuState());
 
 				if (SONG.validScore)
-					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
+					Highscore.saveWeekScore(LoadingState.getWeekTitleShit(storyWeek), campaignScore, storyDifficulty);
 
 				FlxG.save.flush();
 			}

@@ -27,11 +27,11 @@ class LoadingState extends MusicBeatState
 	var loadBar:FlxSprite;
 	var funkay:FlxSprite;
 
-	public static function getWeekLibrary(storyWeek:Int)
+	public static function getWeekTitleShit(storyWeek:Int)
 	{
 		return switch (storyWeek)
 		{
-			case 0: 'turorial';
+			case 0: 'tutorial';
 
 			default: 'week${storyWeek}';
 		}
@@ -70,7 +70,7 @@ class LoadingState extends MusicBeatState
 			if (PlayState.SONG.needsVoices)
 				checkLoadSong(getVocalPath());
 			checkLibrary("shared");
-			checkLibrary(getWeekLibrary(PlayState.storyWeek));
+			checkLibrary(getWeekTitleShit(PlayState.storyWeek));
 
 			var fadeTime = 0.5;
 			FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
@@ -184,7 +184,7 @@ class LoadingState extends MusicBeatState
 
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
-		Paths.setCurrentLevel(getWeekLibrary(PlayState.storyWeek));
+		Paths.setCurrentLevel(getWeekTitleShit(PlayState.storyWeek));
 
 		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
