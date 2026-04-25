@@ -22,15 +22,11 @@ class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var weekData:Array<Dynamic> = [
-		['Tutorial'],
-		['Bopeebo', 'Fresh', 'Dadbattle'],
-	];
-	var curDifficulty:Int = 1;
-
+	var weekData:Array<Dynamic> = [['Tutorial'], ['Argue Park'],];
 	var weekCharacters:Array<Dynamic> = [['dad', 'bf', 'gf'], ['dad', 'bf', 'gf']];
+	var weekNames:Array<String> = ["", "This guy again..."];
 
-	var weekNames:Array<String> = ["", "Daddy Dearest"];
+	var curDifficulty:Int = 1;
 
 	var txtWeekTitle:FlxText;
 
