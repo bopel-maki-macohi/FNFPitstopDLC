@@ -1463,6 +1463,17 @@ class PlayState extends MusicBeatState
 
 		sky.screenCenter();
 		backgroundSprites.add(sky);
+
+		var bgGrass:BGSprite = new BGSprite('bgGrass', 0, 0);
+		
+		bgGrass.scale.set(2, 2);
+		bgGrass.updateHitbox();
+
+		bgGrass.screenCenter();
+		backgroundSprites.add(bgGrass);
+
+		var grass:BGSprite = new BGSprite('grass', 0, 0);
+		backgroundSprites.add(grass);
 	}
 
 	function makeMainStage()

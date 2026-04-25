@@ -19,6 +19,7 @@ import openfl.Assets;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
 import ui.PreferencesMenu;
+import macros.DefineUtil;
 
 using StringTools;
 
@@ -83,16 +84,30 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 		Highscore.load();
 
-		#if FREEPLAY
-		FlxG.switchState(() -> new FreeplayState());
-		#elseif CHARTING
-		FlxG.switchState(() -> new ChartingState());
-		#else
-		new FlxTimer().start(1, function(tmr:FlxTimer)
+		if (DefineUtil.isDefined('FREEPLAY'))
+			FlxG.switchState(() -> new FreeplayState());
+		else if (DefineUtil.isDefined('CHARTING'))
+			FlxG.switchState(() -> new ChartingState());
+		else if (DefineUtil.isDefined('SONG') && DefineUtil.isDefined('STORYWEEK'))
 		{
-			startIntro();
-		});
-		#end
+			var song = DefineUtil.getDefine('SONG').toLowerCase();
+
+			var poop:String = Highscore.formatSong(song, 1);
+
+			PlayState.SONG = Song.loadFromJson(poop, song);
+			PlayState.isStoryMode = false;
+			PlayState.storyDifficulty = 1;
+			PlayState.storyWeek = Std.parseInt(DefineUtil.getDefine('STORYWEEK', '1'));
+
+			LoadingState.loadAndSwitchState(new PlayState());
+		}
+		else
+		{
+			new FlxTimer().start(1, function(tmr:FlxTimer)
+			{
+				startIntro();
+			});
+		}
 
 		#if discord_rpc
 		DiscordClient.initialize();
