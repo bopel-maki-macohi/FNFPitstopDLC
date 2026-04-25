@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxMath;
 import flixel.FlxSprite;
 
 using StringTools;
@@ -60,5 +61,9 @@ class HealthIcon extends FlxSprite
 
 		if (sprTracker != null)
 			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
+
+		
+		setGraphicSize(Std.int(FlxMath.lerp(150, width, 0.85)));
+		updateHitbox();
 	}
 }
