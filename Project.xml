@@ -168,4 +168,5 @@
 	<define name="HXCPP_STACK_LINE" />
 	<define name="HXCPP_STACK_TRACE" />
 	
+	<haxedef name="lime_disable_assets_version" />
 </project>
