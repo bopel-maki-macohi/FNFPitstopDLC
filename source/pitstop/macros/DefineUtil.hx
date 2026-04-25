@@ -1,4 +1,4 @@
-package macros;
+package pitstop.macros;
 
 class DefineUtil
 {
