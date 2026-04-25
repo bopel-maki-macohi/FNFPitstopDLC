@@ -1,5 +1,7 @@
 package;
 
+import pitstop.play.props.RomanceParkPerson;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.addons.display.FlxBackdrop;
 import Section.SwagSection;
 import Song.SwagSong;
@@ -1462,9 +1464,12 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public var romancePark_bgPeople:FlxTypedSpriteGroup<RomanceParkPerson>;
+
 	function makeRomancePark()
 	{
 		defaultCamZoom = 0.8;
+		RomanceParkPerson.SEEN_PEOPLE = [];
 
 		var sky:FlxBackdrop = new FlxBackdrop(Paths.image('sky'), XY);
 
@@ -1494,8 +1499,57 @@ class PlayState extends MusicBeatState
 		bench.y = FlxG.height - (bench.height * 0.75);
 
 		backgroundSprites.add(bgGrass);
+
+		romancePark_bgPeople = new FlxTypedSpriteGroup<RomanceParkPerson>();
+		backgroundSprites.add(romancePark_bgPeople);
+
 		backgroundSprites.add(grass);
 		backgroundSprites.add(bench);
+
+		var peopleCount:Int = FlxG.random.int(8, 14);
+
+		for (i in 0...peopleCount)
+		{
+			var person:RomanceParkPerson = new RomanceParkPerson(grass.x -= (grass.width * 10), grass.y, 1, 1);
+			person.y += person.height * 0.1;
+
+			final personMoveTime:Float = FlxG.random.float(5, 30) * (i + 1);
+
+			function movePerson(targetX:Float, onUpdate:FlxTween->Void = null)
+			{
+				FlxTween.tween(person, {x: targetX}, personMoveTime, {
+					onComplete: t ->
+					{
+						romancePark_bgPeople.remove(person);
+						person.destroy();
+					},
+					onUpdate: onUpdate
+				});
+			}
+
+			movePerson(FlxG.width + (person.width * 2), t ->
+			{
+				switch (person.person)
+				{
+					// pico sees bf and dad and just dips
+					case pico:
+						if (t.percent >= 35)
+						{
+							t.cancel();
+
+							person.flipX = true;
+							FlxTimer.wait(FlxG.random.float(5, 15), () ->
+							{
+								movePerson(-person.width * 10);
+							});
+						}
+
+					default:
+				}
+			});
+
+			romancePark_bgPeople.add(person);
+		}
 	}
 
 	function makeMainStage()
