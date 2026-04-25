@@ -124,6 +124,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song, storyDifficulty));
 		if (SONG.needsVoices)
 			FlxG.sound.cache(Paths.voices(PlayState.SONG.song, storyDifficulty));
+		curSong = SONG.song.toLowerCase();
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
@@ -368,8 +369,6 @@ class PlayState extends MusicBeatState
 	{
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
-
-		curSong = songData.song.toLowerCase();
 
 		vocals = new FlxSound();
 		if (SONG.needsVoices)
@@ -1455,7 +1454,15 @@ class PlayState extends MusicBeatState
 
 	function makeRomancePark()
 	{
-		defaultCamZoom = 0.9;
+		defaultCamZoom = 0.8;
+
+		var sky:BGSprite = new BGSprite('sky', 0, 0, .1, .1);
+		
+		sky.scale.set(2, 2);
+		sky.updateHitbox();
+
+		sky.screenCenter();
+		backgroundSprites.add(sky);
 	}
 
 	function makeMainStage()
