@@ -1457,22 +1457,32 @@ class PlayState extends MusicBeatState
 		defaultCamZoom = 0.8;
 
 		var sky:BGSprite = new BGSprite('sky', 0, 0, .1, .1);
-		
+
 		sky.scale.set(2, 2);
 		sky.updateHitbox();
 
 		sky.screenCenter();
+
 		backgroundSprites.add(sky);
 
-		var bgGrass:BGSprite = new BGSprite('bgGrass', 0, 0);
-		
-		bgGrass.scale.set(2, 2);
+		var bgGrass:BGSprite = new BGSprite('bgGrass', 0, 0, .2, .2);
+
+		bgGrass.scale.set(1.2, 1.2);
 		bgGrass.updateHitbox();
 
 		bgGrass.screenCenter();
+		bgGrass.y = FlxG.height - (bgGrass.height * 1.3);
+
 		backgroundSprites.add(bgGrass);
 
-		var grass:BGSprite = new BGSprite('grass', 0, 0);
+		var grass:BGSprite = new BGSprite('grass', 0, 0, .8, .8);
+
+		grass.scale.set(1.2, 1.2);
+		grass.updateHitbox();
+
+		grass.screenCenter();
+		grass.y = FlxG.height - (grass.height * 0.5);
+
 		backgroundSprites.add(grass);
 	}
 
