@@ -15,6 +15,8 @@ class HealthIcon extends FlxSprite
 	var char:String = '';
 	var isPlayer:Bool = false;
 
+	public var gameplayScalingStuff:Bool = true;
+
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
@@ -61,8 +63,10 @@ class HealthIcon extends FlxSprite
 		if (sprTracker != null)
 			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
 
-		
-		setGraphicSize(Std.int(FlxMath.lerp(150, width, 0.85)));
-		updateHitbox();
+		if (gameplayScalingStuff)
+		{
+			setGraphicSize(Std.int(FlxMath.lerp(150, width, 0.85)));
+			updateHitbox();
+		}
 	}
 }
