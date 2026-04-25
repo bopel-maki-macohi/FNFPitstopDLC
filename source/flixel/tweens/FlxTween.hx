@@ -671,6 +671,8 @@ class FlxTween implements IFlxDestroyable
 		return this;
 	}
 
+	public var onCancel:FlxTween->Void;
+
 	/**
 	 * Immediately stops the Tween and removes it from its
 	 * `manager` without calling the `onComplete` callback.
@@ -679,6 +681,9 @@ class FlxTween implements IFlxDestroyable
 	 */
 	public function cancel():Void
 	{
+		if (onCancel != null)
+			onCancel(this);
+
 		onEnd();
 
 		if (manager != null)

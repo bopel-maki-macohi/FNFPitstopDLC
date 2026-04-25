@@ -1466,6 +1466,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var romancePark_bgPeople:FlxTypedSpriteGroup<RomanceParkPerson>;
+	public var romancePark_bgPeopleTweens:Array<FlxTween> = [];
 
 	function makeRomancePark()
 	{
@@ -1528,7 +1529,7 @@ class PlayState extends MusicBeatState
 
 			function movePerson(targetX:Float, onUpdate:FlxTween->Void = null)
 			{
-				FlxTween.tween(person, {x: targetX}, personMoveTime, {
+				var twn:FlxTween = FlxTween.tween(person, {x: targetX}, personMoveTime, {
 					onComplete: t ->
 					{
 						romancePark_bgPeople.remove(person);
@@ -1536,6 +1537,11 @@ class PlayState extends MusicBeatState
 					},
 					onUpdate: onUpdate
 				});
+				twn.onCancel = t ->
+				{
+					romancePark_bgPeopleTweens.remove(twn);
+				}
+				romancePark_bgPeopleTweens.push(twn);
 			}
 
 			movePerson(FlxG.width + (person.width * 2), t ->
