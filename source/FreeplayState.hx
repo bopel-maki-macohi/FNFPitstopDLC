@@ -1,5 +1,6 @@
 package;
 
+import pitstop.SongList;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
@@ -51,11 +52,8 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
 
-		#if debug
-		addSong('Test', 1, 'bf-pixel');
-		#end
-		addWeek(['Tutorial'], 1, ['gf']);
-		addWeek(['Argue Park'], 1, ['dad']);
+		for (song in SongList.SONGLIST)
+			addSong(song[0], song[1], song[2] ?? 'face');
 
 		// LOAD MUSIC
 
