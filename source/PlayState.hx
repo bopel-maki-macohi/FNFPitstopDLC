@@ -542,6 +542,9 @@ class PlayState extends MusicBeatState
 	{
 		if (paused)
 		{
+			for (tween in tweensList)
+				tween.active = true;
+
 			if (FlxG.sound.music != null && !startingSong)
 				resyncVocals();
 
@@ -735,8 +738,13 @@ class PlayState extends MusicBeatState
 			else
 			{
 				var boyfriendPos = boyfriend.getScreenPosition();
+
 				var pauseSubState = new PauseSubState(boyfriendPos.x, boyfriendPos.y);
 				openSubState(pauseSubState);
+
+				for (tween in tweensList)
+					tween.active = false;
+
 				pauseSubState.camera = camHUD;
 				boyfriendPos.put();
 			}
@@ -1448,6 +1456,8 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public var tweensList:Array<FlxTween> = [];
+	
 	public var useDefaultCameraStuffs:Bool = true;
 
 	public function makeStage(stage:String)
@@ -1466,7 +1476,6 @@ class PlayState extends MusicBeatState
 	}
 
 	public var romancePark_bgPeople:FlxTypedSpriteGroup<RomanceParkPerson>;
-	public var romancePark_bgPeopleTweens:Array<FlxTween> = [];
 
 	function makeRomancePark()
 	{
@@ -1539,9 +1548,9 @@ class PlayState extends MusicBeatState
 				});
 				twn.onCancel = t ->
 				{
-					romancePark_bgPeopleTweens.remove(twn);
+					tweensList.remove(twn);
 				}
-				romancePark_bgPeopleTweens.push(twn);
+				tweensList.push(twn);
 			}
 
 			movePerson(FlxG.width + (person.width * 2), t ->
