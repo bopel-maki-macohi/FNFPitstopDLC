@@ -73,8 +73,6 @@ class TitleState extends MusicBeatState
 
 		#if FREEPLAY
 		FlxG.switchState(() -> new FreeplayState());
-		#elseif ANIMATE
-		FlxG.switchState(() -> new CutsceneAnimTestState());
 		#elseif CHARTING
 		FlxG.switchState(() -> new ChartingState());
 		#else
@@ -232,22 +230,6 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		#if debug
-		if (FlxG.keys.justPressed.EIGHT)
-			FlxG.switchState(() -> new CutsceneAnimTestState());
-		#end
-
-		/* 
-			if (FlxG.keys.justPressed.R)
-			{
-				#if polymod
-				polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
-				trace('reinitialized');
-				#end
-			}
-
-		 */
-
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
