@@ -692,7 +692,7 @@ class PlayState extends MusicBeatState
 
 	function updateUI()
 	{
-		scoreTxt.text = "Score:" + songScore;
+		scoreTxt.text = 'Score: ${FlxStringUtil.formatMoney(songScore, false, true)}';
 	}
 
 	function handlePausing()
