@@ -135,7 +135,7 @@ class PauseSubState extends MusicBeatSubstate
 			text.x = FlxG.width - (text.width + 20);
 
 			FlxTween.tween(text, {alpha: 1, y: text.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: startDelay});
-			startDelay += .3;
+			startDelay += .2;
 		}
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
