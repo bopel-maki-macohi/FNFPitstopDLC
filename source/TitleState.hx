@@ -84,6 +84,15 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 		Highscore.load();
 
+		#if discord_rpc
+		DiscordClient.initialize();
+
+		Application.current.onExit.add(function(exitCode)
+		{
+			DiscordClient.shutdown();
+		});
+		#end
+
 		if (DefineUtil.isDefined('FREEPLAY'))
 			FlxG.switchState(() -> new FreeplayState());
 		else if (DefineUtil.isDefined('SONG') && DefineUtil.isDefined('STORYWEEK'))
@@ -111,15 +120,6 @@ class TitleState extends MusicBeatState
 				startIntro();
 			});
 		}
-
-		#if discord_rpc
-		DiscordClient.initialize();
-
-		Application.current.onExit.add(function(exitCode)
-		{
-			DiscordClient.shutdown();
-		});
-		#end
 	}
 
 	var logoBl:FlxSprite;
