@@ -64,7 +64,7 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
-		watermark = new Watermark(10, 3);
+		watermark = new Watermark();
 		addChild(watermark);
 		#end
 	}

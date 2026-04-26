@@ -1,5 +1,8 @@
 package pitstop.display;
 
+import flixel.FlxG;
+import flixel.system.FlxAssets;
+import openfl.display.Shape;
 import ui.PreferencesMenu;
 import flixel.math.FlxMath;
 import openfl.system.System;
@@ -10,14 +13,14 @@ import openfl.text.TextField;
 
 class Watermark extends TextField
 {
-	override public function new(x:Float, y:Float)
+	override public function new()
 	{
 		super();
 
-		this.x = x;
-		this.y = y;
+		this.width = FlxG.width;
+		this.height = FlxG.height;
 
-		defaultTextFormat = new TextFormat('_sans', 12, FlxColor.WHITE);
+		defaultTextFormat = new TextFormat(FlxAssets.FONT_DEFAULT, 16, FlxColor.WHITE);
 	}
 
 	var curTime:Float = 0;
@@ -26,22 +29,53 @@ class Watermark extends TextField
 
 	var currentFPS:Float = 0;
 
+	var entrys:Array<String> = [];
+
 	override function __enterFrame(deltaTime:Float)
 	{
 		calcFPS(deltaTime);
 
-		var entrys:Array<String> = [
-			'Pitstop DLC v${Application.current.meta.get('version')}',
-		];
+		entrys = [];
 
-		if (PreferencesMenu.getPref('fps-counter'))
-			entrys.push('FPS: ${currentFPS}');
+		function addEntry(line:String, condition:Bool)
+		{
+			if (condition)
+				entrys.push(line);
+			else
+				entrys.push('');
+		}
 
-		if (PreferencesMenu.getPref('memory-counter'))
-			entrys.push('Total Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}mb');
+		addEntry('Pitstop DLC v${Application.current.meta.get('version')}\n', true);
+		addEntry('FPS: $currentFPS', PreferencesMenu.getPref('fps-counter'));
+		addEntry('Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}mb', PreferencesMenu.getPref('memory-counter'));
 
 		text = entrys.join('\n');
-		width = textWidth * 1.1;
+
+		drawBackdrop();
+	}
+
+	var backdrop:Shape;
+
+	public var bgSizePixelOffset:Int = 10;
+
+	function drawBackdrop()
+	{
+		if (backdrop == null)
+			backdrop = new Shape();
+
+		if (parent != null)
+			parent.addChildAt(backdrop, parent.getChildIndex(this) - 1);
+
+		backdrop.x = this.x;
+		backdrop.y = this.y;
+
+		backdrop.alpha = .6;
+
+		backdrop.graphics.clear();
+
+		backdrop.graphics.beginFill(FlxColor.BLACK, 1);
+		backdrop.graphics.drawRect(-(bgSizePixelOffset / 2), -(bgSizePixelOffset / 2), (this.textWidth * 1.05) + bgSizePixelOffset, (textHeight * 1.2));
+		backdrop.graphics.endFill();
 	}
 
 	function calcFPS(deltaTime:Float)
