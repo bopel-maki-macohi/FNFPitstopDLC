@@ -545,7 +545,7 @@ class ChartingState extends MusicBeatState
 
 	function getIsTyping():Bool
 	{
-		return UI_songTitle.hasFocus;
+		return UI_songTitle.hasFocus || UI_Artist.hasFocus || UI_Charter.hasFocus;
 	}
 
 	override function update(elapsed:Float)
@@ -556,7 +556,7 @@ class ChartingState extends MusicBeatState
 
 		_song.artist = UI_Artist.text;
 		_song.charter = UI_Charter.text;
-		
+
 		_song.song = UI_songTitle.text;
 
 		lastTime = Conductor.songPosition;
