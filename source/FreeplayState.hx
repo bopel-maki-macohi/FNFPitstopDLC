@@ -209,32 +209,42 @@ class FreeplayState extends MusicBeatState
 
 	function changeDiff(change:Int = 0)
 	{
+		var diffs = songs[curSelected].difficulties;
+
 		if (change == 0)
-			curDifficulty = songs[curSelected].difficulties[songs[curSelected].difficulties.indexOf(curDifficulty)];
+		{
+			curDifficulty = diffs[diffs.indexOf(lastDiff)];
+
+			if (curDifficulty == -1)
+				curDifficulty = diffs[diffs.indexOf(CoolUtil.difficultyArray.indexOf('NORMAL'))];
+		}
 		else
 			curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = songs[curSelected].difficulties.length - 1;
-		if (curDifficulty > songs[curSelected].difficulties.length - 1)
+			curDifficulty = diffs.length - 1;
+		if (curDifficulty > diffs.length - 1)
 			curDifficulty = 0;
 
-		intendedScore = Highscore.getScore(songs[curSelected].songName, songs[curSelected].difficulties[curDifficulty]);
+		intendedScore = Highscore.getScore(songs[curSelected].songName, diffs[curDifficulty]);
 
-		PlayState.storyDifficulty = songs[curSelected].difficulties[curDifficulty];
+		PlayState.storyDifficulty = diffs[curDifficulty];
 
 		diffText.text = CoolUtil.difficultyString();
 
-		if (songs[curSelected].difficulties.length > 1)
+		if (diffs.length > 1)
 			diffText.text = '< ${diffText.text} >';
 
 		positionHighscore();
 	}
 
+	var lastDiff:Int = 0;
+
 	function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
+		lastDiff = songs[curSelected].difficulties[curDifficulty];
 		curSelected += change;
 
 		if (curSelected < 0)
