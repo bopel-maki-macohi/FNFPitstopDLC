@@ -1,5 +1,6 @@
 package;
 
+import pitstop.play.notes.Note;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
