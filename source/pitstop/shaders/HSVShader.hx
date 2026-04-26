@@ -1,4 +1,4 @@
-package shaderslmfao;
+package pitstop.shaders;
 
 import lime.utils.Assets;
 import flixel.FlxG;

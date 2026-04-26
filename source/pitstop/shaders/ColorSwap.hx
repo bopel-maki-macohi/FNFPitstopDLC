@@ -1,4 +1,4 @@
-package shaderslmfao;
+package pitstop.shaders;
 
 import flixel.system.FlxAssets.FlxShader;
 import flixel.util.FlxColor;

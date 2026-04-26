@@ -1,6 +1,6 @@
 package pitstop.play.notes;
 
-import shaderslmfao.ColorSwap;
+import pitstop.shaders.ColorSwap;
 import flixel.FlxSprite;
 
 class NoteStatic extends FlxSprite

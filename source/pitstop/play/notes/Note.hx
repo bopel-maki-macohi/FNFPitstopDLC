@@ -1,8 +1,8 @@
 package pitstop.play.notes;
 
-import shaderslmfao.HSVShader;
+import pitstop.shaders.HSVShader;
 import flixel.FlxSprite;
-import shaderslmfao.ColorSwap;
+import pitstop.shaders.ColorSwap;
 import ui.PreferencesMenu;
 
 using StringTools;

@@ -16,8 +16,8 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import openfl.Assets;
-import shaderslmfao.BuildingShaders;
-import shaderslmfao.ColorSwap;
+import pitstop.shaders.BuildingShaders;
+import pitstop.shaders.ColorSwap;
 import ui.PreferencesMenu;
 import pitstop.macros.DefineUtil;
 
