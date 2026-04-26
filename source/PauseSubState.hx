@@ -112,17 +112,15 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			songRoleText.text = artistText;
 
-			// wait 2 secs
-			// fade out 1s
-			// change text
-			// fade in 1s
-			// repeat?
+			final fadeTime:Float = 2;
+			final startDelay:Float = 5;
+			final loopDelay:Float = 5;
 
-			FlxTween.tween(songRoleText, {alpha: 0}, 1, {
+			FlxTween.tween(songRoleText, {alpha: 0}, fadeTime, {
 				type: LOOPING,
 
-				startDelay: 2,
-				loopDelay: 2,
+				startDelay: loopDelay,
+				loopDelay: loopDelay,
 
 				onComplete: t ->
 				{
@@ -131,7 +129,7 @@ class PauseSubState extends MusicBeatSubstate
 					else
 						songRoleText.text = charterText;
 
-					FlxTween.tween(songRoleText, {alpha: 1}, 1);
+					FlxTween.tween(songRoleText, {alpha: 1}, fadeTime);
 				},
 			});
 		}
