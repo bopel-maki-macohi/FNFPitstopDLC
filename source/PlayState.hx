@@ -604,7 +604,10 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.sound.music.volume = FlxG.sound.volume;
 			if (vocals != null)
-				vocals.volume = FlxG.sound.music.volume;
+			{
+				vocals.bfVocals.volume = FlxG.sound.music.volume;
+				vocals.dadVocals.volume = FlxG.sound.music.volume;
+			}
 		}
 
 		updateUI();
@@ -841,9 +844,6 @@ class PlayState extends MusicBeatState
 
 				dad.holdTimer = 0;
 
-				if (SONG.needsVoices)
-					vocals.volume = 1;
-
 				murderNote(daNote);
 			}
 
@@ -926,6 +926,7 @@ class PlayState extends MusicBeatState
 		seenCutscene = false;
 		deathCounter = 0;
 		canPause = false;
+
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 
@@ -976,7 +977,7 @@ class PlayState extends MusicBeatState
 	// gives score and pops up rating
 	public function popUpScore(strumtime:Float, daNote:Note):Void
 	{
-		vocals.volume = 1;
+		vocals.bfVocals.volume = 1;
 
 		var ratingSprite:FlxSprite = new FlxSprite();
 		var rating:RatingClass = Score.grade(Math.abs(strumtime - Conductor.songPosition));
@@ -1233,7 +1234,7 @@ class PlayState extends MusicBeatState
 
 	function noteMissBasic(direction:Int = 1)
 	{
-		vocals.volume = 0;
+		vocals.bfVocals.volume = 0;
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 
 		boyfriend.playAnim(singAnimations[direction] + 'miss', true);
@@ -1287,7 +1288,7 @@ class PlayState extends MusicBeatState
 		playerStrums.forEach((spr) -> if (Math.abs(note.noteData) == spr.ID) spr.animation.play('confirm', true));
 
 		note.wasGoodHit = true;
-		vocals.volume = 1;
+		vocals.bfVocals.volume = 1;
 
 		if (!note.isSustainNote)
 			murderNote(note);

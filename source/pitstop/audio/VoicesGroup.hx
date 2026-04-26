@@ -5,6 +5,9 @@ import lime.utils.Assets;
 
 class VoicesGroup extends FunkinSoundGroup
 {
+	public var bfVocals:FlxSound;
+	public var dadVocals:FlxSound;
+
 	public function new(song:String, difficulty:Int)
 	{
 		super();
@@ -18,11 +21,18 @@ class VoicesGroup extends FunkinSoundGroup
 		final regularVocalsExists:Bool = Assets.exists(regularVocalPath);
 
 		if (bfVocalsExists)
-			add(new FlxSound().loadEmbedded(bfVocalPath));
+			add(bfVocals = new FlxSound().loadEmbedded(bfVocalPath));
 		if (dadVocalsExists)
-			add(new FlxSound().loadEmbedded(dadVocalPath));
+			add(dadVocals = new FlxSound().loadEmbedded(dadVocalPath));
 
-		if (regularVocalsExists)
-			add(new FlxSound().loadEmbedded(regularVocalPath));
+		if (regularVocalsExists && !bfVocalsExists)
+		{
+			add(bfVocals = new FlxSound().loadEmbedded(regularVocalPath));
+		}
+
+		if (bfVocals == null)
+			bfVocals = new FlxSound();
+		if (dadVocals == null)
+			dadVocals = new FlxSound();
 	}
 }
