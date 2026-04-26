@@ -11,11 +11,6 @@ class NoteStatic extends FlxSprite
 		
 		this.ID = i;
 
-		var colorswap:ColorSwap = new ColorSwap();
-
-		shader = colorswap.shader;
-		colorswap.update(Note.arrowColors[i]);
-
 		frames = Paths.getSparrowAtlas('NOTE_assets');
 
 		setGraphicSize(Std.int(width * 0.7));
