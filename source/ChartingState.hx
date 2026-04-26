@@ -179,17 +179,59 @@ class ChartingState extends MusicBeatState
 		super.create();
 	}
 
-	
 	function addSong2UI():Void
 	{
 		var tabGroup = new FlxUI(null, UI_box);
 		tabGroup.name = "Song2";
 
+		var gfVersionDropDown = new FlxUIDropDownMenu(10, 20, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
+		{
+			_song.gfVersion = characterList[Std.parseInt(character)];
+		});
+		gfVersionDropDown.selectedLabel = _song.gfVersion ?? 'gf';
+
+		var diffs = Highscore.difficultiesStrArray(_song.song);
+
+		difficultyDropDown = new FlxUIDropDownMenu(gfVersionDropDown.x + gfVersionDropDown.width  + 10, gfVersionDropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(diffs, true), function(difficulty:String)
+		{
+			var difficultyStr = diffs[Std.parseInt(difficulty)];
+			PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(difficultyStr);
+
+			reloadSongFunc();
+		});
+		difficultyDropDown.selectedLabel = diffs[diffs.indexOf(CoolUtil.difficultyArray[PlayState.storyDifficulty])];
+
+		var stageList = CoolUtil.coolTextFile(Paths.txt('stageList'));
+
+		stageDropDown = new FlxUIDropDownMenu(difficultyDropDown.x, difficultyDropDown.y + difficultyDropDown.height + 20,
+			FlxUIDropDownMenu.makeStrIdLabelArray(stageList, true), function(stage:String)
+		{
+			_song.stage = stageList[Std.parseInt(stage)];
+		});
+		stageDropDown.selectedLabel = _song.stage ?? 'mainStage';
+
+		tabGroup.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 16, 0, 'GF Version:'));
+		tabGroup.add(gfVersionDropDown);
+
+		tabGroup.add(new FlxText(difficultyDropDown.x, difficultyDropDown.y - 16, 0, 'Difficulty:'));
+		tabGroup.add(difficultyDropDown);
+		
+		tabGroup.add(new FlxText(stageDropDown.x, stageDropDown.y - 16, 0, 'Stage:'));
+		tabGroup.add(stageDropDown);
+
 		UI_box.addGroup(tabGroup);
 	}
 
+	var characterList = CoolUtil.coolTextFile(Paths.txt('characterList'));
+
 	var difficultyDropDown:FlxUIDropDownMenu;
 	var stageDropDown:FlxUIDropDownMenu;
+
+	function reloadSongFunc()
+	{
+		autosaveSong();
+		loadJson(_song.song);
+	}
 
 	function addSongUI():Void
 	{
@@ -222,12 +264,6 @@ class ChartingState extends MusicBeatState
 			saveLevel();
 		});
 
-		function reloadSongFunc()
-		{
-			autosaveSong();
-			loadJson(_song.song);
-		}
-
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", () ->
 		{
 			loadSong(Highscore.formatSong(_song.song, PlayState.storyDifficulty));
@@ -245,41 +281,19 @@ class ChartingState extends MusicBeatState
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
-		var characterList = CoolUtil.coolTextFile(Paths.txt('characterList'));
-
-		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
+		var player1DropDown = new FlxUIDropDownMenu(10, 120, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
 		{
 			_song.player1 = characterList[Std.parseInt(character)];
 			updateHeads();
 		});
 		player1DropDown.selectedLabel = _song.player1;
 
-		var player2DropDown = new FlxUIDropDownMenu(140, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
+		var player2DropDown = new FlxUIDropDownMenu(140, player1DropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
 		{
 			_song.player2 = characterList[Std.parseInt(character)];
 			updateHeads();
 		});
 		player2DropDown.selectedLabel = _song.player2;
-
-		var diffs = Highscore.difficultiesStrArray(_song.song);
-
-		difficultyDropDown = new FlxUIDropDownMenu(270, 100, FlxUIDropDownMenu.makeStrIdLabelArray(diffs, true), function(difficulty:String)
-		{
-			var difficultyStr = diffs[Std.parseInt(difficulty)];
-			PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(difficultyStr);
-
-			reloadSongFunc();
-		});
-		difficultyDropDown.selectedLabel = diffs[diffs.indexOf(CoolUtil.difficultyArray[PlayState.storyDifficulty])];
-
-		var stageList = CoolUtil.coolTextFile(Paths.txt('stageList'));
-
-		stageDropDown = new FlxUIDropDownMenu(difficultyDropDown.x, difficultyDropDown.y + difficultyDropDown.height + 10,
-			FlxUIDropDownMenu.makeStrIdLabelArray(stageList, true), function(stage:String)
-		{
-			_song.stage = stageList[Std.parseInt(stage)];
-		});
-		stageDropDown.selectedLabel = _song.stage ?? 'mainStage';
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
@@ -293,10 +307,12 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
+		
+		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 16, 0, 'Player:'));
 		tab_group_song.add(player1DropDown);
+
+		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 16, 0, 'Opponent:'));
 		tab_group_song.add(player2DropDown);
-		tab_group_song.add(difficultyDropDown);
-		tab_group_song.add(stageDropDown);
 
 		UI_box.addGroup(tab_group_song);
 		UI_box.scrollFactor.set();
