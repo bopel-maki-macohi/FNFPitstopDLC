@@ -299,7 +299,8 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 		camHUD.visible = true;
 
-		generateStaticArrows(0);
+		if (PreferencesMenu.getPref('notes-opponent'))
+			generateStaticArrows(0);
 		generateStaticArrows(1);
 
 		startedCountdown = true;
@@ -425,10 +426,15 @@ class PlayState extends MusicBeatState
 				swagNote.sustainLength = songNotes[2];
 				swagNote.altNote = songNotes[3];
 				swagNote.scrollFactor.set(0, 0);
+				swagNote.mustPress = gottaHitNote;
 
 				var susLength:Float = swagNote.sustainLength;
 
 				susLength = susLength / Conductor.stepCrochet;
+
+				if (!swagNote.mustPress && !PreferencesMenu.getPref('notes-opponent'))
+					swagNote.alpha = 0;
+
 				unspawnNotes.push(swagNote);
 
 				for (susNote in 0...Math.floor(susLength))
@@ -437,15 +443,16 @@ class PlayState extends MusicBeatState
 
 					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true);
 					sustainNote.scrollFactor.set();
-					unspawnNotes.push(sustainNote);
-
 					sustainNote.mustPress = gottaHitNote;
+
+					if (!sustainNote.mustPress && !PreferencesMenu.getPref('notes-opponent'))
+						sustainNote.alpha = 0;
+
+					unspawnNotes.push(sustainNote);
 
 					if (sustainNote.mustPress)
 						sustainNote.x += FlxG.width / 2; // general offset
 				}
-
-				swagNote.mustPress = gottaHitNote;
 
 				if (swagNote.mustPress)
 					swagNote.x += FlxG.width / 2; // general offset
