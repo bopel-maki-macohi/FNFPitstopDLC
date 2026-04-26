@@ -32,7 +32,6 @@ class Watermark extends TextField
 
 		var entrys:Array<String> = [
 			'Pitstop DLC v${Application.current.meta.get('version')}',
-			'Total Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}',
 		];
 
 		if (PreferencesMenu.getPref('fps-counter'))
