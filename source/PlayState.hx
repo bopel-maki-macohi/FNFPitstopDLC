@@ -36,6 +36,8 @@ class PlayState extends MusicBeatState
 		instance = null;
 	}
 
+	public final singAnimations:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
+
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
@@ -831,24 +833,10 @@ class PlayState extends MusicBeatState
 
 				var altAnim:String = "";
 
-				if (SONG.notes[Math.floor(curStep / 16)] != null)
-					if (SONG.notes[Math.floor(curStep / 16)].altAnim)
-						altAnim = '-alt';
-
-				if (daNote.altNote)
+				if (SONG.notes[Math.floor(curStep / 16)]?.altAnim || daNote.altNote)
 					altAnim = '-alt';
 
-				switch (Math.abs(daNote.noteData))
-				{
-					case 0:
-						dad.playAnim('singLEFT' + altAnim, true);
-					case 1:
-						dad.playAnim('singDOWN' + altAnim, true);
-					case 2:
-						dad.playAnim('singUP' + altAnim, true);
-					case 3:
-						dad.playAnim('singRIGHT' + altAnim, true);
-				}
+				dad.playAnim(singAnimations[Math.round(Math.abs(daNote.noteData))] + altAnim, true);
 
 				dad.holdTimer = 0;
 
@@ -915,6 +903,7 @@ class PlayState extends MusicBeatState
 	{
 		if (combo > 5 && gf.animOffsets.exists('sad'))
 			gf.playAnim('sad');
+		
 		if (combo != 0)
 		{
 			combo = 0;
@@ -1271,17 +1260,7 @@ class PlayState extends MusicBeatState
 		vocals.volume = 0;
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 
-		switch (direction)
-		{
-			case 0:
-				boyfriend.playAnim('singLEFTmiss', true);
-			case 1:
-				boyfriend.playAnim('singDOWNmiss', true);
-			case 2:
-				boyfriend.playAnim('singUPmiss', true);
-			case 3:
-				boyfriend.playAnim('singRIGHTmiss', true);
-		}
+		boyfriend.playAnim(singAnimations[direction] + 'miss', true);
 	}
 
 	function goodNoteHit(note:Note):Void
@@ -1297,17 +1276,7 @@ class PlayState extends MusicBeatState
 
 		health += 0.023;
 
-		switch (note.noteData)
-		{
-			case 0:
-				boyfriend.playAnim('singLEFT', true);
-			case 1:
-				boyfriend.playAnim('singDOWN', true);
-			case 2:
-				boyfriend.playAnim('singUP', true);
-			case 3:
-				boyfriend.playAnim('singRIGHT', true);
-		}
+		boyfriend.playAnim(singAnimations[note.noteData], true);
 
 		playerStrums.forEach((spr) -> if (Math.abs(note.noteData) == spr.ID) spr.animation.play('confirm', true));
 
@@ -1332,9 +1301,7 @@ class PlayState extends MusicBeatState
 		super.stepHit();
 		if (Math.abs(FlxG.sound.music.time - (Conductor.songPosition - Conductor.offset)) > 20
 			|| (SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
-		{
 			resyncVocals();
-		}
 
 		for (song in songClasses)
 			song.onStepHit(curStep);
@@ -1347,12 +1314,11 @@ class PlayState extends MusicBeatState
 		if (generatedMusic)
 			notes.sort(sortNotes, FlxSort.DESCENDING);
 
-		if (SONG.notes[Math.floor(curStep / 16)] != null)
-			if (SONG.notes[Math.floor(curStep / 16)].changeBPM)
-			{
-				Conductor.changeBPM(SONG.notes[Math.floor(curStep / 16)].bpm);
-				FlxG.log.add('CHANGED BPM!');
-			}
+		if (SONG.notes[Math.floor(curStep / 16)]?.changeBPM ?? false)
+		{
+			Conductor.changeBPM(SONG.notes[Math.floor(curStep / 16)].bpm);
+			FlxG.log.add('CHANGED BPM!');
+		}
 
 		if (PreferencesMenu.getPref('camera-zoom'))
 			if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
@@ -1363,9 +1329,6 @@ class PlayState extends MusicBeatState
 
 		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
 		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
-
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
 
 		if (curBeat % gfSpeed == 0)
 			gf.dance();

@@ -54,9 +54,13 @@ class HealthIcon extends FlxSprite
 			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
 
 		if (gameplayScalingStuff)
-		{
 			setGraphicSize(Std.int(FlxMath.lerp(150, width, 0.85)));
-			updateHitbox();
-		}
+	}
+
+	override function setGraphicSize(width:Float = 0.0, height:Float = 0.0)
+	{
+		super.setGraphicSize(width, height);
+
+		updateHitbox();
 	}
 }
