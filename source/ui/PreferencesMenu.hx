@@ -1,5 +1,6 @@
 package ui;
 
+import pitstop.save.PreferencesSaveData;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -73,12 +74,6 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('fps-counter', true);
 		preferenceCheck('memory-counter', true);
 		preferenceCheck('auto-pause', false);
-		preferenceCheck('master-volume', 1);
-
-		#if muted
-		setPref('master-volume', 0);
-		FlxG.sound.muted = true;
-		#end
 
 		FlxG.autoPause = getPref('auto-pause');
 	}
@@ -93,19 +88,15 @@ class PreferencesMenu extends ui.OptionsState.Page
 			{
 				case 'TBool':
 					prefToggle(prefString);
-
-				default:
-					trace('swag');
 			}
+
+			PreferencesSaveField.setField(prefString, preferences.get(prefString));
 		});
 
 		switch (Type.typeof(prefValue).getName())
 		{
 			case 'TBool':
 				createCheckbox(prefString);
-
-			default:
-				trace('swag');
 		}
 
 		trace(Type.typeof(prefValue).getName());
@@ -125,7 +116,9 @@ class PreferencesMenu extends ui.OptionsState.Page
 	{
 		var daSwap:Bool = preferences.get(prefName);
 		daSwap = !daSwap;
+
 		preferences.set(prefName, daSwap);
+
 		checkboxes[items.selectedIndex].daValue = daSwap;
 		trace('toggled? ' + preferences.get(prefName));
 
@@ -151,12 +144,22 @@ class PreferencesMenu extends ui.OptionsState.Page
 		});
 	}
 
-	private static function preferenceCheck(prefString:String, prefValue:Dynamic):Void
+	private static function preferenceCheck(prefString:String, ?defaultValue:Dynamic):Void
 	{
 		if (preferences.get(prefString) == null)
 		{
-			preferences.set(prefString, prefValue);
-			trace('set $prefString to $prefValue!');
+			if (PreferencesSaveField.getField(prefString) == null)
+			{
+				trace('set $prefString to default value: $defaultValue!');
+
+				preferences.set(prefString, defaultValue);
+				PreferencesSaveField.setField(prefString, defaultValue);
+			}
+			else
+			{
+				preferences.set(prefString, PreferencesSaveField.getField(prefString));
+				trace('set $prefString to save value: ${preferences.get(prefString)}!');
+			}
 		}
 		else
 		{
