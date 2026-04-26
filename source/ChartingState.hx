@@ -554,6 +554,9 @@ class ChartingState extends MusicBeatState
 
 		FlxG.watch.addQuick('selectedTab', UI_box.selected_tab);
 
+		_song.artist = UI_Artist.text;
+		_song.charter = UI_Charter.text;
+		
 		_song.song = UI_songTitle.text;
 
 		lastTime = Conductor.songPosition;
