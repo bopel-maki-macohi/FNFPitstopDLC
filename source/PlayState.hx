@@ -1411,21 +1411,17 @@ class PlayState extends MusicBeatState
 				camPos.x += 400;
 		}
 
-		switch (curSong)
-		{
-			case 'tutorial':
-				appendSongClass(new TutorialSong());
-
-			case 'bopeebo':
-				appendSongClass(new BopeeboSong());
-
-			case 'fresh':
-				appendSongClass(new FreshSong());
-
-			case 'argue park':
-				appendSongClass(new ArgueParkSong());
-		}
+		for (song => songClass in songClassMapping)
+			if (curSong == song)
+				appendSongClass(songClass);
 	}
+
+	var songClassMapping:Map<String, SongClass> = [
+		'tutorial' => new TutorialSong(),
+		'bopeebo' => new BopeeboSong(),
+		'fresh' => new FreshSong(),
+		'argue Park' => new ArgueParkSong(),
+	];
 
 	public var tweensList:Array<FlxTween> = [];
 
