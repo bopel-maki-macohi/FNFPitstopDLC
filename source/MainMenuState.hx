@@ -81,7 +81,7 @@ class MainMenuState extends MusicBeatState
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false, true);
 		});
 
-		menuItems.enabled = false; // disable for intro
+		menuItems.enabled = (transIn == null); // disable for intro
 		
 		// menuItems.createItem('story mode', function() startExitState(new StoryMenuState()));
 		menuItems.createItem('freeplay', function() startExitState(new FreeplayState()));
