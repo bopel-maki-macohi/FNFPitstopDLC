@@ -1,5 +1,6 @@
 package;
 
+import animate.FlxAnimateFrames;
 import animate.FlxAnimate;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -32,9 +33,8 @@ class Character extends FlxAnimate
 		switch (curCharacter)
 		{
 			case 'gf':
-				// GIRLFRIEND CODE
-				tex = Paths.getSparrowAtlas('characters/GF_assets');
-				frames = tex;
+				loadTextures([Paths.getSparrowAtlas('characters/GF_assets'),]);
+
 				quickAnimAdd('cheer', 'GF Cheer');
 				quickAnimAdd('singLEFT', 'GF left note');
 				quickAnimAdd('singRIGHT', 'GF Right Note');
@@ -52,9 +52,8 @@ class Character extends FlxAnimate
 				playAnim('danceRight');
 
 			case 'dad':
-				// DAD ANIMATION LOADING CODE
-				tex = Paths.getSparrowAtlas('characters/DADDY_DEAREST');
-				frames = tex;
+				loadTextures([Paths.getSparrowAtlas('characters/DADDY_DEAREST'),]);
+
 				quickAnimAdd('idle', 'Dad idle dance');
 				quickAnimAdd('singUP', 'Dad Sing Note UP');
 				quickAnimAdd('singRIGHT', 'Dad Sing Note RIGHT');
@@ -66,8 +65,8 @@ class Character extends FlxAnimate
 				playAnim('idle');
 
 			case 'bf':
-				var tex = Paths.getSparrowAtlas('characters/BOYFRIEND');
-				frames = tex;
+				loadTextures([Paths.getSparrowAtlas('characters/BOYFRIEND'),]);
+
 				quickAnimAdd('idle', 'BF idle dance');
 				quickAnimAdd('singUP', 'BF NOTE UP0');
 				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
@@ -91,7 +90,7 @@ class Character extends FlxAnimate
 				playAnim('idle');
 
 			case 'gf-park':
-				frames = Paths.getAnimateAtlas('characters/gf-park');
+				loadTextures([Paths.getAnimateAtlas('characters/gf-park'),]);
 
 				anim.addByFrameLabel('danceLeft', 'danceLeft', 24, false);
 				anim.addByFrameLabel('danceRight', 'danceRight', 24, false);
@@ -101,16 +100,18 @@ class Character extends FlxAnimate
 				loadOffsetFile(curCharacter);
 
 			case 'bf-park':
-				frames = Paths.getSparrowAtlas('characters/bf-park');
+				loadTextures([
+					Paths.getSparrowAtlas('characters/bf-park'),
+					Paths.getSparrowAtlas('characters/BOYFRIEND'),
+				]);
+
 				quickAnimAdd('idle', 'bf anim idle');
 
-				loadOffsetFile(curCharacter);
-
-				frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
 				quickAnimAdd('firstDeath', "BF dies");
 				anim.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
 				quickAnimAdd('deathConfirm', "BF Dead confirm");
 
+				loadOffsetFile(curCharacter);
 				loadOffsetFile('bf-dead');
 
 				playAnim('idle');
@@ -140,6 +141,11 @@ class Character extends FlxAnimate
 				}
 			}
 		}
+	}
+
+	function loadTextures(textures:Array<FlxAtlasFrames>)
+	{
+		frames = FlxAnimateFrames.combineAtlas(textures);
 	}
 
 	function sortAnims(val1:Array<Dynamic>, val2:Array<Dynamic>):Int
@@ -182,7 +188,7 @@ class Character extends FlxAnimate
 		}
 		else
 		{
-			if (anim.name.startsWith('sing'))
+			if (anim?.name?.startsWith('sing'))
 				holdTimer += elapsed;
 
 			var dadVar:Float = 4;
