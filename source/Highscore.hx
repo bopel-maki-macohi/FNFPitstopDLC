@@ -92,7 +92,7 @@ class Highscore
 		if (!songScores.exists(formatSong(song, diff)))
 			setScore(formatSong(song, diff), 0);
 
-		return songScores.get(formatSong(song, diff));
+		return songScores.get(formatSong(song, diff)) ?? 0;
 	}
 
 	public static function getWeekScore(week:String, diff:Int):Float
@@ -100,7 +100,7 @@ class Highscore
 		if (!songScores.exists(formatSong(week, diff)))
 			setScore(formatSong(week, diff), 0);
 
-		return songScores.get(formatSong(week, diff));
+		return songScores.get(formatSong(week, diff)) ?? 0;
 	}
 
 	public static function load():Void
