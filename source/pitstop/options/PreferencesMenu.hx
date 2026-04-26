@@ -31,13 +31,8 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 
 		add(items = new TextMenuList());
 
-		createPrefItem('naughtyness', 'censor-naughty', true);
-		createPrefItem('downscroll', 'downscroll', false);
-		createPrefItem('flashing menu', 'flashing-menu', true);
-		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
-		createPrefItem('FPS Counter', 'fps-counter', true);
-		createPrefItem('Memory Counter', 'memory-counter', true);
-		createPrefItem('Auto Pause', 'auto-pause', false);
+		for (key => value in prefsOptionMap)
+			createPrefItem(key, value, preferences.get(value));
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
@@ -65,16 +60,32 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		preferences.set(pref, value);
 	}
 
+	static var prefsOptionMap:Map<String, Dynamic> = [
+		'Naughtyness' => 'censor-naughty',
+		'Downscroll' => 'downscroll',
+		'Flashing Menu BG' => 'flashing-menu',
+		'Camera Zooming on Beat' => 'camera-zoom',
+		'FPS Counter' => 'fps-counter',
+		'Memory Counter' => 'memory-counter',
+		'Auto Pause' => 'auto-pause',
+		'Ghost Tapping' => 'ghost-tapping',
+	];
+
+	static var prefsValMap:Map<String, Dynamic> = [
+		'censor-naughty' => true,
+		'downscroll' => false,
+		'flashing-menu' => true,
+		'camera-zoom' => true,
+		'fps-counter' => true,
+		'memory-counter' => true,
+		'auto-pause' => false,
+		'ghost-tapping' => false,
+	];
+
 	public static function initPrefs():Void
 	{
-		preferenceCheck('censor-naughty', true);
-		preferenceCheck('downscroll', false);
-		preferenceCheck('flashing-menu', true);
-		preferenceCheck('camera-zoom', true);
-		preferenceCheck('fps-counter', true);
-		preferenceCheck('memory-counter', true);
-		preferenceCheck('auto-pause', false);
-		preferenceCheck('ghost-tapping', false);
+		for (key => value in prefsValMap)
+			preferenceCheck(key, value);
 
 		FlxG.autoPause = getPref('auto-pause');
 	}
@@ -203,7 +214,7 @@ class CheckboxThingie extends FlxSprite
 	function set_daValue(value:Bool):Bool
 	{
 		if (value)
-			animation.play('checked', true);
+			animation.play('checked');
 		else
 			animation.play('static');
 
