@@ -1,5 +1,9 @@
 package pitstop.play.songs;
 
+import flixel.tweens.FlxEase;
+import flixel.FlxG;
+import flixel.tweens.FlxTween;
+
 class TutorialSong extends SongClass
 {
 	override function onBeatHit(beat:Int)
@@ -11,5 +15,15 @@ class TutorialSong extends SongClass
 			PlayState.instance.boyfriend.playAnim('hey', true);
 			PlayState.instance.dad.playAnim('cheer', true);
 		}
+	}
+
+	override function cameraMovement(bfSide:Bool)
+	{
+		super.cameraMovement(bfSide);
+
+		if (!bfSide)
+			PlayState.instance.tweenCamIn();
+		else
+			FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
 	}
 }

@@ -13,4 +13,6 @@ class SongClass
 	public function onStepHit(step:Int) {}
 
 	public function onBeatHit(beat:Int) {}
+
+	public function cameraMovement(bfSide:Bool) {}
 }

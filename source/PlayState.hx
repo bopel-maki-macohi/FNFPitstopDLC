@@ -496,7 +496,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function tweenCamIn():Void
+	public function tweenCamIn():Void
 	{
 		FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
 	}
@@ -1096,16 +1096,16 @@ class PlayState extends MusicBeatState
 		{
 			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 
-			if (SONG.song.toLowerCase() == 'tutorial')
-				tweenCamIn();
+			for (song in songClasses)
+				song.cameraMovement(false);
 		}
 
 		if (cameraRightSide && camFollow.x != boyfriend.getMidpoint().x - 100)
 		{
 			camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
-			if (SONG.song.toLowerCase() == 'tutorial')
-				FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
+			for (song in songClasses)
+				song.cameraMovement(true);
 		}
 	}
 
