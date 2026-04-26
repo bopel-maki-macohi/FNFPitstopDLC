@@ -138,11 +138,11 @@ class PlayState extends MusicBeatState
 
 		if (SONG == null)
 			SONG = Song.loadFromJson('tutorial');
-
-		FlxG.sound.cache(Paths.inst(PlayState.SONG.song, storyDifficulty));
-		if (SONG.needsVoices)
-			FlxG.sound.cache(Paths.voices(PlayState.SONG.song, storyDifficulty));
 		curSong = SONG.song.toLowerCase();
+
+		FlxG.sound.cache(Paths.inst(curSong, storyDifficulty));
+		if (SONG.needsVoices)
+			FlxG.sound.cache(Paths.voices(curSong, storyDifficulty));
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
@@ -366,7 +366,7 @@ class PlayState extends MusicBeatState
 
 		previousFrameTime = FlxG.game.ticks;
 
-		FlxG.sound.playMusic(Paths.inst(SONG.song, storyDifficulty), 1, false);
+		FlxG.sound.playMusic(Paths.inst(curSong, storyDifficulty), 1, false);
 		if (paused)
 			FlxG.sound.music.pause();
 
@@ -389,7 +389,7 @@ class PlayState extends MusicBeatState
 
 		vocals = new FlxSound();
 		if (SONG.needsVoices)
-			vocals.loadEmbedded(Paths.voices(SONG.song, storyDifficulty));
+			vocals.loadEmbedded(Paths.voices(curSong, storyDifficulty));
 		vocals.onComplete = () -> vocalsFinished = true;
 
 		FlxG.sound.list.add(vocals);
@@ -827,7 +827,8 @@ class PlayState extends MusicBeatState
 
 			if (!daNote.mustPress && daNote.wasGoodHit)
 			{
-				if (SONG.song != 'Tutorial')
+				// how do i make this a song class thing...?
+				if (curSong != 'tutorial')
 					camZooming = true;
 
 				var altAnim:String = "";
