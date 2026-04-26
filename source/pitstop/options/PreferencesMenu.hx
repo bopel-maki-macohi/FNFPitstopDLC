@@ -74,7 +74,7 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 	public static function makePref(display:String, name:String, defaultValue:Dynamic, ?experimental:Bool = false)
 	{
 		prefs.push(display);
-		
+
 		if (experimental)
 			experimentalPrefs.push(display);
 		else
@@ -93,9 +93,9 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 
 		makePref('Camera Zooming on Beat', 'camera-zoom', true);
 
-		makePref('Debug Display', 'watermark', true);
-		makePref('Debug Display FPS Counter', 'fps-counter', true);
-		makePref('Debug Display Memory Counter', 'memory-counter', true);
+		makePref('Debug Display (DD)', 'watermark', true);
+		makePref('DD FPS Counter', 'fps-counter', true);
+		makePref('DD Memory Counter', 'memory-counter', true);
 
 		makePref('Auto Pause', 'auto-pause', true);
 		makePref('Ghost Tapping', 'ghost-tapping', false, true);
