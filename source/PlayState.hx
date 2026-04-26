@@ -1259,14 +1259,14 @@ class PlayState extends MusicBeatState
 
 	function noteMissGhost(direction:Int = 1)
 	{
-		if (!PreferencesMenu.getPref('ghost-tapping'))
-		{
-			health -= 0.02;
-			killCombo();
+		if (PreferencesMenu.getPref('ghost-tapping'))
+			return;
 
-			if (!practiceMode)
-				songScore -= 5;
-		}
+		health -= 0.02;
+		killCombo();
+
+		if (!practiceMode)
+			songScore -= 5;
 
 		noteMissBasic(direction);
 	}
