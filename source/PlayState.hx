@@ -1,5 +1,8 @@
 package;
 
+import pitstop.play.score.Rating;
+import pitstop.play.score.Score;
+import pitstop.play.score.RatingClass;
 import pitstop.play.songs.*;
 import pitstop.play.stages.*;
 import pitstop.play.SongClass;
@@ -903,7 +906,7 @@ class PlayState extends MusicBeatState
 	{
 		if (combo > 5 && gf.animOffsets.exists('sad'))
 			gf.playAnim('sad');
-		
+
 		if (combo != 0)
 		{
 			combo = 0;
@@ -974,66 +977,46 @@ class PlayState extends MusicBeatState
 	// gives score and pops up rating
 	public function popUpScore(strumtime:Float, daNote:Note):Void
 	{
-		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
 		vocals.volume = 1;
 
-		var rating:FlxSprite = new FlxSprite();
-		var score:Int = 350;
+		var ratingSprite:FlxSprite = new FlxSprite();
+		var rating:RatingClass = Score.grade(Math.abs(strumtime - Conductor.songPosition));
 
-		var daRating:String = "sick";
-
-		if (noteDiff > Conductor.safeZoneOffset * 0.9)
-		{
-			daRating = 'shit';
-			score = 50;
-		}
-		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
-		{
-			daRating = 'bad';
-			score = 100;
-		}
-		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
-		{
-			daRating = 'good';
-			score = 200;
-		}
-
-		var isSick:Bool = daRating == 'sick';
-
-		if (isSick)
+		if (rating == Rating.SICK)
 		{
 			var noteSplash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
 			noteSplash.setupNoteSplash(daNote.x, daNote.y, daNote.noteData);
+
 			grpNoteSplashes.add(noteSplash);
 		}
 
 		if (!practiceMode)
-			songScore += score;
+			songScore += rating.score;
 
-		var ratingPath:String = daRating;
+		var ratingPath:String = rating.rating;
 
-		rating.loadGraphic(Paths.image(ratingPath));
-		rating.x = FlxG.width * 0.55 - 40;
+		ratingSprite.loadGraphic(Paths.image(ratingPath));
+		ratingSprite.x = FlxG.width * 0.55 - 40;
 		// make sure rating is visible lol!
-		if (rating.x < FlxG.camera.scroll.x)
-			rating.x = FlxG.camera.scroll.x;
-		else if (rating.x > FlxG.camera.scroll.x + FlxG.camera.width - rating.width)
-			rating.x = FlxG.camera.scroll.x + FlxG.camera.width - rating.width;
+		if (ratingSprite.x < FlxG.camera.scroll.x)
+			ratingSprite.x = FlxG.camera.scroll.x;
+		else if (ratingSprite.x > FlxG.camera.scroll.x + FlxG.camera.width - ratingSprite.width)
+			ratingSprite.x = FlxG.camera.scroll.x + FlxG.camera.width - ratingSprite.width;
 
-		rating.y = FlxG.camera.scroll.y + FlxG.camera.height * 0.4 - 60;
-		rating.acceleration.y = 550;
-		rating.velocity.y -= FlxG.random.int(140, 175);
-		rating.velocity.x -= FlxG.random.int(0, 10);
+		ratingSprite.y = FlxG.camera.scroll.y + FlxG.camera.height * 0.4 - 60;
+		ratingSprite.acceleration.y = 550;
+		ratingSprite.velocity.y -= FlxG.random.int(140, 175);
+		ratingSprite.velocity.x -= FlxG.random.int(0, 10);
 
-		add(rating);
+		add(ratingSprite);
 
-		rating.setGraphicSize(Std.int(rating.width * 0.7));
-		rating.updateHitbox();
+		ratingSprite.setGraphicSize(Std.int(ratingSprite.width * 0.7));
+		ratingSprite.updateHitbox();
 
-		FlxTween.tween(rating, {alpha: 0}, 0.2, {
+		FlxTween.tween(ratingSprite, {alpha: 0}, 0.2, {
 			onComplete: function(tween:FlxTween)
 			{
-				rating.destroy();
+				ratingSprite.destroy();
 			},
 			startDelay: Conductor.crochet * 0.001
 		});
