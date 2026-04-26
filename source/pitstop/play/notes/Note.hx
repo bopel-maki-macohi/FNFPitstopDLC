@@ -61,15 +61,15 @@ class Note extends FlxSprite
 		animation.addByPrefix('blueScroll', 'blue instance');
 		animation.addByPrefix('purpleScroll', 'purple instance');
 
-		animation.addByPrefix('purpleholdend', 'pruple end hold');
-		animation.addByPrefix('greenholdend', 'green hold end');
-		animation.addByPrefix('redholdend', 'red hold end');
-		animation.addByPrefix('blueholdend', 'blue hold end');
+		animation.addByPrefix('purpleholdend', 'pruple end hold instance');
+		animation.addByPrefix('greenholdend', 'green hold end instance');
+		animation.addByPrefix('redholdend', 'red hold end instance');
+		animation.addByPrefix('blueholdend', 'blue hold end instance');
 
-		animation.addByPrefix('purplehold', 'purple hold piece');
-		animation.addByPrefix('greenhold', 'green hold piece');
-		animation.addByPrefix('redhold', 'red hold piece');
-		animation.addByPrefix('bluehold', 'blue hold piece');
+		animation.addByPrefix('purplehold', 'purple hold piece instance');
+		animation.addByPrefix('greenhold', 'green hold piece instance');
+		animation.addByPrefix('redhold', 'red hold piece instance');
+		animation.addByPrefix('bluehold', 'blue hold piece instance');
 
 		setGraphicSize(Std.int(width * 0.7));
 		updateHitbox();
