@@ -940,10 +940,7 @@ class PlayState extends MusicBeatState
 			if (storyPlaylist.length <= 0)
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			else
-			{
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-			}
+				FlxTransitionableState.skipNextTransIn = FlxTransitionableState.skipNextTransOut = true;
 
 			if (storyPlaylist.length <= 0)
 			{
