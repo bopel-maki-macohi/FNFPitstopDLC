@@ -1,5 +1,6 @@
 package;
 
+import pitstop.options.OptionsState;
 import lime.app.Application;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -116,6 +117,8 @@ class TitleState extends MusicBeatState
 		}
 		else if (!initialized && DefineUtil.isDefined('CHARTING'))
 			FlxG.switchState(() -> new ChartingState());
+		else if (!initialized && DefineUtil.isDefined('OPTIONS'))
+			FlxG.switchState(() -> new OptionsState());
 		else
 		{
 			new FlxTimer().start(1, function(tmr:FlxTimer)

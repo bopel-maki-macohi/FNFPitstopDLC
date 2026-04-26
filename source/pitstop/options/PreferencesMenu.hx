@@ -1,5 +1,6 @@
 package pitstop.options;
 
+import flixel.text.FlxText;
 import pitstop.save.PreferencesSaveData;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -20,6 +21,9 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 	var menuCamera:FlxCamera;
 	var camFollow:FlxObject;
 
+	public var textBox:FlxSprite;
+	public var textText:FlxText;
+
 	public function new(experimental:Bool = false)
 	{
 		super();
@@ -31,9 +35,14 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 
 		add(items = new TextMenuList());
 
-		for (pref in prefs)
+		curPrefs = [];
+		for (pref in allPrefs)
 			if (experimental && experimentalPrefs.contains(pref) || !experimental && !experimentalPrefs.contains(pref))
+			{
+				curPrefs.push(pref);
 				createPrefItem(pref, prefsOptionMap.get(pref), preferences.get(prefsOptionMap.get(pref)));
+			}
+		// trace(curPrefs);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
@@ -48,6 +57,42 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		{
 			camFollow.y = selected.y;
 		});
+
+		textBox = new FlxSprite().makeGraphic(FlxG.width, Math.round(FlxG.height * .1), FlxColor.BLACK);
+		add(textBox);
+
+		textBox.alpha = .4;
+
+		textText = new FlxText(0, 0, FlxG.width, '', 16);
+		textText.alignment = CENTER;
+		add(textText);
+
+		textBox.scrollFactor.set();
+		textText.scrollFactor.set();
+
+		textBox.cameras = textText.cameras = [menuCamera];
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		// menuCamera.followLerp = CoolUtil.camLerpShit(0.05);
+
+		items.forEach(function(daItem:TextMenuItem)
+		{
+			if (items.selectedItem == daItem)
+				daItem.x = 150;
+			else
+				daItem.x = 120;
+		});
+
+		textText.text = prefsOptionDescMap.get(curPrefs[this.items.selectedIndex]) ?? 'N / A';
+
+		textBox.screenCenter();
+		textBox.y = FlxG.height * .8;
+
+		textText.y = textBox.getGraphicMidpoint().y - (textText.height / 2);
 	}
 
 	public static function getPref(pref:String):Dynamic
@@ -61,7 +106,8 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		preferences.set(pref, value);
 	}
 
-	public static var prefs:Array<String> = [];
+	public static var allPrefs:Array<String> = [];
+	public var curPrefs:Array<String> = [];
 	public static var regularPrefs:Array<String> = [];
 	public static var experimentalPrefs:Array<String> = [];
 
@@ -74,7 +120,7 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 
 	public static function makePref(preferenceClass:Preference)
 	{
-		prefs.push(preferenceClass.display);
+		allPrefs.push(preferenceClass.display);
 
 		if (preferenceClass.experimental)
 			experimentalPrefs.push(preferenceClass.display);
@@ -89,7 +135,8 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 	public static function initPrefs():Void
 	{
 		makePref(new Preference('censor-naughty', 'Naughtyness', true).setDescription('Toggles naughty naughty things ;)'));
-		makePref(new Preference('downscroll', 'Downscroll', false).setDescription('Toggles the gameplay arrows being down and the arrows coming in from the top instead of the other way around.'));
+		makePref(new Preference('downscroll', 'Downscroll',
+			false).setDescription('Toggles the gameplay arrows being down and the arrows coming in from the top instead of the other way around.'));
 
 		makePref(new Preference('flashing-menu', 'Flashing Menu BG', true).setDescription('Toggles the Menu BG flashing when you select something.'));
 
@@ -99,10 +146,14 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		makePref(new Preference('fps-counter', 'DD FPS Counter', true).setDescription('Toggle the Debug Display FPS Counter.'));
 		makePref(new Preference('memory-counter', 'DD Memory Counter', true).setDescription('Toggle the Debug Display Memory Counter.'));
 
-		makePref(new Preference('auto-pause', 'Auto Pause', true).setDescription('Toggles Flixel pausing the game when you lose focus after already having it.'));
+		makePref(new Preference('auto-pause', 'Auto Pause',
+			true).setDescription('Toggles Flixel pausing the game when you lose focus after already having it.'));
 
-		makePref(new Preference('ghost-tapping', 'Ghost Tapping (GT)', false).setExperimental().setDescription('Toggles allowing you to press notes when theres no note there and not get penaltized.'));
-		makePref(new Preference('ghost-tapping-penalty', 'GT Note Press Penalty', false).setExperimental().setDescription('Toggles the Ghost Tapping Note Press penalty.\n\nThe combo won\'t reset and it\'s half the regular penalty.'));
+		makePref(new Preference('ghost-tapping', 'Ghost Tapping (GT)',
+			false).setExperimental().setDescription('Toggles allowing you to press notes when theres no note there and not get penaltized.'));
+		makePref(new Preference('ghost-tapping-penalty', 'GT Note Press Penalty',
+			false).setExperimental()
+			.setDescription('Toggles the Ghost Tapping Note Press penalty.\n\nThe combo won\'t reset and it\'s half the regular penalty.'));
 
 		for (key => value in prefsValMap)
 			preferenceCheck(key, value);
@@ -131,7 +182,9 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 				createCheckbox(prefString);
 		}
 
-		trace(Type.typeof(prefValue).getName());
+		#if debug
+		trace('$prefString : ' + Type.typeof(prefValue).getName());
+		#end
 	}
 
 	function createCheckbox(prefString:String)
@@ -159,21 +212,6 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 			case 'auto-pause':
 				FlxG.autoPause = getPref('auto-pause');
 		}
-	}
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		// menuCamera.followLerp = CoolUtil.camLerpShit(0.05);
-
-		items.forEach(function(daItem:TextMenuItem)
-		{
-			if (items.selectedItem == daItem)
-				daItem.x = 150;
-			else
-				daItem.x = 120;
-		});
 	}
 
 	private static function preferenceCheck(prefString:String, ?defaultValue:Dynamic):Void
