@@ -209,7 +209,10 @@ class FreeplayState extends MusicBeatState
 
 	function changeDiff(change:Int = 0)
 	{
-		curDifficulty += change;
+		if (change == 0)
+			curDifficulty = songs[curSelected].difficulties[songs[curSelected].difficulties.indexOf(curDifficulty)];
+		else
+			curDifficulty += change;
 
 		if (curDifficulty < 0)
 			curDifficulty = songs[curSelected].difficulties.length - 1;
