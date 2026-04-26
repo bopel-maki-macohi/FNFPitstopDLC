@@ -1,4 +1,4 @@
-package pitstop.display;
+package pitstop.ui;
 
 import flixel.FlxG;
 import flixel.system.FlxAssets;

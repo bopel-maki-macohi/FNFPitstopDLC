@@ -2,7 +2,7 @@ package;
 
 import lime.app.Application;
 import flixel.FlxG;
-import pitstop.display.Watermark;
+import pitstop.ui.Watermark;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Lib;
