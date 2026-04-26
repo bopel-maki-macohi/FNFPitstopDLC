@@ -179,6 +179,8 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
+		songRoleText.x = FlxG.width - (songRoleText.width + 20);
+
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
