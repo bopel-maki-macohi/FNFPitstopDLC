@@ -1,5 +1,6 @@
 package pitstop.display;
 
+import ui.PreferencesMenu;
 import flixel.math.FlxMath;
 import openfl.system.System;
 import lime.app.Application;
@@ -31,12 +32,17 @@ class Watermark extends TextField
 
 		var entrys:Array<String> = [
 			'Pitstop DLC v${Application.current.meta.get('version')}',
-			'',
-			'FPS: ${FlxMath.roundDecimal(currentFPS, 2)}',
 			'Total Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}',
 		];
 
+		if (PreferencesMenu.getPref('fps-counter'))
+			entrys.push('FPS: ${currentFPS}');
+
+		if (PreferencesMenu.getPref('memory-counter'))
+			entrys.push('Total Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}');
+
 		text = entrys.join('\n');
+		width = textWidth * 1.1;
 	}
 
 	function calcFPS(deltaTime:Float)

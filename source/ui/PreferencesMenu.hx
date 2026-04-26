@@ -35,6 +35,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		createPrefItem('flashing menu', 'flashing-menu', true);
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
+		createPrefItem('Memory Counter', 'memory-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
@@ -70,6 +71,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('flashing-menu', true);
 		preferenceCheck('camera-zoom', true);
 		preferenceCheck('fps-counter', true);
+		preferenceCheck('memory-counter', true);
 		preferenceCheck('auto-pause', false);
 		preferenceCheck('master-volume', 1);
 
@@ -77,9 +79,6 @@ class PreferencesMenu extends ui.OptionsState.Page
 		setPref('master-volume', 0);
 		FlxG.sound.muted = true;
 		#end
-
-		if (!getPref('fps-counter'))
-			FlxG.stage.removeChild(Main.watermark);
 
 		FlxG.autoPause = getPref('auto-pause');
 	}
@@ -132,16 +131,9 @@ class PreferencesMenu extends ui.OptionsState.Page
 
 		switch (prefName)
 		{
-			case 'fps-counter':
-				if (getPref('fps-counter'))
-					FlxG.stage.addChild(Main.watermark);
-				else
-					FlxG.stage.removeChild(Main.watermark);
 			case 'auto-pause':
 				FlxG.autoPause = getPref('auto-pause');
 		}
-
-		if (prefName == 'fps-counter') {}
 	}
 
 	override function update(elapsed:Float)
