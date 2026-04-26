@@ -40,12 +40,16 @@ class Character extends FlxAnimate
 				quickAnimAdd('singRIGHT', 'GF Right Note');
 				quickAnimAdd('singUP', 'GF Up Note');
 				quickAnimAdd('singDOWN', 'GF Down Note');
-				anim.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, true);
-				anim.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				anim.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-				anim.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
-				anim.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-				anim.addByPrefix('scared', 'GF FEAR', 24, true);
+
+				quickIndicesAnimAdd('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+				
+				quickIndicesAnimAdd('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+				quickIndicesAnimAdd('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]);
+				
+				quickIndicesAnimAdd('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3]);
+				quickIndicesAnimAdd('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+				
+				quickAnimAddLooped('scared', 'GF FEAR');
 
 				loadOffsetFile(curCharacter);
 
@@ -79,10 +83,10 @@ class Character extends FlxAnimate
 				quickAnimAdd('hey', 'BF HEY!!');
 
 				quickAnimAdd('firstDeath', "BF dies");
-				anim.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
+				quickAnimAddLooped('deathLoop', "BF Dead Loop");
 				quickAnimAdd('deathConfirm', "BF Dead confirm");
 
-				anim.addByPrefix('scared', 'BF idle shaking', 24, true);
+				quickAnimAddLooped('scared', "BF idle shaking");
 
 				loadOffsetFile(curCharacter);
 				loadOffsetFile('bf-dead');
@@ -92,8 +96,8 @@ class Character extends FlxAnimate
 			case 'gf-park':
 				loadTextures([Paths.getAnimateAtlas('characters/gf-park'),]);
 
-				anim.addByFrameLabel('danceLeft', 'danceLeft', 24, false);
-				anim.addByFrameLabel('danceRight', 'danceRight', 24, false);
+				quickFrameLabelAnimAdd('danceLeft', 'danceLeft');
+				quickFrameLabelAnimAdd('danceRight', 'danceRight');
 
 				playAnim('danceRight');
 
@@ -118,7 +122,7 @@ class Character extends FlxAnimate
 				quickAnimAdd('singRIGHTmiss', 'bf anim miss right');
 
 				quickAnimAdd('firstDeath', "BF dies");
-				anim.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
+				quickAnimAddLooped('deathLoop', "BF Dead Loop");
 				quickAnimAdd('deathConfirm', "BF Dead confirm");
 
 				loadOffsetFile(curCharacter);
@@ -164,9 +168,16 @@ class Character extends FlxAnimate
 	}
 
 	function quickAnimAdd(name:String, prefix:String)
-	{
 		anim.addByPrefix(name, prefix, 24, false);
-	}
+
+	function quickAnimAddLooped(name:String, prefix:String)
+		anim.addByPrefix(name, prefix, 24, true);
+
+	function quickIndicesAnimAdd(name:String, prefix:String, indices:Array<Int>)
+		anim.addByIndices(name, prefix, indices, '', 24, false);
+
+	function quickFrameLabelAnimAdd(name:String, prefix:String)
+		anim.addByFrameLabel(name, prefix, 24, false);
 
 	private function loadOffsetFile(offsetCharacter:String)
 	{
