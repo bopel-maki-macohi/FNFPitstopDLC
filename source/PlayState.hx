@@ -1166,9 +1166,7 @@ class PlayState extends MusicBeatState
 		if (pressArray.contains(true) && generatedMusic)
 			checkForNoteHit(pressArray);
 
-		if (boyfriend.holdTimer > Conductor.stepCrochet * 4 * 0.001 && !holdArray.contains(true))
-			if (boyfriend.anim?.curAnim?.name.startsWith('sing') && !boyfriend.anim?.curAnim?.name.endsWith('miss'))
-				boyfriend.playAnim('idle');
+		boyfriend.isHolding = holdArray.contains(true);
 
 		playerStrums.forEach(function(spr:FlxSprite)
 		{

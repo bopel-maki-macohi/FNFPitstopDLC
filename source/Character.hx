@@ -1,5 +1,6 @@
 package;
 
+import lime.utils.Assets;
 import animate.FlxAnimateFrames;
 import animate.FlxAnimate;
 import flixel.FlxG;
@@ -28,8 +29,6 @@ class Character extends FlxAnimate
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 
-		var tex:FlxAtlasFrames;
-
 		switch (curCharacter)
 		{
 			case 'gf':
@@ -42,13 +41,13 @@ class Character extends FlxAnimate
 				quickAnimAdd('singDOWN', 'GF Down Note');
 
 				quickIndicesAnimAdd('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-				
+
 				quickIndicesAnimAdd('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 				quickIndicesAnimAdd('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]);
-				
+
 				quickIndicesAnimAdd('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3]);
 				quickIndicesAnimAdd('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
-				
+
 				quickAnimAddLooped('scared', 'GF FEAR');
 
 				loadOffsetFile(curCharacter);
@@ -67,6 +66,8 @@ class Character extends FlxAnimate
 				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
+
+				dadVar = 6.1;
 
 			case 'bf':
 				loadTextures([Paths.getSparrowAtlas('characters/BOYFRIEND'),]);
@@ -110,12 +111,12 @@ class Character extends FlxAnimate
 				]);
 
 				quickAnimAdd('idle', 'bf anim idle');
-				
+
 				quickAnimAdd('singLEFT', 'bf anim left');
 				quickAnimAdd('singDOWN', 'bf anim down');
 				quickAnimAdd('singUP', 'bf anim up');
 				quickAnimAdd('singRIGHT', 'bf anim right');
-				
+
 				quickAnimAdd('singLEFTmiss', 'bf anim miss left');
 				quickAnimAdd('singDOWNmiss', 'bf anim miss down');
 				quickAnimAdd('singUPmiss', 'bf anim miss up');
@@ -139,7 +140,7 @@ class Character extends FlxAnimate
 			flipX = !flipX;
 
 			// Doesn't flip for BF, since his are already in the right place???
-			if (!curCharacter.startsWith('bf'))
+			if (!flippedHorizSingAnimChars.contains(curCharacter))
 			{
 				// var animArray
 				var oldRight = anim.getByName('singRIGHT').frames;
@@ -157,40 +158,13 @@ class Character extends FlxAnimate
 		}
 	}
 
-	function loadTextures(textures:Array<FlxAtlasFrames>)
-	{
-		frames = FlxAnimateFrames.combineAtlas(textures);
-	}
-
-	function sortAnims(val1:Array<Dynamic>, val2:Array<Dynamic>):Int
-	{
-		return FlxSort.byValues(FlxSort.ASCENDING, val1[0], val2[0]);
-	}
-
-	function quickAnimAdd(name:String, prefix:String)
-		anim.addByPrefix(name, prefix, 24, false);
-
-	function quickAnimAddLooped(name:String, prefix:String)
-		anim.addByPrefix(name, prefix, 24, true);
-
-	function quickIndicesAnimAdd(name:String, prefix:String, indices:Array<Int>)
-		anim.addByIndices(name, prefix, indices, '', 24, false);
-
-	function quickFrameLabelAnimAdd(name:String, prefix:String)
-		anim.addByFrameLabel(name, prefix, 24, false);
-
-	private function loadOffsetFile(offsetCharacter:String)
-	{
-		var daFile:Array<String> = CoolUtil.coolTextFile(Paths.file("images/characters/" + offsetCharacter + "Offsets.txt", TEXT, 'shared'));
-
-		for (i in daFile)
-		{
-			var splitWords:Array<String> = i.split(" ");
-			addOffset(splitWords[0], Std.parseInt(splitWords[1]), Std.parseInt(splitWords[2]));
-		}
-	}
+	var flippedHorizSingAnimChars:Array<String> = ['bf', 'bf-park'];
 
 	public var startedDeath:Bool = false;
+
+	public var dadVar:Float = 4;
+
+	public var isHolding:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -200,6 +174,10 @@ class Character extends FlxAnimate
 				holdTimer += elapsed;
 			else
 				holdTimer = 0;
+
+			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
+				if (!isHolding && anim?.curAnim?.name.startsWith('sing') && !anim?.curAnim?.name.endsWith('miss'))
+					dance();
 
 			if (anim.name.endsWith('miss') && anim.finished && !debugMode)
 				playAnim('idle', true, false, 10);
@@ -212,10 +190,6 @@ class Character extends FlxAnimate
 			if (anim?.name?.startsWith('sing'))
 				holdTimer += elapsed;
 
-			var dadVar:Float = 4;
-
-			if (curCharacter == 'dad')
-				dadVar = 6.1;
 			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
 			{
 				dance();
@@ -235,26 +209,45 @@ class Character extends FlxAnimate
 
 	private var danced:Bool = false;
 
+	public var danceIdleChars:Array<String> = ['gf', 'gf-park'];
+
 	public function dance()
 	{
 		if (debugMode)
 			return;
 
-		switch (curCharacter)
+		if (danceIdleChars.contains(curCharacter))
 		{
-			case 'gf' | 'gf-park':
-				if (!anim.name.startsWith('hair'))
-				{
-					danced = !danced;
+			if (curCharacter == 'gf' && anim.name.startsWith('hair'))
+				return;
 
-					if (danced)
-						playAnim('danceRight');
-					else
-						playAnim('danceLeft');
-				}
+			danced = !danced;
 
-			default:
-				playAnim('idle');
+			if (danced)
+				playAnim('danceRight');
+			else
+				playAnim('danceLeft');
+		}
+		else
+			playAnim('idle');
+	}
+
+	function loadTextures(textures:Array<FlxAtlasFrames>)
+		frames = FlxAnimateFrames.combineAtlas(textures);
+
+	private function loadOffsetFile(offsetCharacter:String)
+	{
+		var offsetFile:String = Paths.file("images/characters/" + offsetCharacter + "Offsets.txt", TEXT, 'shared');
+
+		if (!Assets.exists(offsetFile))
+			return;
+
+		var daFile:Array<String> = CoolUtil.coolTextFile(offsetFile);
+
+		for (i in daFile)
+		{
+			var splitWords:Array<String> = i.split(" ");
+			addOffset(splitWords[0], Std.parseInt(splitWords[1]), Std.parseInt(splitWords[2]));
 		}
 	}
 
@@ -278,7 +271,17 @@ class Character extends FlxAnimate
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-	{
 		animOffsets[name] = [x, y];
-	}
+
+	function quickAnimAdd(name:String, prefix:String)
+		anim.addByPrefix(name, prefix, 24, false);
+
+	function quickAnimAddLooped(name:String, prefix:String)
+		anim.addByPrefix(name, prefix, 24, true);
+
+	function quickIndicesAnimAdd(name:String, prefix:String, indices:Array<Int>)
+		anim.addByIndices(name, prefix, indices, '', 24, false);
+
+	function quickFrameLabelAnimAdd(name:String, prefix:String)
+		anim.addByFrameLabel(name, prefix, 24, false);
 }
