@@ -855,9 +855,14 @@ class PlayState extends MusicBeatState
 			else if (daNote.tooLate || daNote.wasGoodHit)
 			{
 				if (daNote.tooLate)
+				{
 					noteMissTooLate();
 
-				murderNote(daNote);
+					if (daNote.y < (daNote.height * 2))
+						murderNote(daNote);
+				}
+				else
+					murderNote(daNote);
 			}
 		});
 	}

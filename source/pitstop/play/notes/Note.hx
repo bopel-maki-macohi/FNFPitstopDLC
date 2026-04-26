@@ -1,19 +1,10 @@
 package pitstop.play.notes;
 
-import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.math.FlxMath;
-import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
 import shaderslmfao.ColorSwap;
 import ui.PreferencesMenu;
 
 using StringTools;
-
-#if polymod
-import polymod.format.ParseRules.TargetSignatureElement;
-#end
 
 class Note extends FlxSprite
 {
@@ -235,7 +226,7 @@ class Note extends FlxSprite
 		if (tooLate)
 		{
 			if (alpha > 0.3)
-				alpha = 0.3;
+				alpha -= .1 * elapsed;
 		}
 	}
 }
