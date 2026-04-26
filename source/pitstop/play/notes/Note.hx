@@ -26,7 +26,6 @@ class Note extends FlxSprite
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 
-	public var HSV:HSVShader;
 	public var noteScore:Float = 1;
 
 	public static var swagWidth:Float = 160 * 0.7;
@@ -70,9 +69,6 @@ class Note extends FlxSprite
 
 		setGraphicSize(Std.int(width * 0.7));
 		updateHitbox();
-
-		HSV = new HSVShader();
-		shader = HSV;
 
 		x += swagWidth * noteData;
 		switch (noteData)
@@ -171,10 +167,7 @@ class Note extends FlxSprite
 				wasGoodHit = true;
 		}
 
-		if (tooLate && HSV.saturation > 0.2)
-		{
-			HSV.saturation = 0.2;
-			shader = HSV;
-		}
+		if (tooLate && alpha > 0.3)
+			alpha = .3;
 	}
 }
