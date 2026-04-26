@@ -3,6 +3,7 @@
 - Results Screen
 
 - Title Screen Rework
+- New Logo
 
 - Story Menu Rework
 
