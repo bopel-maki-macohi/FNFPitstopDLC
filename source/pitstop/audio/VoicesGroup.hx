@@ -12,8 +12,8 @@ class VoicesGroup extends FunkinSoundGroup
 	{
 		super();
 
-		final bfVocalPath:String = Paths.voices(song, difficulty, 'bf');
-		final dadVocalPath:String = Paths.voices(song, difficulty, 'dad');
+		final bfVocalPath:String = Paths.voices(song, difficulty, '-bf');
+		final dadVocalPath:String = Paths.voices(song, difficulty, '-dad');
 		final regularVocalPath:String = Paths.voices(song, difficulty, '');
 
 		final bfVocalsExists:Bool = Assets.exists(bfVocalPath);
