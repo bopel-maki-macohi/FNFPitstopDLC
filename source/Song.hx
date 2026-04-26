@@ -9,6 +9,9 @@ using StringTools;
 
 typedef SwagSong =
 {
+	var ?charter:String;
+	var ?artist:String;
+
 	var ?stage:String;
 
 	var song:String;

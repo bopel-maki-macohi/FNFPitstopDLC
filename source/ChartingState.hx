@@ -69,7 +69,6 @@ class ChartingState extends MusicBeatState
 
 	var _song:SwagSong;
 
-	var typingShit:FlxInputText;
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
 	**/
@@ -180,12 +179,18 @@ class ChartingState extends MusicBeatState
 		super.create();
 	}
 
+	var UI_Artist:FlxUIInputText;
+	var UI_Charter:FlxUIInputText;
+
 	function addSong2UI():Void
 	{
+		UI_Artist = new FlxUIInputText(10, 20, 70, _song.artist ?? '', 8);
+		UI_Charter = new FlxUIInputText(UI_Artist.x + UI_Artist.width + 10, UI_Artist.y, 70, _song.charter ?? '', 8);
+
 		var tabGroup = new FlxUI(null, UI_box);
 		tabGroup.name = "Song2";
 
-		var gfVersionDropDown = new FlxUIDropDownMenu(10, 20, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
+		var gfVersionDropDown = new FlxUIDropDownMenu(UI_Artist.x, UI_Artist.y + UI_Artist.height + 20, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
 		{
 			_song.gfVersion = characterList[Std.parseInt(character)];
 		});
@@ -193,7 +198,8 @@ class ChartingState extends MusicBeatState
 
 		var diffs = Highscore.difficultiesStrArray(_song.song);
 
-		difficultyDropDown = new FlxUIDropDownMenu(gfVersionDropDown.x + gfVersionDropDown.width  + 10, gfVersionDropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(diffs, true), function(difficulty:String)
+		difficultyDropDown = new FlxUIDropDownMenu(gfVersionDropDown.x + gfVersionDropDown.width + 10, gfVersionDropDown.y,
+			FlxUIDropDownMenu.makeStrIdLabelArray(diffs, true), function(difficulty:String)
 		{
 			var difficultyStr = diffs[Std.parseInt(difficulty)];
 			PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(difficultyStr);
@@ -211,12 +217,18 @@ class ChartingState extends MusicBeatState
 		});
 		stageDropDown.selectedLabel = _song.stage ?? 'mainStage';
 
+		tabGroup.add(new FlxText(UI_Artist.x, UI_Artist.y - 16, 0, 'Artist:'));
+		tabGroup.add(UI_Artist);
+
+		tabGroup.add(new FlxText(UI_Charter.x, UI_Charter.y - 16, 0, 'Charter:'));
+		tabGroup.add(UI_Charter);
+
 		tabGroup.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 16, 0, 'GF Version:'));
 		tabGroup.add(gfVersionDropDown);
 
 		tabGroup.add(new FlxText(difficultyDropDown.x, difficultyDropDown.y - 16, 0, 'Difficulty:'));
 		tabGroup.add(difficultyDropDown);
-		
+
 		tabGroup.add(new FlxText(stageDropDown.x, stageDropDown.y - 16, 0, 'Stage:'));
 		tabGroup.add(stageDropDown);
 
@@ -234,10 +246,11 @@ class ChartingState extends MusicBeatState
 		loadJson(_song.song);
 	}
 
+	var UI_songTitle:FlxUIInputText;
+
 	function addSongUI():Void
 	{
-		var UI_songTitle = new FlxUIInputText(10, 10, 70, _song.song, 8);
-		typingShit = UI_songTitle;
+		UI_songTitle = new FlxUIInputText(10, 10, 70, _song.song, 8);
 
 		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has voice track", 100);
 		check_voices.checked = _song.needsVoices;
@@ -289,11 +302,12 @@ class ChartingState extends MusicBeatState
 		});
 		player1DropDown.selectedLabel = _song.player1;
 
-		var player2DropDown = new FlxUIDropDownMenu(140, player1DropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
-		{
-			_song.player2 = characterList[Std.parseInt(character)];
-			updateHeads();
-		});
+		var player2DropDown = new FlxUIDropDownMenu(140, player1DropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true),
+			function(character:String)
+			{
+				_song.player2 = characterList[Std.parseInt(character)];
+				updateHeads();
+			});
 		player2DropDown.selectedLabel = _song.player2;
 
 		var tab_group_song = new FlxUI(null, UI_box);
@@ -308,7 +322,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
-		
+
 		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 16, 0, 'Player:'));
 		tab_group_song.add(player1DropDown);
 
@@ -529,9 +543,21 @@ class ChartingState extends MusicBeatState
 		return daPos;
 	}
 
+	function getIsTyping():Bool
+	{
+		return UI_songTitle.hasFocus || UI_Artist.hasFocus || UI_Charter.hasFocus;
+	}
+
 	override function update(elapsed:Float)
 	{
 		curStep = recalculateSteps();
+
+		FlxG.watch.addQuick('selectedTab', UI_box.selected_tab);
+
+		_song.artist = UI_Artist.text;
+		_song.charter = UI_Charter.text;
+
+		_song.song = UI_songTitle.text;
 
 		lastTime = Conductor.songPosition;
 
@@ -542,7 +568,6 @@ class ChartingState extends MusicBeatState
 			FlxG.sound.music.time = FlxG.sound.music.length;
 
 		Conductor.songPosition = FlxG.sound.music.time;
-		_song.song = typingShit.text;
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
 
@@ -617,7 +642,7 @@ class ChartingState extends MusicBeatState
 		if (FlxG.keys.pressed.SHIFT)
 			shiftThing = 4;
 
-		if (!typingShit.hasFocus)
+		if (!getIsTyping())
 		{
 			if (FlxG.keys.justPressed.X)
 				toggleAltAnimNote();
@@ -747,7 +772,7 @@ class ChartingState extends MusicBeatState
 
 		addLine('\n');
 
-		if (!typingShit.hasFocus)
+		if (!getIsTyping())
 		{
 			addLine('A / LEFT : Go back ${shiftThing} section(s)');
 			addLine('D / RIGHT : Go back ${shiftThing} section(s)');
@@ -1055,7 +1080,7 @@ class ChartingState extends MusicBeatState
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 
-		if (!typingShit.hasFocus)
+		if (!getIsTyping())
 			if (FlxG.keys.pressed.CONTROL)
 				_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteAlt, '']);
 

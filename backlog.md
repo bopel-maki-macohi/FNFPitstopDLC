@@ -18,10 +18,6 @@
         - Changes depending on player
     - Fancy Difficulty / Variation Selector
 
-- Pause Menu Update
-    - Song Artist(s)
-    - Song Charter(s)
-
 - More Preference Types
     - Percentage
     - Enum

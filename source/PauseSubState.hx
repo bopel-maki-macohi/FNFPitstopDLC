@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxTimer;
 import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -12,6 +13,8 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+
+using StringTools;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -71,7 +74,22 @@ class PauseSubState extends MusicBeatSubstate
 		deathCounter.updateHitbox();
 		add(deathCounter);
 
-		practiceText = new FlxText(20, 15 + 64 + 32, 0, "PRACTICE MODE", 32);
+		final artistText:String = 'Artist: ' + PlayState.SONG.artist;
+		final charterText:String = 'Charter: ' + PlayState.SONG.charter;
+
+		var songArtistText:FlxText = new FlxText(20, 15 + 64 + 32, 0, artistText, 32);
+		songArtistText.scrollFactor.set();
+		songArtistText.setFormat(Paths.font('vcr.ttf'), 32);
+		songArtistText.updateHitbox();
+		add(songArtistText);
+
+		var songCharterText:FlxText = new FlxText(20, 15 + 64 + 64, 0, charterText, 32);
+		songCharterText.scrollFactor.set();
+		songCharterText.setFormat(Paths.font('vcr.ttf'), 32);
+		songCharterText.updateHitbox();
+		add(songCharterText);
+
+		practiceText = new FlxText(20, 15 + 64 + 64 + 32, 0, "PRACTICE MODE", 32);
 		practiceText.scrollFactor.set();
 		practiceText.setFormat(Paths.font('vcr.ttf'), 32);
 		practiceText.updateHitbox();
@@ -79,18 +97,42 @@ class PauseSubState extends MusicBeatSubstate
 		practiceText.visible = PlayState.practiceMode;
 		add(practiceText);
 
-		levelDifficulty.alpha = 0;
-		levelInfo.alpha = 0;
-		deathCounter.alpha = 0;
+		final missingArtist = PlayState.SONG.artist == null || PlayState.SONG.artist.trim().length < 1;
+		final missingCharter = PlayState.SONG.charter == null || PlayState.SONG.charter.trim().length < 1;
 
-		levelInfo.x = FlxG.width - (levelInfo.width + 20);
-		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
-		deathCounter.x = FlxG.width - (deathCounter.width + 20);
+		if (missingArtist)
+		{
+			remove(songArtistText);
+			songCharterText.y -= 32;
+			practiceText.y -= 32;
+		}
+		
+		if (missingCharter)
+		{
+			remove(songCharterText);
+			songArtistText.y -= 32;
+			practiceText.y -= 32;
+		}
+
+		var startDelay:Float = 0.3;
+
+		for (text in [
+			levelInfo,
+			levelDifficulty,
+			deathCounter,
+			songArtistText,
+			songCharterText,
+			practiceText
+		])
+		{
+			text.alpha = 0;
+			text.x = FlxG.width - (text.width + 20);
+
+			FlxTween.tween(text, {alpha: 1, y: text.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: startDelay});
+			startDelay += .2;
+		}
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
-		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
-		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
-		FlxTween.tween(deathCounter, {alpha: 1, y: deathCounter.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
