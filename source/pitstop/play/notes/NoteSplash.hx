@@ -1,4 +1,4 @@
-package;
+package pitstop.play.notes;
 
 import flixel.FlxG;
 import flixel.FlxSprite;

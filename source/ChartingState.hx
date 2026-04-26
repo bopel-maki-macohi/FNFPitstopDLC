@@ -31,6 +31,7 @@ import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
 import flixel.text.FlxText;
+import pitstop.play.notes.*;
 
 using StringTools;
 

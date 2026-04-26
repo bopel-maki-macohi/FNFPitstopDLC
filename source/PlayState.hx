@@ -17,6 +17,7 @@ import flixel.ui.FlxBar;
 import flixel.util.*;
 import shaderslmfao.*;
 import ui.PreferencesMenu;
+import pitstop.play.notes.*;
 
 using StringTools;
 
@@ -51,8 +52,8 @@ class PlayState extends MusicBeatState
 
 	private static var prevCamFollow:FlxObject;
 
-	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
-	private var playerStrums:FlxTypedGroup<FlxSprite>;
+	private var strumLineNotes:FlxTypedGroup<NoteStatic>;
+	private var playerStrums:FlxTypedGroup<NoteStatic>;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -173,7 +174,7 @@ class PlayState extends MusicBeatState
 
 		strumLine.scrollFactor.set();
 
-		strumLineNotes = new FlxTypedGroup<FlxSprite>();
+		strumLineNotes = new FlxTypedGroup<NoteStatic>();
 		add(strumLineNotes);
 
 		// fake notesplash cache type deal so that it loads in the graphic?
@@ -186,7 +187,7 @@ class PlayState extends MusicBeatState
 
 		add(grpNoteSplashes);
 
-		playerStrums = new FlxTypedGroup<FlxSprite>();
+		playerStrums = new FlxTypedGroup<NoteStatic>();
 
 		generateSong();
 
@@ -461,38 +462,7 @@ class PlayState extends MusicBeatState
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
-			var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
-			var colorswap:ColorSwap = new ColorSwap();
-			babyArrow.shader = colorswap.shader;
-			colorswap.update(Note.arrowColors[i]);
-
-			babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
-
-			babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
-
-			babyArrow.x += Note.swagWidth * Math.abs(i);
-			switch (Math.abs(i))
-			{
-				case 0:
-					babyArrow.animation.addByPrefix('static', 'arrow static instance 1');
-					babyArrow.animation.addByPrefix('pressed', 'left press instance', 24, false);
-					babyArrow.animation.addByPrefix('confirm', 'left confirm instance', 24, false);
-				case 1:
-					babyArrow.animation.addByPrefix('static', 'arrow static instance 2');
-					babyArrow.animation.addByPrefix('pressed', 'down press instance', 24, false);
-					babyArrow.animation.addByPrefix('confirm', 'down confirm instance', 24, false);
-				case 2:
-					babyArrow.animation.addByPrefix('static', 'arrow static instance 4');
-					babyArrow.animation.addByPrefix('pressed', 'up press instance', 24, false);
-					babyArrow.animation.addByPrefix('confirm', 'up confirm instance', 24, false);
-				case 3:
-					babyArrow.animation.addByPrefix('static', 'arrow static instance 3');
-					babyArrow.animation.addByPrefix('pressed', 'right press instance', 24, false);
-					babyArrow.animation.addByPrefix('confirm', 'right confirm instance', 24, false);
-			}
-
-			babyArrow.updateHitbox();
-			babyArrow.scrollFactor.set();
+			var babyArrow:NoteStatic = new NoteStatic(0, strumLine.y);
 
 			if (!isStoryMode)
 			{
