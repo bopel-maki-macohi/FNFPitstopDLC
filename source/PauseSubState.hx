@@ -34,7 +34,6 @@ class PauseSubState extends MusicBeatSubstate
 
 	var pauseMusic:FlxSound;
 
-	var songRoleText:FlxText;
 	var practiceText:FlxText;
 
 	public function new(x:Float, y:Float)
@@ -75,13 +74,22 @@ class PauseSubState extends MusicBeatSubstate
 		deathCounter.updateHitbox();
 		add(deathCounter);
 
-		songRoleText = new FlxText(20, 15 + 64 + 32, 0, "", 32);
-		songRoleText.scrollFactor.set();
-		songRoleText.setFormat(Paths.font('vcr.ttf'), 32);
-		songRoleText.updateHitbox();
-		add(songRoleText);
+		final artistText:String = 'Artist: ' + PlayState.SONG.artist;
+		final charterText:String = 'Charter: ' + PlayState.SONG.charter;
 
-		practiceText = new FlxText(20, 15 + 64 + 64, 0, "PRACTICE MODE", 32);
+		var songArtistText:FlxText = new FlxText(20, 15 + 64 + 32, 0, artistText, 32);
+		songArtistText.scrollFactor.set();
+		songArtistText.setFormat(Paths.font('vcr.ttf'), 32);
+		songArtistText.updateHitbox();
+		add(songArtistText);
+
+		var songCharterText:FlxText = new FlxText(20, 15 + 64 + 64, 0, charterText, 32);
+		songCharterText.scrollFactor.set();
+		songCharterText.setFormat(Paths.font('vcr.ttf'), 32);
+		songCharterText.updateHitbox();
+		add(songCharterText);
+
+		practiceText = new FlxText(20, 15 + 64 + 64 + 32, 0, "PRACTICE MODE", 32);
 		practiceText.scrollFactor.set();
 		practiceText.setFormat(Paths.font('vcr.ttf'), 32);
 		practiceText.updateHitbox();
@@ -89,53 +97,33 @@ class PauseSubState extends MusicBeatSubstate
 		practiceText.visible = PlayState.practiceMode;
 		add(practiceText);
 
-		final artistText:String = 'Artist: ' + PlayState.SONG.artist;
-		final charterText:String = 'Charter: ' + PlayState.SONG.charter;
-
 		final missingArtist = PlayState.SONG.artist == null || PlayState.SONG.artist.trim().length < 1;
 		final missingCharter = PlayState.SONG.charter == null || PlayState.SONG.charter.trim().length < 1;
 
-		if (missingArtist && missingCharter)
+		if (missingArtist)
 		{
-			remove(songRoleText);
+			remove(songArtistText);
+			songCharterText.y -= 32;
 			practiceText.y -= 32;
 		}
-		else if (!missingArtist && missingCharter)
+		
+		if (missingCharter)
 		{
-			songRoleText.text = artistText;
-		}
-		else if (missingArtist && !missingCharter)
-		{
-			songRoleText.text = charterText;
-		}
-		else if (!missingArtist && !missingCharter)
-		{
-			songRoleText.text = artistText;
-
-			final fadeTime:Float = 2;
-			final loopDelay:Float = 5;
-
-			FlxTween.tween(songRoleText, {alpha: 0}, fadeTime, {
-				type: LOOPING,
-
-				startDelay: loopDelay,
-				loopDelay: loopDelay,
-
-				onComplete: t ->
-				{
-					if (songRoleText.text == charterText)
-						songRoleText.text = artistText;
-					else
-						songRoleText.text = charterText;
-
-					FlxTween.tween(songRoleText, {alpha: 1}, fadeTime);
-				},
-			});
+			remove(songCharterText);
+			songArtistText.y -= 32;
+			practiceText.y -= 32;
 		}
 
 		var startDelay:Float = 0.3;
 
-		for (text in [levelInfo, levelDifficulty, deathCounter, songRoleText, practiceText])
+		for (text in [
+			levelInfo,
+			levelDifficulty,
+			deathCounter,
+			songArtistText,
+			songCharterText,
+			practiceText
+		])
 		{
 			text.alpha = 0;
 			text.x = FlxG.width - (text.width + 20);
@@ -175,8 +163,6 @@ class PauseSubState extends MusicBeatSubstate
 			pauseMusic.volume += 0.01 * elapsed;
 
 		super.update(elapsed);
-
-		songRoleText.x = FlxG.width - (songRoleText.width + 20);
 
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
