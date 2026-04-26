@@ -230,6 +230,21 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
+		grpNoteSplashes.cameras = [camHUD];
+		strumLineNotes.cameras = [camHUD];
+		notes.cameras = [camHUD];
+
+		initHUD();
+
+		startingSong = true;
+
+		startCountdown();
+
+		super.create();
+	}
+
+	function initHUD()
+	{
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
@@ -258,22 +273,11 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		grpNoteSplashes.cameras = [camHUD];
-		strumLineNotes.cameras = [camHUD];
-		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
-
-		startingSong = true;
-
-		// remember this
-		// if (isStoryMode && !seenCutscene)
-		startCountdown();
-
-		super.create();
 	}
 
 	function initDiscord():Void
