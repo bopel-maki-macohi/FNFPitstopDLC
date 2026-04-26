@@ -5,10 +5,8 @@ import pitstop.play.scoring.*;
 import pitstop.play.songs.*;
 import pitstop.play.stages.*;
 import pitstop.play.*;
-
 import Section.SwagSection;
 import Song.SwagSong;
-
 import flixel.*;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup;
@@ -856,7 +854,7 @@ class PlayState extends MusicBeatState
 			else if (daNote.tooLate || daNote.wasGoodHit)
 			{
 				if (daNote.tooLate)
-					noteMiss();
+					noteMissTooLate();
 
 				murderNote(daNote);
 			}
@@ -1218,7 +1216,7 @@ class PlayState extends MusicBeatState
 			// if a direction is hit that shouldn't be
 			for (shit in 0...pressArray.length)
 				if (pressArray[shit] && !directionList.contains(shit))
-					noteMiss(shit);
+					noteMissGhost(shit);
 
 			for (coolNote in possibleNotes)
 				if (pressArray[coolNote.noteData])
@@ -1227,10 +1225,18 @@ class PlayState extends MusicBeatState
 		else
 			for (shit in 0...pressArray.length)
 				if (pressArray[shit])
-					noteMiss(shit);
+					noteMissGhost(shit);
 	}
 
-	function noteMiss(direction:Int = 1):Void
+	function noteMissBasic(direction:Int = 1)
+	{
+		vocals.volume = 0;
+		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+
+		boyfriend.playAnim(singAnimations[direction] + 'miss', true);
+	}
+
+	function noteMissTooLate(direction:Int = 1):Void
 	{
 		health -= 0.04;
 		killCombo();
@@ -1238,10 +1244,21 @@ class PlayState extends MusicBeatState
 		if (!practiceMode)
 			songScore -= 10;
 
-		vocals.volume = 0;
-		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+		noteMissBasic(direction);
+	}
 
-		boyfriend.playAnim(singAnimations[direction] + 'miss', true);
+	function noteMissGhost(direction:Int = 1)
+	{
+		if (!PreferencesMenu.getPref('ghost-tapping'))
+		{
+			health -= 0.02;
+			killCombo();
+
+			if (!practiceMode)
+				songScore -= 5;
+		}
+
+		noteMissBasic(direction);
 	}
 
 	function goodNoteHit(note:Note):Void

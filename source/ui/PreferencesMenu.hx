@@ -74,6 +74,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('fps-counter', true);
 		preferenceCheck('memory-counter', true);
 		preferenceCheck('auto-pause', false);
+		preferenceCheck('ghost-tapping', false);
 
 		FlxG.autoPause = getPref('auto-pause');
 	}
