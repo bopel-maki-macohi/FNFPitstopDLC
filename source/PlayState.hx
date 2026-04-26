@@ -302,9 +302,9 @@ class PlayState extends MusicBeatState
 
 			if (swagCounter % 2 == 0)
 			{
-				if (!boyfriend.animation.curAnim.name.startsWith("sing"))
+				if (!boyfriend.anim.curAnim.name.startsWith("sing"))
 					boyfriend.playAnim('idle');
-				if (!dad.animation.curAnim.name.startsWith("sing"))
+				if (!dad.anim.curAnim.name.startsWith("sing"))
 					dad.dance();
 			}
 
@@ -1201,7 +1201,7 @@ class PlayState extends MusicBeatState
 			checkForNoteHit(pressArray);
 
 		if (boyfriend.holdTimer > Conductor.stepCrochet * 4 * 0.001 && !holdArray.contains(true))
-			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
+			if (boyfriend.anim.curAnim.name.startsWith('sing') && !boyfriend.anim.curAnim.name.endsWith('miss'))
 				boyfriend.playAnim('idle');
 
 		playerStrums.forEach(function(spr:FlxSprite)
@@ -1401,9 +1401,9 @@ class PlayState extends MusicBeatState
 
 		if (curBeat % 2 == 0)
 		{
-			if (!boyfriend.animation.curAnim.name.startsWith("sing"))
+			if (!boyfriend.anim.curAnim.name.startsWith("sing"))
 				boyfriend.playAnim('idle');
-			if (!dad.animation.curAnim.name.startsWith("sing"))
+			if (!dad.anim.curAnim.name.startsWith("sing"))
 				dad.dance();
 		}
 
