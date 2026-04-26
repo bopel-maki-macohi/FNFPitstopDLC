@@ -22,7 +22,7 @@ class VoicesGroup extends FunkinSoundGroup
 
 		if (bfVocalsExists)
 		{
-			trace('Using $bfVocals for bf');
+			trace('Using $bfVocalPath for bf');
 			add(bfVocals = new FlxSound().loadEmbedded(bfVocalPath));
 		}
 
