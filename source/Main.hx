@@ -1,5 +1,7 @@
 package;
 
+import lime.app.Application;
+import flixel.FlxG;
 import pitstop.display.Watermark;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -58,14 +60,18 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
 		watermark = new Watermark();
 		addChild(watermark);
 		#end
+
+		FlxG.save.bind('funkinDLC', 'PitstopCrew');
+
+		Application.current.onExit.add(l ->
+		{
+			FlxG.save.flush();
+		});
 	}
 }

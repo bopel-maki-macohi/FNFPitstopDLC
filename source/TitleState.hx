@@ -70,16 +70,6 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		if (!FlxG.save.isBound)
-		{
-			FlxG.save.bind('funkinDLC', 'PitstopCrew');
-
-			Application.current.onExit.add(l ->
-			{
-				FlxG.save.flush();
-			});
-		}
-
 		PreferencesMenu.initPrefs();
 		PlayerSettings.init();
 		Highscore.load();
