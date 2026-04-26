@@ -6,9 +6,9 @@ import flixel.FlxG;
 
 class Highscore
 {
-	public static var songScores:Map<String, Float> = [];
+	public static var songScores:Map<String, Int> = [];
 
-	public static function saveScore(song:String, score:Float = 0, ?diff:Int = 0):Void
+	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0):Void
 	{
 		var formattedSong:String = formatSong(song, diff);
 
@@ -21,7 +21,7 @@ class Highscore
 			setScore(formattedSong, score);
 	}
 
-	public static function saveWeekScore(week:String, score:Float = 0, ?diff:Int = 0):Void
+	public static function saveWeekScore(week:String, score:Int = 0, ?diff:Int = 0):Void
 	{
 		var formattedSong:String = formatSong(week, diff);
 
@@ -37,7 +37,7 @@ class Highscore
 	/**
 	 * YOU SHOULD FORMAT SONG WITH formatSong() BEFORE TOSSING IN SONG VARIABLE
 	 */
-	static function setScore(formattedSong:String, score:Float):Void
+	static function setScore(formattedSong:String, score:Int):Void
 	{
 		/** GeoKureli
 		 * References to Highscore were wrapped in `#if !switch` blocks. I wasn't sure if this
@@ -87,20 +87,20 @@ class Highscore
 		return diffs;
 	}
 
-	public static function getScore(song:String, diff:Int):Float
+	public static function getScore(song:String, diff:Int):Int
 	{
 		if (!songScores.exists(formatSong(song, diff)))
 			setScore(formatSong(song, diff), 0);
 
-		return songScores.get(formatSong(song, diff)) ?? 0;
+		return songScores?.get(formatSong(song, diff)) ?? 0;
 	}
 
-	public static function getWeekScore(week:String, diff:Int):Float
+	public static function getWeekScore(week:String, diff:Int):Int
 	{
 		if (!songScores.exists(formatSong(week, diff)))
 			setScore(formatSong(week, diff), 0);
 
-		return songScores.get(formatSong(week, diff)) ?? 0;
+		return songScores?.get(formatSong(week, diff)) ?? 0;
 	}
 
 	public static function load():Void
@@ -108,6 +108,10 @@ class Highscore
 		if (FlxG.save.data.songScores != null)
 		{
 			songScores = FlxG.save.data.songScores;
+		}
+		else
+		{
+			songScores = [];
 		}
 	}
 }
