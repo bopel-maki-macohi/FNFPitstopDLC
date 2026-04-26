@@ -1258,6 +1258,12 @@ class PlayState extends MusicBeatState
 		if (PreferencesMenu.getPref('ghost-tapping'))
 			return;
 
+		if (PreferencesMenu.getPref('ghost-tapping-penalty'))
+		{
+			noteMissTooLate(direction);
+			return;
+		}
+
 		health -= 0.02;
 		killCombo();
 

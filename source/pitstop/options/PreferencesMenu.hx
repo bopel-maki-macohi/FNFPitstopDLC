@@ -98,7 +98,9 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		makePref('DD Memory Counter', 'memory-counter', true);
 
 		makePref('Auto Pause', 'auto-pause', true);
-		makePref('Ghost Tapping', 'ghost-tapping', false, true);
+
+		makePref('Ghost Tapping (GT)', 'ghost-tapping', false, true);
+		makePref('GT Note Press Penalty', 'ghost-tapping-penalty', false, true);
 
 		for (key => value in prefsValMap)
 			preferenceCheck(key, value);
