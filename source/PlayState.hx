@@ -933,7 +933,7 @@ class PlayState extends MusicBeatState
 		vocals.volume = 0;
 
 		if (SONG.validScore)
-			Highscore.saveScore(SONG.song, Std.int(songScore), storyDifficulty);
+			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
 
 		if (isStoryMode)
 		{
@@ -951,7 +951,7 @@ class PlayState extends MusicBeatState
 				// FlxG.switchState(() -> new StoryMenuState());
 
 				if (SONG.validScore)
-					Highscore.saveWeekScore(LoadingState.getWeekTitleShit(storyWeek), Std.int(campaignScore), storyDifficulty);
+					Highscore.saveWeekScore(LoadingState.getWeekTitleShit(storyWeek), campaignScore, storyDifficulty);
 			}
 			else
 			{
@@ -990,6 +990,9 @@ class PlayState extends MusicBeatState
 
 			grpNoteSplashes.add(noteSplash);
 		}
+
+		if (!practiceMode)
+			songScore += rating.score;
 
 		var ratingPath:String = rating.rating;
 
@@ -1274,17 +1277,7 @@ class PlayState extends MusicBeatState
 		{
 			combo += 1;
 			health += rating.healthChange;
-
-			if (!practiceMode)
-				songScore += rating.score;
-
 			popUpScore(rating, note);
-		}
-		else
-		{
-			health += (30 / 100) * FlxG.elapsed;
-			if (!practiceMode)
-				songScore += 250 * FlxG.elapsed;
 		}
 
 		boyfriend.playAnim(singAnimations[note.noteData], true);
