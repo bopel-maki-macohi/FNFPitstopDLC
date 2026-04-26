@@ -106,6 +106,16 @@ class Character extends FlxAnimate
 				]);
 
 				quickAnimAdd('idle', 'bf anim idle');
+				
+				quickAnimAdd('singLEFT', 'bf anim left');
+				quickAnimAdd('singDOWN', 'bf anim down');
+				quickAnimAdd('singUP', 'bf anim up');
+				quickAnimAdd('singRIGHT', 'bf anim right');
+				
+				quickAnimAdd('singLEFTmiss', 'bf anim miss left');
+				quickAnimAdd('singDOWNmiss', 'bf anim miss down');
+				quickAnimAdd('singUPmiss', 'bf anim miss up');
+				quickAnimAdd('singRIGHTmiss', 'bf anim miss right');
 
 				quickAnimAdd('firstDeath', "BF dies");
 				anim.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
