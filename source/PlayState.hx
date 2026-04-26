@@ -1,5 +1,6 @@
 package;
 
+import pitstop.play.songs.ArgueParkSong;
 import pitstop.play.SongClass;
 import pitstop.play.stages.*;
 import pitstop.play.StageGroup;
@@ -89,8 +90,6 @@ class PlayState extends MusicBeatState
 	public var midgroundSprites:FlxTypedGroup<FlxSprite>;
 	public var foregroundSprites:FlxTypedGroup<FlxSprite>;
 
-	var talking:Bool = true;
-
 	public var songScore:Int = 0;
 	public var scoreTxt:FlxText;
 
@@ -114,7 +113,7 @@ class PlayState extends MusicBeatState
 	var detailsPausedText:String = "";
 	#end
 
-	var camPos:FlxPoint;
+	public var camPos:FlxPoint;
 
 	override public function create()
 	{
@@ -299,7 +298,6 @@ class PlayState extends MusicBeatState
 		generateStaticArrows(0);
 		generateStaticArrows(1);
 
-		talking = false;
 		startedCountdown = true;
 		Conductor.songPosition = 0;
 		Conductor.songPosition -= Conductor.crochet * 5;
@@ -1448,10 +1446,7 @@ class PlayState extends MusicBeatState
 		switch (curSong)
 		{
 			case 'argue park':
-				useDefaultCameraStuffs = false;
-
-				camPos.x = gf.getGraphicMidpoint().x;
-				camPos.y = gf.getGraphicMidpoint().y - 45;
+				appendSongClass(new ArgueParkSong());
 		}
 	}
 
@@ -1491,6 +1486,9 @@ class PlayState extends MusicBeatState
 
 	function appendSongClass(songClass:SongClass)
 	{
+		if (songClass != null)
+			songClass.make();
+
 		if (songClass != null)
 			songClasses.push(songClass);
 	}
