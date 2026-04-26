@@ -1449,8 +1449,8 @@ class PlayState extends MusicBeatState
 			case 'argue park':
 				useDefaultCameraStuffs = false;
 
-				camPos.x = 640;
-				camPos.y = 360;
+				camPos.x = gf.getGraphicMidpoint().x;
+				camPos.y = gf.getGraphicMidpoint().y;
 		}
 	}
 
@@ -1505,7 +1505,7 @@ class PlayState extends MusicBeatState
 
 		bgGrass.y = FlxG.height - (bgGrass.height * 1.3);
 		grass.y = FlxG.height - (grass.height * 0.5);
-		bench.y = FlxG.height - (bench.height * 0.75);
+		bench.y = FlxG.height - (bench.height * 0.8);
 
 		backgroundSprites.add(bgGrass);
 
@@ -1600,6 +1600,8 @@ class PlayState extends MusicBeatState
 
 			romancePark_bgPeople.add(person);
 		}
+
+		gf.y += 50;
 	}
 
 	function makeMainStage()
@@ -1617,9 +1619,5 @@ class PlayState extends MusicBeatState
 		backgroundSprites.add(stageBack);
 		backgroundSprites.add(stageFront);
 		backgroundSprites.add(stageCurtains);
-
-		gf.setPosition(400, 130);
-		dad.setPosition(100, 100);
-		boyfriend.setPosition(770, 450);
 	}
 }
