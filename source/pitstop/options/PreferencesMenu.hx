@@ -66,41 +66,43 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 	public static var experimentalPrefs:Array<String> = [];
 
 	static var prefsOptionMap:Map<String, Dynamic> = [];
+	static var prefsOptionDescMap:Map<String, Dynamic> = [];
 	static var prefsValMap:Map<String, Dynamic> = [];
 
 	// for array prefs but thats l8r
 	static var prefsValuesMap:Map<String, Array<Dynamic>> = [];
 
-	public static function makePref(display:String, name:String, defaultValue:Dynamic, ?experimental:Bool = false)
+	public static function makePref(preferenceClass:Preference)
 	{
-		prefs.push(display);
+		prefs.push(preferenceClass.display);
 
-		if (experimental)
-			experimentalPrefs.push(display);
+		if (preferenceClass.experimental)
+			experimentalPrefs.push(preferenceClass.display);
 		else
-			regularPrefs.push(display);
+			regularPrefs.push(preferenceClass.display);
 
-		prefsOptionMap.set(display, name);
-		prefsValMap.set(name, defaultValue);
+		prefsOptionMap.set(preferenceClass.display, preferenceClass.id);
+		prefsOptionDescMap.set(preferenceClass.display, preferenceClass.description);
+		prefsValMap.set(preferenceClass.id, preferenceClass.defaultValue);
 	}
 
 	public static function initPrefs():Void
 	{
-		makePref('Naughtyness', 'censor-naughty', true);
-		makePref('Downscroll', 'downscroll', false);
+		makePref(new Preference('censor-naughty', 'Naughtyness', true).setDescription('Toggles naughty naughty things ;)'));
+		makePref(new Preference('downscroll', 'Downscroll', false).setDescription('Toggles the gameplay arrows being down and the arrows coming in from the top instead of the other way around.'));
 
-		makePref('Flashing Menu BG', 'flashing-menu', true);
+		makePref(new Preference('flashing-menu', 'Flashing Menu BG', true).setDescription('Toggles the Menu BG flashing when you select something.'));
 
-		makePref('Camera Zooming on Beat', 'camera-zoom', true);
+		makePref(new Preference('camera-zoom', 'Camera Zooming on Beat', false).setDescription('Toggles the Camera bopping on beat in gameplay.'));
 
-		makePref('Debug Display (DD)', 'watermark', true);
-		makePref('DD FPS Counter', 'fps-counter', true);
-		makePref('DD Memory Counter', 'memory-counter', true);
+		makePref(new Preference('debug-display', 'Debug Display (DD)', false).setDescription('Toggle the Debug Display.'));
+		makePref(new Preference('fps-counter', 'DD FPS Counter', true).setDescription('Toggle the Debug Display FPS Counter.'));
+		makePref(new Preference('memory-counter', 'DD Memory Counter', true).setDescription('Toggle the Debug Display Memory Counter.'));
 
-		makePref('Auto Pause', 'auto-pause', true);
+		makePref(new Preference('auto-pause', 'Auto Pause', true).setDescription('Toggles Flixel pausing the game when you lose focus after already having it.'));
 
-		makePref('Ghost Tapping (GT)', 'ghost-tapping', false, true);
-		makePref('GT Note Press Penalty', 'ghost-tapping-penalty', false, true);
+		makePref(new Preference('ghost-tapping', 'Ghost Tapping (GT)', false).setExperimental().setDescription('Toggles allowing you to press notes when theres no note there and not get penaltized.'));
+		makePref(new Preference('ghost-tapping-penalty', 'GT Note Press Penalty', false).setExperimental().setDescription('Toggles the Ghost Tapping Note Press penalty.\n\nThe combo won\'t reset and it\'s half the regular penalty.'));
 
 		for (key => value in prefsValMap)
 			preferenceCheck(key, value);
