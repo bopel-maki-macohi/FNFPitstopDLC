@@ -583,6 +583,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var paused:Bool = false;
+
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 
@@ -592,6 +593,9 @@ class PlayState extends MusicBeatState
 		updateConductor();
 
 		super.update(elapsed);
+
+		for (group in stageClasses)
+			group.update(elapsed);
 
 		if (FlxG.sound.music != null)
 		{
@@ -1460,8 +1464,14 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public var stageClasses:Array<StageGroup> = [];
+
 	function loadStageFromClass(stageClass:StageGroup)
 	{
-		stageClass.buildStage();
+		if (stageClass != null)
+			stageClass.buildStage();
+
+		if (stageClass != null)
+			stageClasses.push(stageClass);
 	}
 }
