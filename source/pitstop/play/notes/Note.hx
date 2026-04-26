@@ -52,6 +52,7 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
+		var daSong:String = PlayState.instance.curSong;
 		var daStage:String = PlayState.curStage;
 
 		frames = Paths.getSparrowAtlas('NOTE_assets');
