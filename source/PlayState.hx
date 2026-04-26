@@ -1602,6 +1602,7 @@ class PlayState extends MusicBeatState
 		}
 
 		gf.y += 25;
+		boyfriend.y -= 175;
 	}
 
 	function makeMainStage()
