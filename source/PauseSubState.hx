@@ -113,7 +113,6 @@ class PauseSubState extends MusicBeatSubstate
 			songRoleText.text = artistText;
 
 			final fadeTime:Float = 2;
-			final startDelay:Float = 5;
 			final loopDelay:Float = 5;
 
 			FlxTween.tween(songRoleText, {alpha: 0}, fadeTime, {
