@@ -29,7 +29,8 @@ class OptionsState extends MusicBeatState
 		add(menuBG);
 
 		var options = addPage(Options, new OptionsMenu(false));
-		var preferences = addPage(Preferences, new PreferencesMenu());
+		var preferences = addPage(Preferences, new PreferencesMenu(false));
+		var experimental = addPage(Experimental, new PreferencesMenu(true));
 		var controls = addPage(Controls, new ControlsMenu());
 		// var colors = addPage(Colors, new ColorsMenu());
 
@@ -43,6 +44,7 @@ class OptionsState extends MusicBeatState
 			controls.onExit.add(switchPage.bind(Options));
 			// colors.onExit.add(switchPage.bind(Options));
 			preferences.onExit.add(switchPage.bind(Options));
+			experimental.onExit.add(switchPage.bind(Options));
 
 			#if cpp
 			// mods.onExit.add(switchPage.bind(Options));
@@ -177,7 +179,13 @@ class OptionsMenu extends Page
 		super();
 
 		add(items = new TextMenuList());
-		createItem('preferences', function() switchPage(Preferences));
+
+		if (PreferencesMenu.regularPrefs.length > 0)
+			createItem('preferences', function() switchPage(Preferences));
+
+		if (PreferencesMenu.experimentalPrefs.length > 0)
+			createItem('experimental', function() switchPage(Experimental));
+
 		createItem("controls", function() switchPage(Controls));
 		// createItem('colors', function() switchPage(Colors));
 		#if cpp
@@ -235,5 +243,7 @@ enum PageName
 	Controls;
 	Colors;
 	Mods;
+
 	Preferences;
+	Experimental;
 }

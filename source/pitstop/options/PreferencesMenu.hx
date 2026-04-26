@@ -20,7 +20,7 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 	var menuCamera:FlxCamera;
 	var camFollow:FlxObject;
 
-	public function new()
+	public function new(experimental:Bool = false)
 	{
 		super();
 
@@ -32,7 +32,8 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		add(items = new TextMenuList());
 
 		for (pref in prefs)
-			createPrefItem(pref, prefsOptionMap.get(pref), preferences.get(prefsOptionMap.get(pref)));
+			if (experimental && experimentalPrefs.contains(pref) || !experimental && !experimentalPrefs.contains(pref))
+				createPrefItem(pref, prefsOptionMap.get(pref), preferences.get(prefsOptionMap.get(pref)));
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
@@ -60,13 +61,25 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		preferences.set(pref, value);
 	}
 
-	static var prefs:Array<String> = [];
+	public static var prefs:Array<String> = [];
+	public static var regularPrefs:Array<String> = [];
+	public static var experimentalPrefs:Array<String> = [];
+
 	static var prefsOptionMap:Map<String, Dynamic> = [];
 	static var prefsValMap:Map<String, Dynamic> = [];
 
-	public static function makePref(display:String, name:String, defaultValue:Dynamic)
+	// for array prefs but thats l8r
+	static var prefsValuesMap:Map<String, Array<Dynamic>> = [];
+
+	public static function makePref(display:String, name:String, defaultValue:Dynamic, ?experimental:Bool = false)
 	{
 		prefs.push(display);
+		
+		if (experimental)
+			experimentalPrefs.push(display);
+		else
+			regularPrefs.push(display);
+
 		prefsOptionMap.set(display, name);
 		prefsValMap.set(name, defaultValue);
 	}
@@ -75,17 +88,17 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 	{
 		makePref('Naughtyness', 'censor-naughty', true);
 		makePref('Downscroll', 'downscroll', false);
-		
+
 		makePref('Flashing Menu BG', 'flashing-menu', true);
-		
+
 		makePref('Camera Zooming on Beat', 'camera-zoom', true);
-		
+
 		makePref('Debug Display', 'watermark', true);
 		makePref('Debug Display FPS Counter', 'fps-counter', true);
 		makePref('Debug Display Memory Counter', 'memory-counter', true);
-		
+
 		makePref('Auto Pause', 'auto-pause', true);
-		makePref('Ghost Tapping', 'ghost-tapping', false);
+		makePref('Ghost Tapping', 'ghost-tapping', false, true);
 
 		for (key => value in prefsValMap)
 			preferenceCheck(key, value);
