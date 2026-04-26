@@ -601,14 +601,7 @@ class PlayState extends MusicBeatState
 			song.update(elapsed);
 
 		if (FlxG.sound.music != null)
-		{
 			FlxG.sound.music.volume = FlxG.sound.volume;
-			if (vocals != null)
-			{
-				vocals.bfVocals.volume = FlxG.sound.music.volume;
-				vocals.dadVocals.volume = FlxG.sound.music.volume;
-			}
-		}
 
 		updateUI();
 
@@ -977,8 +970,6 @@ class PlayState extends MusicBeatState
 	// gives score and pops up rating
 	public function popUpScore(strumtime:Float, daNote:Note):Void
 	{
-		vocals.bfVocals.volume = 1;
-
 		var ratingSprite:FlxSprite = new FlxSprite();
 		var rating:RatingClass = Score.grade(Math.abs(strumtime - Conductor.songPosition));
 
@@ -1288,7 +1279,7 @@ class PlayState extends MusicBeatState
 		playerStrums.forEach((spr) -> if (Math.abs(note.noteData) == spr.ID) spr.animation.play('confirm', true));
 
 		note.wasGoodHit = true;
-		vocals.bfVocals.volume = 1;
+		vocals.bfVocals.volume = FlxG.sound.volume;
 
 		if (!note.isSustainNote)
 			murderNote(note);
