@@ -234,9 +234,8 @@ class PlayState extends MusicBeatState
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 
-		initHUD();
 		if (PreferencesMenu.getPref('hud'))
-			initOptionalHUD();
+			initHUD();
 
 		startingSong = true;
 
@@ -261,13 +260,7 @@ class PlayState extends MusicBeatState
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		// healthBar
 		add(healthBar);
-
-		healthBar.cameras = [camHUD];
-		healthBarBG.cameras = [camHUD];
-	}
-
-	function initOptionalHUD()
-	{
+		
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
@@ -280,6 +273,9 @@ class PlayState extends MusicBeatState
 		iconP2 = new HealthIcon(SONG.player2, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
+
+		healthBar.cameras = [camHUD];
+		healthBarBG.cameras = [camHUD];
 
 		scoreTxt.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
