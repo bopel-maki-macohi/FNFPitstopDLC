@@ -31,8 +31,8 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 
 		add(items = new TextMenuList());
 
-		for (key => value in prefsOptionMap)
-			createPrefItem(key, value, preferences.get(value));
+		for (pref in prefs)
+			createPrefItem(pref, prefsOptionMap.get(pref), preferences.get(prefsOptionMap.get(pref)));
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
@@ -60,30 +60,28 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		preferences.set(pref, value);
 	}
 
-	static var prefsOptionMap:Map<String, Dynamic> = [
-		'Naughtyness' => 'censor-naughty',
-		'Downscroll' => 'downscroll',
-		'Flashing Menu BG' => 'flashing-menu',
-		'Camera Zooming on Beat' => 'camera-zoom',
-		'FPS Counter' => 'fps-counter',
-		'Memory Counter' => 'memory-counter',
-		'Auto Pause' => 'auto-pause',
-		'Ghost Tapping' => 'ghost-tapping',
-	];
+	static var prefs:Array<String> = [];
+	static var prefsOptionMap:Map<String, Dynamic> = [];
+	static var prefsValMap:Map<String, Dynamic> = [];
 
-	static var prefsValMap:Map<String, Dynamic> = [
-		'censor-naughty' => true,
-		'downscroll' => false,
-		'flashing-menu' => true,
-		'camera-zoom' => true,
-		'fps-counter' => true,
-		'memory-counter' => true,
-		'auto-pause' => false,
-		'ghost-tapping' => false,
-	];
+	public static function makePref(display:String, name:String, defaultValue:Dynamic)
+	{
+		prefs.push(display);
+		prefsOptionMap.set(display, name);
+		prefsValMap.set(name, defaultValue);
+	}
 
 	public static function initPrefs():Void
 	{
+		makePref('Naughtyness', 'censor-naughty', true);
+		makePref('Downscroll', 'downscroll', false);
+		makePref('Flashing Menu BG', 'flashing-menu', true);
+		makePref('Camera Zooming on Beat', 'camera-zoom', true);
+		makePref('FPS Counter', 'fps-counter', true);
+		makePref('Memory Counter', 'memory-counter', true);
+		makePref('Auto Pause', 'auto-pause', false);
+		makePref('Ghost Tapping', 'ghost-tapping', false);
+
 		for (key => value in prefsValMap)
 			preferenceCheck(key, value);
 
