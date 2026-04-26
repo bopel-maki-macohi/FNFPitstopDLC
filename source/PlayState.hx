@@ -1373,7 +1373,7 @@ class PlayState extends MusicBeatState
 		}
 
 		for (song => songClass in songClassMapping)
-			if (curSong == song)
+			if (curSong == song.toLowerCase())
 				appendSongClass(songClass);
 	}
 
@@ -1381,7 +1381,7 @@ class PlayState extends MusicBeatState
 		'tutorial' => new TutorialSong(),
 		'bopeebo' => new BopeeboSong(),
 		'fresh' => new FreshSong(),
-		'argue Park' => new ArgueParkSong(),
+		'argue park' => new ArgueParkSong(),
 	];
 
 	public var tweensList:Array<FlxTween> = [];
