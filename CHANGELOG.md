@@ -1,5 +1,5 @@
 # 0.1.0 : Day 1 - 04/25/2026
 
-Inital Release
+Inital Release : Day 1 : Argue Park
 
 - Storymenu is disabled right now (it will come back in 0.2.0 )
