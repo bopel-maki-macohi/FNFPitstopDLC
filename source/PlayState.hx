@@ -621,7 +621,11 @@ class PlayState extends MusicBeatState
 				vocals.volume = FlxG.sound.music.volume;
 		}
 
-		updateUI();
+		if (health > 2)
+			health = 2;
+		healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
+
+		updateHUD();
 
 		handlePausing();
 
@@ -693,13 +697,9 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function updateUI()
+	function updateHUD()
 	{
 		scoreTxt.text = 'Score: ${FlxStringUtil.formatMoney(songScore, false, true)}';
-
-		if (health > 2)
-			health = 2;
-		healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
 
 		var iconOffset:Int = 26;
 
@@ -1347,8 +1347,10 @@ class PlayState extends MusicBeatState
 				camHUD.zoom += 0.03;
 			}
 
-		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+		if (iconP1 != null)
+			iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+		if (iconP2 != null)
+			iconP2.setGraphicSize(Std.int(iconP2.width + 30));
 
 		if (curBeat % gfSpeed == 0)
 			gf.dance();
