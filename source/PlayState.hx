@@ -230,6 +230,22 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
+		grpNoteSplashes.cameras = [camHUD];
+		strumLineNotes.cameras = [camHUD];
+		notes.cameras = [camHUD];
+
+		if (PreferencesMenu.getPref('hud'))
+			initHUD();
+
+		startingSong = true;
+
+		startCountdown();
+
+		super.create();
+	}
+
+	function initHUD()
+	{
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
@@ -243,8 +259,9 @@ class PlayState extends MusicBeatState
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		// healthBar
+		// no shit
 		add(healthBar);
-
+		
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
@@ -258,22 +275,12 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		grpNoteSplashes.cameras = [camHUD];
-		strumLineNotes.cameras = [camHUD];
-		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
+
+		scoreTxt.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
-		scoreTxt.cameras = [camHUD];
-
-		startingSong = true;
-
-		// remember this
-		// if (isStoryMode && !seenCutscene)
-		startCountdown();
-
-		super.create();
 	}
 
 	function initDiscord():Void
@@ -299,7 +306,8 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 		camHUD.visible = true;
 
-		generateStaticArrows(0);
+		if (PreferencesMenu.getPref('notes-opponent'))
+			generateStaticArrows(0);
 		generateStaticArrows(1);
 
 		startedCountdown = true;
@@ -425,10 +433,15 @@ class PlayState extends MusicBeatState
 				swagNote.sustainLength = songNotes[2];
 				swagNote.altNote = songNotes[3];
 				swagNote.scrollFactor.set(0, 0);
+				swagNote.mustPress = gottaHitNote;
 
 				var susLength:Float = swagNote.sustainLength;
 
 				susLength = susLength / Conductor.stepCrochet;
+
+				if (!swagNote.mustPress && !PreferencesMenu.getPref('notes-opponent'))
+					swagNote.alpha = 0;
+
 				unspawnNotes.push(swagNote);
 
 				for (susNote in 0...Math.floor(susLength))
@@ -437,15 +450,16 @@ class PlayState extends MusicBeatState
 
 					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true);
 					sustainNote.scrollFactor.set();
-					unspawnNotes.push(sustainNote);
-
 					sustainNote.mustPress = gottaHitNote;
+
+					if (!sustainNote.mustPress && !PreferencesMenu.getPref('notes-opponent'))
+						sustainNote.alpha = 0;
+
+					unspawnNotes.push(sustainNote);
 
 					if (sustainNote.mustPress)
 						sustainNote.x += FlxG.width / 2; // general offset
 				}
-
-				swagNote.mustPress = gottaHitNote;
 
 				if (swagNote.mustPress)
 					swagNote.x += FlxG.width / 2; // general offset
@@ -610,7 +624,12 @@ class PlayState extends MusicBeatState
 				vocals.volume = FlxG.sound.music.volume;
 		}
 
-		updateUI();
+		if (health > 2)
+			health = 2;
+		healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
+
+		if (PreferencesMenu.getPref('hud'))
+			updateHUD();
 
 		handlePausing();
 
@@ -682,13 +701,9 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function updateUI()
+	function updateHUD()
 	{
 		scoreTxt.text = 'Score: ${FlxStringUtil.formatMoney(songScore, false, true)}';
-
-		if (health > 2)
-			health = 2;
-		healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
 
 		var iconOffset:Int = 26;
 
@@ -1336,8 +1351,10 @@ class PlayState extends MusicBeatState
 				camHUD.zoom += 0.03;
 			}
 
-		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+		if (iconP1 != null)
+			iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+		if (iconP2 != null)
+			iconP2.setGraphicSize(Std.int(iconP2.width + 30));
 
 		if (curBeat % gfSpeed == 0)
 			gf.dance();
