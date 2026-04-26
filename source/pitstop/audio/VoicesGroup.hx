@@ -21,12 +21,20 @@ class VoicesGroup extends FunkinSoundGroup
 		final regularVocalsExists:Bool = Assets.exists(regularVocalPath);
 
 		if (bfVocalsExists)
+		{
+			trace('Using $bfVocals for bf');
 			add(bfVocals = new FlxSound().loadEmbedded(bfVocalPath));
+		}
+
 		if (dadVocalsExists)
+		{
+			trace('Using $dadVocalPath for dad');
 			add(dadVocals = new FlxSound().loadEmbedded(dadVocalPath));
+		}
 
 		if (regularVocalsExists && !bfVocalsExists)
 		{
+			trace('Using $regularVocalPath for bf');
 			add(bfVocals = new FlxSound().loadEmbedded(regularVocalPath));
 		}
 
