@@ -30,6 +30,7 @@ import Discord.DiscordClient;
 class TitleState extends MusicBeatState
 {
 	public static var initialized:Bool = false;
+	public static var seenIntro:Bool = false;
 
 	var startedIntro:Bool;
 
@@ -48,6 +49,18 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		if (!initialized)
+		{
+			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
+			diamond.persist = true;
+			diamond.destroyOnNoUse = false;
+
+			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
+				new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
+				{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+		}
+
 		#if polymod
 		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod'], framework: OPENFL});
 		// FlxG.bitmap.clearCache();
@@ -83,9 +96,9 @@ class TitleState extends MusicBeatState
 		});
 		#end
 
-		if (DefineUtil.isDefined('FREEPLAY'))
+		if (!initialized && DefineUtil.isDefined('FREEPLAY'))
 			FlxG.switchState(() -> new FreeplayState());
-		else if (DefineUtil.isDefined('SONG') && DefineUtil.isDefined('STORYWEEK'))
+		else if (!initialized && DefineUtil.isDefined('SONG') && DefineUtil.isDefined('STORYWEEK'))
 		{
 			var song = DefineUtil.getDefine('SONG').toLowerCase();
 
@@ -101,7 +114,7 @@ class TitleState extends MusicBeatState
 			else
 				LoadingState.loadAndSwitchState(new PlayState());
 		}
-		else if (DefineUtil.isDefined('CHARTING'))
+		else if (!initialized && DefineUtil.isDefined('CHARTING'))
 			FlxG.switchState(() -> new ChartingState());
 		else
 		{
@@ -110,6 +123,8 @@ class TitleState extends MusicBeatState
 				startIntro();
 			});
 		}
+
+		initialized = true;
 	}
 
 	var logoBl:FlxSprite;
@@ -120,18 +135,6 @@ class TitleState extends MusicBeatState
 
 	function startIntro()
 	{
-		if (!initialized)
-		{
-			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
-			diamond.persist = true;
-			diamond.destroyOnNoUse = false;
-
-			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
-				new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
-				{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-		}
-
 		if (FlxG.sound.music == null || !FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
@@ -201,10 +204,10 @@ class TitleState extends MusicBeatState
 
 		FlxG.mouse.visible = false;
 
-		if (initialized)
+		if (seenIntro)
 			skipIntro();
 		else
-			initialized = true;
+			seenIntro = true;
 
 		startedIntro = true;
 		// credGroup.add(credTextShit);
@@ -276,21 +279,6 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !skippedIntro && initialized)
 			skipIntro();
-		/* 
-			#if web
-			if (!initialized && controls.ACCEPT)
-			{
-				// netStream.dispose();
-				// FlxG.stage.removeChild(video);
-
-				startIntro();
-				skipIntro();
-			}
-			#end
-		 */
-
-		// if (FlxG.keys.justPressed.SPACE)
-		// swagShader.hasOutline = !swagShader.hasOutline;
 
 		if (controls.UI_LEFT)
 			swagShader.update(-elapsed * 0.1);
