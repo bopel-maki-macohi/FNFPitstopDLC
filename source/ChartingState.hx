@@ -122,6 +122,7 @@ class ChartingState extends MusicBeatState
 				needsVoices: false,
 				player1: 'bf',
 				player2: 'dad',
+				gfVersion: 'gf',
 				speed: 1,
 				validScore: false
 			};
@@ -153,7 +154,8 @@ class ChartingState extends MusicBeatState
 		add(dummyArrow);
 
 		var tabs = [
-			{name: "Song", label: 'Song'},
+			{name: "Song", label: 'Song 1'},
+			{name: "Song2", label: 'Song 2'},
 			{name: "Section", label: 'Section'},
 			{name: "Note", label: 'Note'}
 		];
@@ -166,6 +168,7 @@ class ChartingState extends MusicBeatState
 		add(UI_box);
 
 		addSongUI();
+		addSong2UI();
 		addSectionUI();
 		addNoteUI();
 
@@ -174,6 +177,15 @@ class ChartingState extends MusicBeatState
 
 		changeSection();
 		super.create();
+	}
+
+	
+	function addSong2UI():Void
+	{
+		var tabGroup = new FlxUI(null, UI_box);
+		tabGroup.name = "Song2";
+
+		UI_box.addGroup(tabGroup);
 	}
 
 	var difficultyDropDown:FlxUIDropDownMenu;

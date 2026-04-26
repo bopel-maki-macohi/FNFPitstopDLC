@@ -141,9 +141,7 @@ class PlayState extends MusicBeatState
 		initDiscord();
 		#end
 
-		var gfVersion:String = 'gf';
-
-		gf = new Character(400, 130, gfVersion);
+		gf = new Character(400, 130, SONG?.gfVersion ?? 'gf');
 		gf.scrollFactor.set(0.95, 0.95);
 
 		dad = new Character(100, 100, SONG.player2);
