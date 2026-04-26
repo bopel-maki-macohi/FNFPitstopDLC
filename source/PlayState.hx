@@ -1,5 +1,6 @@
 package;
 
+import pitstop.play.SongClass;
 import pitstop.play.stages.*;
 import pitstop.play.StageGroup;
 import Section.SwagSection;
@@ -162,8 +163,6 @@ class PlayState extends MusicBeatState
 
 		boyfriend = new Character(770, 450, SONG.player1);
 
-		makeStage(SONG.stage ?? 'stage');
-
 		add(backgroundSprites);
 
 		add(gf);
@@ -176,6 +175,8 @@ class PlayState extends MusicBeatState
 		add(foregroundSprites);
 
 		initSongShits(SONG);
+
+		makeStage(SONG.stage ?? 'stage');
 
 		Conductor.songPosition = -5000;
 
@@ -594,8 +595,11 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		for (group in stageClasses)
-			group.update(elapsed);
+		for (stage in stageClasses)
+			stage.update(elapsed);
+
+		for (song in songClasses)
+			song.update(elapsed);
 
 		if (FlxG.sound.music != null)
 		{
@@ -1356,6 +1360,9 @@ class PlayState extends MusicBeatState
 		{
 			resyncVocals();
 		}
+
+		for (song in songClasses)
+			song.onStepHit(curStep);
 	}
 
 	override function beatHit()
@@ -1417,6 +1424,9 @@ class PlayState extends MusicBeatState
 				}
 			});
 		}
+
+		for (song in songClasses)
+			song.onBeatHit(curBeat);
 	}
 
 	function initSongShits(song:SwagSong)
@@ -1462,8 +1472,12 @@ class PlayState extends MusicBeatState
 				curStage = 'mainStage';
 				loadStageFromClass(new MainStage());
 		}
+
+		for (song in songClasses)
+			song.postBuildStage();
 	}
 
+	public var songClasses:Array<SongClass> = [];
 	public var stageClasses:Array<StageGroup> = [];
 
 	function loadStageFromClass(stageClass:StageGroup)
@@ -1473,5 +1487,11 @@ class PlayState extends MusicBeatState
 
 		if (stageClass != null)
 			stageClasses.push(stageClass);
+	}
+
+	function appendSongClass(songClass:SongClass)
+	{
+		if (songClass != null)
+			songClasses.push(songClass);
 	}
 }
