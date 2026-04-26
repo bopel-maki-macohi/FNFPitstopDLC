@@ -26,16 +26,16 @@ class VoicesGroup extends FunkinSoundGroup
 			add(bfVocals = new FlxSound().loadEmbedded(bfVocalPath));
 		}
 
-		if (dadVocalsExists)
-		{
-			trace('Using $dadVocalPath for dad');
-			add(dadVocals = new FlxSound().loadEmbedded(dadVocalPath));
-		}
-
 		if (regularVocalsExists && !bfVocalsExists)
 		{
 			trace('Using $regularVocalPath for bf');
 			add(bfVocals = new FlxSound().loadEmbedded(regularVocalPath));
+		}
+
+		if (dadVocalsExists)
+		{
+			trace('Using $dadVocalPath for dad');
+			add(dadVocals = new FlxSound().loadEmbedded(dadVocalPath));
 		}
 
 		if (bfVocals == null)
