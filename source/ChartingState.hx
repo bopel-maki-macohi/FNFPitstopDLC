@@ -184,10 +184,13 @@ class ChartingState extends MusicBeatState
 
 	function addSong2UI():Void
 	{
+		UI_Artist = new FlxUIInputText(10, 20, 70, _song.artist ?? '', 8);
+		UI_Charter = new FlxUIInputText(UI_Artist.x + UI_Artist.width + 10, UI_Artist.y, 70, _song.artist ?? '', 8);
+
 		var tabGroup = new FlxUI(null, UI_box);
 		tabGroup.name = "Song2";
 
-		var gfVersionDropDown = new FlxUIDropDownMenu(10, 20, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
+		var gfVersionDropDown = new FlxUIDropDownMenu(UI_Artist.x, UI_Artist.y + UI_Artist.height + 20, FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true), function(character:String)
 		{
 			_song.gfVersion = characterList[Std.parseInt(character)];
 		});
@@ -213,6 +216,12 @@ class ChartingState extends MusicBeatState
 			_song.stage = stageList[Std.parseInt(stage)];
 		});
 		stageDropDown.selectedLabel = _song.stage ?? 'mainStage';
+
+		tabGroup.add(new FlxText(UI_Artist.x, UI_Artist.y - 16, 0, 'Artist:'));
+		tabGroup.add(UI_Artist);
+
+		tabGroup.add(new FlxText(UI_Charter.x, UI_Charter.y - 16, 0, 'Charter:'));
+		tabGroup.add(UI_Charter);
 
 		tabGroup.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 16, 0, 'GF Version:'));
 		tabGroup.add(gfVersionDropDown);
