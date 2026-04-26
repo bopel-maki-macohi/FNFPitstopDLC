@@ -1265,7 +1265,6 @@ class PlayState extends MusicBeatState
 		}
 
 		health -= 0.02;
-		killCombo();
 
 		if (!practiceMode)
 			songScore -= 5;
