@@ -28,7 +28,7 @@ class FreeplayState extends MusicBeatState
 	var scoreText:FlxText;
 	var diffText:FlxText;
 	var lerpScore:Float = 0;
-	var intendedScore:Int = 0;
+	var intendedScore:Float = 0;
 
 	var coolColors:Array<Int> = [0xff9271fd, 0xff9271fd,];
 

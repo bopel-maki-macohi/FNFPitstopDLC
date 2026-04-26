@@ -69,7 +69,10 @@ class PlayState extends MusicBeatState
 	public var curSong:String = "";
 
 	public var gfSpeed:Int = 1;
+
 	public var health:Float = 1;
+	public var healthLerp:Float = 1;
+
 	public var combo:Int = 0;
 
 	public var healthBarBG:FlxSprite;
@@ -91,12 +94,12 @@ class PlayState extends MusicBeatState
 	public var midgroundSprites:FlxTypedGroup<FlxSprite>;
 	public var foregroundSprites:FlxTypedGroup<FlxSprite>;
 
-	public var songScore:Int = 0;
+	public var songScore:Float = 0;
 	public var scoreTxt:FlxText;
 
 	public var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
-	public static var campaignScore:Int = 0;
+	public static var campaignScore:Float = 0;
 
 	public var defaultCamZoom:Float = 1.05;
 
@@ -236,7 +239,7 @@ class PlayState extends MusicBeatState
 			healthBarBG.y = FlxG.height * 0.1;
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
+			'healthLerp', 0, 2);
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		// healthBar
@@ -613,17 +616,6 @@ class PlayState extends MusicBeatState
 
 		handleDebugKeys();
 
-		var iconOffset:Int = 26;
-
-		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
-		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
-
-		if (health > 2)
-			health = 2;
-
-		iconP1.animation.curAnim.curFrame = (healthBar.percent < 20) ? 1 : 0;
-		iconP2.animation.curAnim.curFrame = (healthBar.percent > 80) ? 1 : 0;
-
 		if (generatedMusic && SONG.notes[Std.int(curStep / 16)] != null && useDefaultCameraStuffs)
 		{
 			cameraRightSide = SONG.notes[Std.int(curStep / 16)].mustHitSection;
@@ -693,6 +685,18 @@ class PlayState extends MusicBeatState
 	function updateUI()
 	{
 		scoreTxt.text = 'Score: ${FlxStringUtil.formatMoney(songScore, false, true)}';
+
+		if (health > 2)
+			health = 2;
+		healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
+
+		var iconOffset:Int = 26;
+
+		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+
+		iconP1.animation.curAnim.curFrame = (healthBar.percent < 20) ? 1 : 0;
+		iconP2.animation.curAnim.curFrame = (healthBar.percent > 80) ? 1 : 0;
 	}
 
 	function handlePausing()
