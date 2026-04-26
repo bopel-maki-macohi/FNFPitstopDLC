@@ -56,7 +56,7 @@ class OptionsState extends MusicBeatState
 		}
 
 		// disable for intro transition
-		currentPage.enabled = false;
+		currentPage.enabled = (transIn == null);
 		super.create();
 	}
 
