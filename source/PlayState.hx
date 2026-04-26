@@ -581,6 +581,13 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
+		if (FlxG.sound.music != null)
+		{
+			FlxG.sound.music.volume = FlxG.sound.volume;
+			if (vocals != null)
+				vocals.volume = FlxG.sound.music.volume;
+		}
+
 		updateUI();
 
 		handlePausing();
