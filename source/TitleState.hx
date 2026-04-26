@@ -261,21 +261,17 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			if (FlxG.sound.music != null)
-				FlxG.sound.music.onComplete = null;
-
-			// If it's Friday according to da clock
-			if (Date.now().getDay() == 5)
-				titleText.animation.play('press');
+			titleText.animation.play('press');
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 			transitioning = true;
-			// FlxG.sound.music.stop();
 
-			FlxG.switchState(() -> new MainMenuState());
-			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				FlxG.switchState(() -> new MainMenuState());
+			});
 		}
 
 		if (pressedEnter && !skippedIntro && initialized)
