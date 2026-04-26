@@ -1,4 +1,4 @@
-package pitstop.play.score;
+package pitstop.play.scoring;
 
 enum abstract Rating(RatingClass) from RatingClass to RatingClass
 {

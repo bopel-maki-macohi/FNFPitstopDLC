@@ -1,14 +1,14 @@
 package;
 
-import pitstop.play.score.Rating;
-import pitstop.play.score.Score;
-import pitstop.play.score.RatingClass;
+import pitstop.play.notes.*;
+import pitstop.play.scoring.*;
 import pitstop.play.songs.*;
 import pitstop.play.stages.*;
-import pitstop.play.SongClass;
-import pitstop.play.StageGroup;
+import pitstop.play.*;
+
 import Section.SwagSection;
 import Song.SwagSong;
+
 import flixel.*;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup;
@@ -18,9 +18,7 @@ import flixel.text.FlxText;
 import flixel.tweens.*;
 import flixel.ui.FlxBar;
 import flixel.util.*;
-import shaderslmfao.*;
 import ui.PreferencesMenu;
-import pitstop.play.notes.*;
 
 using StringTools;
 
