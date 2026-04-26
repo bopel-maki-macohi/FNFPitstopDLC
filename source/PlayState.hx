@@ -1450,7 +1450,7 @@ class PlayState extends MusicBeatState
 				useDefaultCameraStuffs = false;
 
 				camPos.x = gf.getGraphicMidpoint().x;
-				camPos.y = gf.getGraphicMidpoint().y;
+				camPos.y = gf.getGraphicMidpoint().y - 45;
 		}
 	}
 
@@ -1505,7 +1505,7 @@ class PlayState extends MusicBeatState
 
 		bgGrass.y = FlxG.height - (bgGrass.height * 1.3);
 		grass.y = FlxG.height - (grass.height * 0.5);
-		bench.y = FlxG.height - (bench.height * 0.8);
+		bench.y = FlxG.height - (bench.height * 0.85);
 
 		backgroundSprites.add(bgGrass);
 
@@ -1519,7 +1519,7 @@ class PlayState extends MusicBeatState
 
 		for (i in 0...peopleCount)
 		{
-			var person:RomanceParkPerson = new RomanceParkPerson(grass.x - (grass.width * 2), grass.y * 1.1, 1, 1);
+			var person:RomanceParkPerson = new RomanceParkPerson(grass.x - (grass.width * 2), grass.y * 1.1, .5, .5);
 			// trace('$i : ${person.person}');
 
 			switch (person.person)
@@ -1553,7 +1553,7 @@ class PlayState extends MusicBeatState
 
 			if (DefineUtil.isDefined('SHORTEN_PERSON_MOVE_TIME'))
 			{
-				personMoveTime = 2 * i;
+				personMoveTime = i + 1;
 				FlxG.camera.zoom = .2;
 			}
 
@@ -1601,7 +1601,7 @@ class PlayState extends MusicBeatState
 			romancePark_bgPeople.add(person);
 		}
 
-		gf.y += 50;
+		gf.y += 25;
 	}
 
 	function makeMainStage()
