@@ -185,7 +185,7 @@ class ChartingState extends MusicBeatState
 	function addSong2UI():Void
 	{
 		UI_Artist = new FlxUIInputText(10, 20, 70, _song.artist ?? '', 8);
-		UI_Charter = new FlxUIInputText(UI_Artist.x + UI_Artist.width + 10, UI_Artist.y, 70, _song.artist ?? '', 8);
+		UI_Charter = new FlxUIInputText(UI_Artist.x + UI_Artist.width + 10, UI_Artist.y, 70, _song.charter ?? '', 8);
 
 		var tabGroup = new FlxUI(null, UI_box);
 		tabGroup.name = "Song2";
