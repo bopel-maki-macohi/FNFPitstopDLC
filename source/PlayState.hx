@@ -1,5 +1,6 @@
 package;
 
+import pitstop.audio.VoicesGroup;
 import pitstop.play.notes.*;
 import pitstop.play.scoring.*;
 import pitstop.play.songs.*;
@@ -46,7 +47,7 @@ class PlayState extends MusicBeatState
 	public static var deathCounter:Int = 0;
 	public static var practiceMode:Bool = false;
 
-	public var vocals:FlxSound;
+	public var vocals:VoicesGroup;
 	public var vocalsFinished:Bool = false;
 
 	public var dad:Character;
@@ -390,12 +391,8 @@ class PlayState extends MusicBeatState
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
-		vocals = new FlxSound();
-		if (SONG.needsVoices)
-			vocals.loadEmbedded(Paths.voices(curSong, storyDifficulty));
+		vocals = new VoicesGroup(curSong, storyDifficulty);
 		vocals.onComplete = () -> vocalsFinished = true;
-
-		FlxG.sound.list.add(vocals);
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
