@@ -196,13 +196,13 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{
-			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
+			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), songs[curSelected].difficulties[curDifficulty]);
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
 			PlayState.isStoryMode = false;
-			PlayState.storyDifficulty = curDifficulty;
+			PlayState.storyDifficulty = songs[curSelected].difficulties[curDifficulty];
 
 			PlayState.storyWeek = songs[curSelected].week;
-			trace('CUR WEEK' + PlayState.storyWeek);
+			trace('CUR WEEK ${PlayState.storyWeek}');
 			LoadingState.loadAndSwitchState(new PlayState());
 		}
 	}
@@ -212,13 +212,13 @@ class FreeplayState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = 2;
-		if (curDifficulty > 2)
+			curDifficulty = songs[curSelected].difficulties.length - 1;
+		if (curDifficulty > songs[curSelected].difficulties.length - 1)
 			curDifficulty = 0;
 
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedScore = Highscore.getScore(songs[curSelected].songName, songs[curSelected].difficulties[curDifficulty]);
 
-		PlayState.storyDifficulty = curDifficulty;
+		PlayState.storyDifficulty = songs[curSelected].difficulties[curDifficulty];
 
 		diffText.text = "< " + CoolUtil.difficultyString() + " >";
 		positionHighscore();
@@ -286,10 +286,19 @@ class SongMetadata
 	public var week:Int = 0;
 	public var songCharacter:String = "";
 
+	public var difficulties:Array<Int> = [];
+
 	public function new(song:String, week:Int, songCharacter:String)
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
+
+		recalcDifficulties();
+	}
+
+	public function recalcDifficulties()
+	{
+		difficulties = Highscore.calcSongDifficulties(songName);
 	}
 }
