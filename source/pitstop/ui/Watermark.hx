@@ -17,8 +17,7 @@ class Watermark extends TextField
 	{
 		super();
 
-		this.x = 5;
-		this.y = 5;
+		this.x = this.y = 0;
 
 		this.width = FlxG.width;
 		this.height = FlxG.height;
@@ -61,8 +60,6 @@ class Watermark extends TextField
 
 	var backdrop:Shape;
 
-	public var bgSizePixelOffset:Int = 15;
-
 	function drawBackdrop()
 	{
 		if (backdrop == null)
@@ -81,7 +78,7 @@ class Watermark extends TextField
 		if (entrys.length > 0)
 		{
 			backdrop.graphics.beginFill(FlxColor.BLACK, 1);
-			backdrop.graphics.drawRect(-(bgSizePixelOffset / 2), -(bgSizePixelOffset / 2), (this.textWidth * 1.2) + bgSizePixelOffset, (textHeight * 1.2));
+			backdrop.graphics.drawRect(0, 0, (this.textWidth * 1.05), (textHeight * 1.1));
 			backdrop.graphics.endFill();
 		}
 	}
