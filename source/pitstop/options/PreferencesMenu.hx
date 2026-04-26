@@ -80,9 +80,9 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		
 		makePref('Camera Zooming on Beat', 'camera-zoom', true);
 		
-		makePref('Watermark', 'watermark', false);
-		makePref('FPS Counter', 'fps-counter', true);
-		makePref('Memory Counter', 'memory-counter', true);
+		makePref('Debug Display', 'watermark', true);
+		makePref('Debug Display FPS Counter', 'fps-counter', true);
+		makePref('Debug Display Memory Counter', 'memory-counter', true);
 		
 		makePref('Auto Pause', 'auto-pause', true);
 		makePref('Ghost Tapping', 'ghost-tapping', false);
