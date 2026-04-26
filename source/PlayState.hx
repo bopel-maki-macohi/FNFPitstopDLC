@@ -1,9 +1,7 @@
 package;
 
-import pitstop.macros.DefineUtil;
-import pitstop.play.props.RomanceParkPerson;
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.addons.display.FlxBackdrop;
+import pitstop.play.stages.*;
+import pitstop.play.StageGroup;
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.*;
@@ -27,6 +25,15 @@ import Discord.DiscordClient;
 
 class PlayState extends MusicBeatState
 {
+	public static var instance:PlayState;
+
+	override function destroy()
+	{
+		super.destroy();
+
+		instance = null;
+	}
+
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
@@ -36,65 +43,66 @@ class PlayState extends MusicBeatState
 	public static var deathCounter:Int = 0;
 	public static var practiceMode:Bool = false;
 
-	private var vocals:FlxSound;
-	private var vocalsFinished:Bool = false;
+	public var vocals:FlxSound;
+	public var vocalsFinished:Bool = false;
 
-	private var dad:Character;
-	private var gf:Character;
-	private var boyfriend:Character;
+	public var dad:Character;
+	public var gf:Character;
+	public var boyfriend:Character;
 
-	private var notes:FlxTypedGroup<Note>;
-	private var unspawnNotes:Array<Note> = [];
+	public var notes:FlxTypedGroup<Note>;
+	public var unspawnNotes:Array<Note> = [];
 
-	private var strumLine:FlxSprite;
+	public var strumLine:FlxSprite;
 
-	private var camFollow:FlxObject;
+	public var camFollow:FlxObject;
 
-	private static var prevCamFollow:FlxObject;
+	public static var prevCamFollow:FlxObject;
 
-	private var strumLineNotes:FlxTypedGroup<NoteStatic>;
-	private var playerStrums:FlxTypedGroup<NoteStatic>;
+	public var strumLineNotes:FlxTypedGroup<NoteStatic>;
+	public var playerStrums:FlxTypedGroup<NoteStatic>;
 
-	private var camZooming:Bool = false;
-	private var curSong:String = "";
+	public var camZooming:Bool = false;
+	public var curSong:String = "";
 
-	private var gfSpeed:Int = 1;
-	private var health:Float = 1;
-	private var combo:Int = 0;
+	public var gfSpeed:Int = 1;
+	public var health:Float = 1;
+	public var combo:Int = 0;
 
-	private var healthBarBG:FlxSprite;
-	private var healthBar:FlxBar;
+	public var healthBarBG:FlxSprite;
+	public var healthBar:FlxBar;
 
-	private var generatedMusic:Bool = false;
-	private var startingSong:Bool = false;
+	public var generatedMusic:Bool = false;
+	public var startingSong:Bool = false;
 
-	private var iconP1:HealthIcon;
-	private var iconP2:HealthIcon;
-	private var camHUD:FlxCamera;
-	private var camGame:FlxCamera;
+	public var iconP1:HealthIcon;
+	public var iconP2:HealthIcon;
+	public var camHUD:FlxCamera;
+	public var camGame:FlxCamera;
 
-	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
+	public var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
 	public static var seenCutscene:Bool = false;
 
-	var backgroundSprites:FlxTypedGroup<FlxSprite>;
-	var midgroundSprites:FlxTypedGroup<FlxSprite>;
-	var foregroundSprites:FlxTypedGroup<FlxSprite>;
+	public var backgroundSprites:FlxTypedGroup<FlxSprite>;
+	public var midgroundSprites:FlxTypedGroup<FlxSprite>;
+	public var foregroundSprites:FlxTypedGroup<FlxSprite>;
 
 	var talking:Bool = true;
-	var songScore:Int = 0;
-	var scoreTxt:FlxText;
 
-	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
+	public var songScore:Int = 0;
+	public var scoreTxt:FlxText;
+
+	public var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
 	public static var campaignScore:Int = 0;
 
-	var defaultCamZoom:Float = 1.05;
+	public var defaultCamZoom:Float = 1.05;
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
 
-	var inCutscene:Bool = false;
+	public var inCutscene:Bool = false;
 
 	#if discord_rpc
 	// Discord RPC variables
@@ -109,6 +117,10 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		if (instance != null)
+			instance = null;
+		instance = this;
+
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -370,7 +382,7 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	private function generateSong():Void
+	public function generateSong():Void
 	{
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
@@ -459,7 +471,7 @@ class PlayState extends MusicBeatState
 
 	// ^ These two sorts also look cute together ^
 
-	private function generateStaticArrows(player:Int):Void
+	public function generateStaticArrows(player:Int):Void
 	{
 		for (i in 0...4)
 		{
@@ -570,7 +582,7 @@ class PlayState extends MusicBeatState
 		vocals.play();
 	}
 
-	private var paused:Bool = false;
+	public var paused:Bool = false;
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 
@@ -988,7 +1000,7 @@ class PlayState extends MusicBeatState
 	}
 
 	// gives score and pops up rating
-	private function popUpScore(strumtime:Float, daNote:Note):Void
+	public function popUpScore(strumtime:Float, daNote:Note):Void
 	{
 		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
 		vocals.volume = 1;
@@ -1146,7 +1158,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	private function keyShit():Void
+	public function keyShit():Void
 	{
 		// control arrays, order L D R U
 		var holdArray:Array<Bool> = [controls.NOTE_LEFT, controls.NOTE_DOWN, controls.NOTE_UP, controls.NOTE_RIGHT];
@@ -1440,160 +1452,16 @@ class PlayState extends MusicBeatState
 		switch (stage)
 		{
 			case 'romancePark':
-				makeRomancePark();
+				loadStageFromClass(new RomanceParkStage());
 
 			default:
 				curStage = 'mainStage';
-				makeMainStage();
+				loadStageFromClass(new MainStage());
 		}
 	}
 
-	public var romancePark_bgPeople:FlxTypedSpriteGroup<RomanceParkPerson>;
-
-	function makeRomancePark()
+	function loadStageFromClass(stageClass:StageGroup)
 	{
-		defaultCamZoom = 0.8;
-		RomanceParkPerson.SEEN_PEOPLE = [];
-
-		var sky:FlxBackdrop = new FlxBackdrop(Paths.image('sky'), XY, -320);
-
-		sky.scale.set(2, 2);
-		sky.updateHitbox();
-
-		sky.screenCenter();
-
-		backgroundSprites.add(sky);
-
-		sky.velocity.set(25, 0);
-
-		var bgGrass:BGSprite = new BGSprite('bgGrass', 0, 0, .2, .2);
-		var grass:BGSprite = new BGSprite('grass', 0, 0, .8, .8);
-		var bench:BGSprite = new BGSprite('bench', 0, 0, .9, .9);
-
-		for (bgSprite in [bgGrass, grass, bench])
-		{
-			bgSprite.scale.set(1.2, 1.2);
-			bgSprite.updateHitbox();
-
-			bgSprite.screenCenter();
-		}
-
-		bgGrass.y = FlxG.height - (bgGrass.height * 1.3);
-		grass.y = FlxG.height - (grass.height * 0.5);
-		bench.y = FlxG.height - (bench.height * 0.85);
-
-		backgroundSprites.add(bgGrass);
-
-		romancePark_bgPeople = new FlxTypedSpriteGroup<RomanceParkPerson>();
-		backgroundSprites.add(romancePark_bgPeople);
-
-		backgroundSprites.add(grass);
-		backgroundSprites.add(bench);
-
-		var peopleCount:Int = FlxG.random.int(8, 14);
-
-		for (i in 0...peopleCount)
-		{
-			var person:RomanceParkPerson = new RomanceParkPerson(grass.x - (grass.width * 2), grass.y * 1.1, .5, .5);
-			// trace('$i : ${person.person}');
-
-			switch (person.person)
-			{
-				case short:
-					person.y += person.height * 0.05;
-
-				case jax:
-					person.y -= person.height * 1.1;
-
-				case caine:
-					person.y -= person.height * 0.7;
-
-				case regular:
-					person.y -= person.height * 0.2;
-
-				case enderman:
-					person.y += person.height * 0.2;
-
-				case invincible:
-					person.y += person.height * 0.2;
-
-				case pico:
-					person.y -= person.height * 0.55;
-
-				default:
-					person.y -= person.height * 0.4;
-			}
-
-			var personMoveTime:Float = FlxG.random.float(4, 8) * (FlxG.random.int(5, i) + 1);
-
-			if (DefineUtil.isDefined('SHORTEN_PERSON_MOVE_TIME'))
-			{
-				personMoveTime = i + 1;
-				FlxG.camera.zoom = .2;
-			}
-
-			function movePerson(targetX:Float, onUpdate:FlxTween->Void = null)
-			{
-				var twn:FlxTween = FlxTween.tween(person, {x: targetX}, personMoveTime, {
-					onComplete: t ->
-					{
-						romancePark_bgPeople.remove(person);
-						person.destroy();
-					},
-					onUpdate: t ->
-					{
-						onUpdate(t);
-					}
-				});
-				twn.onCancel = t ->
-				{
-					tweensList.remove(twn);
-				}
-				tweensList.push(twn);
-			}
-
-			movePerson(FlxG.width + (person.width * 2), t ->
-			{
-				switch (person.person)
-				{
-					// pico sees bf and dad and just dips
-					case pico:
-						if (t.percent >= 35)
-						{
-							t.cancel();
-
-							person.flipX = true;
-							FlxTimer.wait(FlxG.random.float(5, 15), () ->
-							{
-								movePerson(-person.width * 10);
-							});
-						}
-
-					default:
-				}
-			});
-
-			romancePark_bgPeople.add(person);
-		}
-
-		gf.y += 25;
-		boyfriend.y -= 175;
-	}
-
-	function makeMainStage()
-	{
-		defaultCamZoom = 0.9;
-
-		var stageBack:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
-
-		var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
-		stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-
-		var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
-		stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-
-		backgroundSprites.add(stageBack);
-		backgroundSprites.add(stageFront);
-		backgroundSprites.add(stageCurtains);
+		stageClass.buildStage();
 	}
 }
