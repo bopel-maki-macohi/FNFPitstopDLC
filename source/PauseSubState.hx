@@ -14,6 +14,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
+using StringTools;
+
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -90,16 +92,23 @@ class PauseSubState extends MusicBeatSubstate
 		final artistText:String = 'Artist: ' + PlayState.SONG.artist;
 		final charterText:String = 'Charter: ' + PlayState.SONG.charter;
 
-		if (PlayState.SONG.artist == null && PlayState.SONG.charter == null)
+		final missingArtist = PlayState.SONG.artist == null || PlayState.SONG.artist.trim().length < 1;
+		final missingCharter = PlayState.SONG.charter == null || PlayState.SONG.charter.trim().length < 1;
+
+		if (missingArtist && missingCharter)
 		{
 			remove(songRoleText);
 			practiceText.y -= 32;
 		}
-		else if (PlayState.SONG.artist != null && PlayState.SONG.charter == null)
+		else if (!missingArtist && missingCharter)
+		{
 			songRoleText.text = artistText;
-		else if (PlayState.SONG.artist == null && PlayState.SONG.charter != null)
+		}
+		else if (missingArtist && !missingCharter)
+		{
 			songRoleText.text = charterText;
-		else if (PlayState.SONG.artist != null && PlayState.SONG.charter != null)
+		}
+		else if (!missingArtist && !missingCharter)
 		{
 			songRoleText.text = artistText;
 
