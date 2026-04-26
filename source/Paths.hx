@@ -1,5 +1,7 @@
 package;
 
+import animate.FlxAnimateFrames;
+import lime.utils.Assets;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
@@ -127,5 +129,31 @@ class Paths
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
+	}
+
+	public static function animateAtlas(path:String, ?library:String):String
+	{
+		return getLibraryPath('images/$path', library);
+	}
+
+	inline static public function getAnimateAtlas(key:String, ?library:String)
+	{
+		var assetLibrary:String = library ?? "";
+		var graphicKey:String = "";
+
+		if (assetLibrary != "")
+		{
+			graphicKey = Paths.animateAtlas(key, assetLibrary);
+		}
+		else
+		{
+			graphicKey = Paths.animateAtlas(key);
+		}
+
+		// Validate asset path.
+		if (!Assets.exists('${graphicKey}/Animation.json'))
+			throw 'No Animation.json file exists at the specified path (${graphicKey})';
+
+		return FlxAnimateFrames.fromAnimate(graphicKey);
 	}
 }
