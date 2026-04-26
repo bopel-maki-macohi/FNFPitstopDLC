@@ -234,7 +234,8 @@ class PlayState extends MusicBeatState
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 
-		initHUD();
+		if (PreferencesMenu.getPref('hud'))
+			initHUD();
 
 		startingSong = true;
 
@@ -625,7 +626,8 @@ class PlayState extends MusicBeatState
 			health = 2;
 		healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
 
-		updateHUD();
+		if (PreferencesMenu.getPref('hud'))
+			updateHUD();
 
 		handlePausing();
 
