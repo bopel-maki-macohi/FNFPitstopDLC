@@ -157,7 +157,7 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 			false).setExperimental()
 			.setDescription('Toggles the Ghost Tapping Note Press penalty.\n\nThe combo won\'t reset and it\'s half the regular penalty.'));
 
-		makePref(new Preference('hud', 'HUD', true).setExperimental().setDescription('Toggles HUD visibility'));
+		makePref(new Preference('hud', 'HUD', true).setExperimental().setDescription('Toggles HUD visibility\n\nMore specifically everything that isn\'t the notes.'));
 		makePref(new Preference('notes-opponent', 'Opponent Notes', true).setExperimental().setDescription('Toggles Opponent Note visibility'));
 
 		for (key => value in prefsValMap)
