@@ -1,5 +1,6 @@
 package;
 
+import pitstop.display.Watermark;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Lib;
@@ -53,7 +54,7 @@ class Main extends Sprite
 		setupGame();
 	}
 
-	public static var fpsCounter:FPS;
+	public static var watermark:Watermark;
 
 	private function setupGame():Void
 	{
@@ -63,8 +64,8 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
-		fpsCounter = new FPS(10, 3, 0xFFFFFF);
-		addChild(fpsCounter);
+		watermark = new Watermark(10, 3);
+		addChild(watermark);
 		#end
 	}
 }
