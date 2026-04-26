@@ -977,11 +977,12 @@ class PlayState extends MusicBeatState
 	}
 
 	// gives score and pops up rating
-	public function popUpScore(rating:RatingClass, daNote:Note):Void
+	public function popUpScore(strumtime:Float, daNote:Note):Void
 	{
 		vocals.volume = 1;
 
 		var ratingSprite:FlxSprite = new FlxSprite();
+		var rating:RatingClass = Score.grade(Math.abs(strumtime - Conductor.songPosition));
 
 		if (rating == Rating.SICK)
 		{
@@ -1271,14 +1272,13 @@ class PlayState extends MusicBeatState
 		if (note.wasGoodHit)
 			return;
 
-		var rating:RatingClass = Score.grade(Math.abs(note.strumTime - Conductor.songPosition));
-
 		if (!note.isSustainNote)
 		{
 			combo += 1;
-			health += rating.healthChange;
-			popUpScore(rating, note);
+			popUpScore(note.strumTime, note);
 		}
+
+		health += 0.023;
 
 		boyfriend.playAnim(singAnimations[note.noteData], true);
 

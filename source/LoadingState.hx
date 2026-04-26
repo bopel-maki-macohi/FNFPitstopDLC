@@ -33,15 +33,7 @@ class LoadingState extends MusicBeatState
 		{
 			case 0: 'tutorial';
 
-			#if INCLUDE_WEEK1
-			case 1: 'week 1';
-			#end
-
-			#if INCLUDE_WEEK1
-			default: 'day${storyWeek - 1}';
-			#else
 			default: 'day${storyWeek}';
-			#end
 		}
 	}
 
