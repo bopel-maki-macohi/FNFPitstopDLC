@@ -23,7 +23,11 @@ class Watermark extends TextField
 		this.width = FlxG.width;
 		this.height = FlxG.height;
 
+		#if FLIXEL_WATERMARK_FONT 
 		defaultTextFormat = new TextFormat(FlxAssets.FONT_DEFAULT, 16, FlxColor.WHITE);
+		#else
+		defaultTextFormat = new TextFormat('_sans', 12, FlxColor.WHITE);
+		#end
 	}
 
 	var curTime:Float = 0;
@@ -47,7 +51,6 @@ class Watermark extends TextField
 		}
 
 		addEntry('Pitstop DLC v${Application.current.meta.get('version')}' + #if debug ' (PROTOTYPE)' #else '' #end, true);
-		addEntry('\n', PreferencesMenu.getPref('fps-counter') || PreferencesMenu.getPref('memory-counter'));
 		addEntry('FPS: $currentFPS', PreferencesMenu.getPref('fps-counter'));
 		addEntry('Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}mb', PreferencesMenu.getPref('memory-counter'));
 
