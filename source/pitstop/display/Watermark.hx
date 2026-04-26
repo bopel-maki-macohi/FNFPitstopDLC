@@ -38,7 +38,7 @@ class Watermark extends TextField
 			entrys.push('FPS: ${currentFPS}');
 
 		if (PreferencesMenu.getPref('memory-counter'))
-			entrys.push('Total Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}');
+			entrys.push('Total Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}mb');
 
 		text = entrys.join('\n');
 		width = textWidth * 1.1;
