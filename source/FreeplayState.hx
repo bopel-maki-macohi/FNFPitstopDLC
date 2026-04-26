@@ -220,7 +220,11 @@ class FreeplayState extends MusicBeatState
 
 		PlayState.storyDifficulty = songs[curSelected].difficulties[curDifficulty];
 
-		diffText.text = "< " + CoolUtil.difficultyString() + " >";
+		diffText.text = CoolUtil.difficultyString();
+
+		if (songs[curSelected].difficulties.length > 1)
+			diffText.text = '< ${diffText.text} >';
+
 		positionHighscore();
 	}
 
