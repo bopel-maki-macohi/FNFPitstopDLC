@@ -27,8 +27,4 @@
     - Enum
     - Number
 
-- New Preferences
-    - Hide HUD : Hides Combo Numbers & Rating Sprite
-    - Hide Opponent Notes
-
 - Split vocals support
