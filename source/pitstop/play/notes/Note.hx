@@ -189,6 +189,8 @@ class Note extends FlxSprite
 		colorSwap.update(arrowColors[noteData]);
 	}
 
+	public var missedAlready:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
