@@ -5,9 +5,9 @@ import flixel.FlxSprite;
 
 class NoteStatic extends FlxSprite
 {
-	override public function new(i:Int, ?x:Float = 0, ?y:Float = 0)
+	override public function new(i:Int, ?ny:Float = 0)
 	{
-		super(x, y);
+		super(0, ny);
 
 		var colorswap:ColorSwap = new ColorSwap();
 
@@ -18,7 +18,7 @@ class NoteStatic extends FlxSprite
 
 		setGraphicSize(Std.int(width * 0.7));
 
-		this.x += Note.swagWidth * Math.abs(i);
+		x += Note.swagWidth * Math.abs(i);
 
 		switch (Math.abs(i))
 		{

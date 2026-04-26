@@ -461,8 +461,7 @@ class PlayState extends MusicBeatState
 	{
 		for (i in 0...4)
 		{
-			// FlxG.log.add(i);
-			var babyArrow:NoteStatic = new NoteStatic(0, strumLine.y);
+			var babyArrow:NoteStatic = new NoteStatic(i, strumLine.y);
 
 			if (!isStoryMode)
 			{
@@ -477,6 +476,7 @@ class PlayState extends MusicBeatState
 				playerStrums.add(babyArrow);
 
 			babyArrow.animation.play('static');
+
 			babyArrow.x += 50;
 			babyArrow.x += ((FlxG.width / 2) * player);
 
