@@ -8,6 +8,8 @@ class NoteStatic extends FlxSprite
 	override public function new(i:Int, ?ny:Float = 0)
 	{
 		super(0, ny);
+		
+		this.ID = i;
 
 		var colorswap:ColorSwap = new ColorSwap();
 

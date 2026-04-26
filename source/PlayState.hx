@@ -470,8 +470,6 @@ class PlayState extends MusicBeatState
 				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
-			babyArrow.ID = i;
-
 			if (player == 1)
 				playerStrums.add(babyArrow);
 
