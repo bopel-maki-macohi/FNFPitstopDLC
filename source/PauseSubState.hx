@@ -96,16 +96,12 @@ class PauseSubState extends MusicBeatSubstate
 		add(grpMenuShit);
 
 		regenMenu();
-
-		// cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
 
 	private function regenMenu():Void
 	{
 		while (grpMenuShit.members.length > 0)
-		{
 			grpMenuShit.remove(grpMenuShit.members[0], true);
-		}
 
 		for (i in 0...menuItems.length)
 		{
@@ -131,13 +127,9 @@ class PauseSubState extends MusicBeatSubstate
 		var accepted = controls.ACCEPT;
 
 		if (upP)
-		{
 			changeSelection(-1);
-		}
 		if (downP)
-		{
 			changeSelection(1);
-		}
 
 		if (accepted)
 		{
@@ -147,13 +139,13 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				case "Resume":
 					close();
+
 				case "EASY" | 'NORMAL' | "HARD":
-					PlayState.SONG = Song.loadFromJson(Highscore.formatSong(PlayState.SONG.song.toLowerCase(), curSelected),
-						PlayState.SONG.song.toLowerCase());
+					PlayState.SONG = Song.loadFromJson(Highscore.formatSong(PlayState.SONG.song.toLowerCase(), curSelected), PlayState.SONG.song.toLowerCase());
 
 					PlayState.storyDifficulty = curSelected;
 
-					FlxG.resetState();
+					FlxG.switchState(() -> new PlayState());
 
 				case 'Toggle Practice Mode':
 					PlayState.practiceMode = !PlayState.practiceMode;
@@ -162,26 +154,23 @@ class PauseSubState extends MusicBeatSubstate
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenMenu();
+
 				case 'BACK':
 					menuItems = pauseOG;
 					regenMenu();
+
 				case "Restart Song":
-					FlxG.resetState();
+					FlxG.switchState(() -> new PlayState());
+
 				case "Exit to menu":
 					PlayState.seenCutscene = false;
 					PlayState.deathCounter = 0;
-					
+
 					// if (PlayState.isStoryMode)
 					// 	FlxG.switchState(() -> new StoryMenuState());
 					// else
-						FlxG.switchState(() -> new FreeplayState());
+					FlxG.switchState(() -> new FreeplayState());
 			}
-		}
-
-		if (FlxG.keys.justPressed.J)
-		{
-			// for reference later!
-			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
 	}
 
