@@ -90,7 +90,7 @@ class Character extends FlxAnimate
 				playAnim('idle');
 
 			case 'gf-park':
-				frames =  Paths.getAnimateAtlas('characters/gf-park');
+				frames = Paths.getAnimateAtlas('characters/gf-park');
 
 				anim.addByFrameLabel('danceLeft', 'danceLeft', 24, false);
 				anim.addByFrameLabel('danceRight', 'danceRight', 24, false);
@@ -154,28 +154,20 @@ class Character extends FlxAnimate
 		if (isPlayer)
 		{
 			if (anim.name.startsWith('sing'))
-			{
 				holdTimer += elapsed;
-			}
 			else
 				holdTimer = 0;
 
 			if (anim.name.endsWith('miss') && anim.finished && !debugMode)
-			{
 				playAnim('idle', true, false, 10);
-			}
 
 			if (anim.name == 'firstDeath' && anim.finished && startedDeath)
-			{
 				playAnim('deathLoop');
-			}
 		}
 		else
 		{
 			if (anim.name.startsWith('sing'))
-			{
 				holdTimer += elapsed;
-			}
 
 			var dadVar:Float = 4;
 
@@ -188,42 +180,11 @@ class Character extends FlxAnimate
 			}
 		}
 
-		if (curCharacter.endsWith('-car'))
-		{
-			// looping hair anims after idle finished
-			if (!anim.name.startsWith('sing') && anim.finished)
-				playAnim('idleHair');
-		}
-
 		switch (curCharacter)
 		{
 			case 'gf':
 				if (anim.name == 'hairFall' && anim.finished)
 					playAnim('danceRight');
-			case "pico-speaker":
-				// for pico??
-				if (animationNotes.length > 0)
-				{
-					if (Conductor.songPosition > animationNotes[0][0])
-					{
-						trace('played shoot anim' + animationNotes[0][1]);
-
-						var shootAnim:Int = 1;
-
-						if (animationNotes[0][1] >= 2)
-							shootAnim = 3;
-
-						shootAnim += FlxG.random.int(0, 1);
-
-						playAnim('shoot' + shootAnim, true);
-						animationNotes.shift();
-					}
-				}
-
-				if (anim.finished)
-				{
-					playAnim(anim.name, false, false, anim.numFrames - 3);
-				}
 		}
 
 		super.update(elapsed);
@@ -231,44 +192,26 @@ class Character extends FlxAnimate
 
 	private var danced:Bool = false;
 
-	/**
-	 * FOR GF DANCING SHIT
-	 */
 	public function dance()
 	{
-		if (!debugMode)
+		if (debugMode)
+			return;
+
+		switch (curCharacter)
 		{
-			switch (curCharacter)
-			{
-				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-tankmen':
-					if (!anim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-
-				case 'pico-speaker':
-					// lol weed
-					// playAnim('shoot' + FlxG.random.int(1, 4), true);
-
-				case 'tankman':
-					if (!anim.name.endsWith('DOWN-alt'))
-						playAnim('idle');
-
-				case 'spooky':
+			case 'gf' | 'gf-park':
+				if (!anim.name.startsWith('hair'))
+				{
 					danced = !danced;
 
 					if (danced)
 						playAnim('danceRight');
 					else
 						playAnim('danceLeft');
-				default:
-					playAnim('idle');
-			}
+				}
+
+			default:
+				playAnim('idle');
 		}
 	}
 
@@ -278,28 +221,17 @@ class Character extends FlxAnimate
 
 		var daOffset = animOffsets.get(AnimName);
 		if (animOffsets.exists(AnimName))
-		{
 			offset.set(daOffset[0], daOffset[1]);
-		}
 		else
 			offset.set(0, 0);
 
 		if (curCharacter == 'gf')
-		{
-			if (AnimName == 'singLEFT')
-			{
-				danced = true;
-			}
-			else if (AnimName == 'singRIGHT')
-			{
-				danced = false;
-			}
-
 			if (AnimName == 'singUP' || AnimName == 'singDOWN')
-			{
 				danced = !danced;
-			}
-		}
+			else if (AnimName == 'singLEFT')
+				danced = true;
+			else if (AnimName == 'singRIGHT')
+				danced = false;
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)

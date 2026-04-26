@@ -131,24 +131,14 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
 
-	public static function animateAtlas(path:String, ?library:String):String
+	public static function animateAtlas(path:String, ?library:String = 'shared'):String
 	{
 		return getLibraryPath('images/$path', library);
 	}
 
-	inline static public function getAnimateAtlas(key:String, ?library:String)
+	inline static public function getAnimateAtlas(key:String, ?library:String = 'shared')
 	{
-		var assetLibrary:String = library ?? "";
-		var graphicKey:String = "";
-
-		if (assetLibrary != "")
-		{
-			graphicKey = Paths.animateAtlas(key, assetLibrary);
-		}
-		else
-		{
-			graphicKey = Paths.animateAtlas(key);
-		}
+		var graphicKey:String = Paths.animateAtlas(key, library);
 
 		// Validate asset path.
 		if (!Assets.exists('${graphicKey}/Animation.json'))

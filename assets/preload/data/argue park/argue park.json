@@ -4,7 +4,16 @@
 		"notes": [
 			{
 				"altAnim": false,
-				"bpm": 150,
+				"changeBPM": false,
+				"lengthInSteps": 16,
+				"mustHitSection": true,
+				"sectionNotes": [],
+				"typeOfSection": 0,
+				"bpm": 150
+			},
+			{
+				"altAnim": false,
+				"bpm": 194.487,
 				"changeBPM": false,
 				"lengthInSteps": 16,
 				"mustHitSection": true,
@@ -16,8 +25,9 @@
 		"needsVoices": false,
 		"player1": "bf",
 		"player2": "dad",
+		"validScore": true,
+		"stage": "romancePark",
 		"speed": 1,
-		"validScore": false,
-		"stage": "romancePark"
+		"gfVersion": "gf-park"
 	}
 }
