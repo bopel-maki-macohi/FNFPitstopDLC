@@ -23,7 +23,7 @@ class Watermark extends TextField
 		this.width = FlxG.width;
 		this.height = FlxG.height;
 
-		#if FLIXEL_WATERMARK_FONT 
+		#if FLIXEL_WATERMARK_FONT
 		defaultTextFormat = new TextFormat(FlxAssets.FONT_DEFAULT, 16, FlxColor.WHITE);
 		#else
 		defaultTextFormat = new TextFormat('_sans', 12, FlxColor.WHITE);
@@ -46,7 +46,7 @@ class Watermark extends TextField
 
 		function addEntry(line:String, condition:Bool)
 		{
-			if (condition)
+			if (condition && PreferencesMenu.getPref('watermark'))
 				entrys.push(line);
 		}
 
@@ -61,7 +61,7 @@ class Watermark extends TextField
 
 	var backdrop:Shape;
 
-	public var bgSizePixelOffset:Int = 10;
+	public var bgSizePixelOffset:Int = 15;
 
 	function drawBackdrop()
 	{
@@ -78,9 +78,12 @@ class Watermark extends TextField
 
 		backdrop.graphics.clear();
 
-		backdrop.graphics.beginFill(FlxColor.BLACK, 1);
-		backdrop.graphics.drawRect(-(bgSizePixelOffset / 2), -(bgSizePixelOffset / 2), (this.textWidth * 1.05) + bgSizePixelOffset, (textHeight * 1.2));
-		backdrop.graphics.endFill();
+		if (entrys.length > 0)
+		{
+			backdrop.graphics.beginFill(FlxColor.BLACK, 1);
+			backdrop.graphics.drawRect(-(bgSizePixelOffset / 2), -(bgSizePixelOffset / 2), (this.textWidth * 1.2) + bgSizePixelOffset, (textHeight * 1.2));
+			backdrop.graphics.endFill();
+		}
 	}
 
 	function calcFPS(deltaTime:Float)

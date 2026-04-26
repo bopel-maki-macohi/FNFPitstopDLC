@@ -75,10 +75,15 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 	{
 		makePref('Naughtyness', 'censor-naughty', true);
 		makePref('Downscroll', 'downscroll', false);
+		
 		makePref('Flashing Menu BG', 'flashing-menu', true);
+		
 		makePref('Camera Zooming on Beat', 'camera-zoom', true);
+		
+		makePref('Watermark', 'watermark', false);
 		makePref('FPS Counter', 'fps-counter', true);
 		makePref('Memory Counter', 'memory-counter', true);
+		
 		makePref('Auto Pause', 'auto-pause', true);
 		makePref('Ghost Tapping', 'ghost-tapping', false);
 

@@ -2,16 +2,7 @@ package pitstop.save;
 
 import flixel.FlxG;
 
-typedef PreferencesSaveData =
-{
-	?censor_naughty:Bool,
-	?downscroll:Bool,
-	?flashing_menu:Bool,
-	?camera_zoom:Bool,
-	?fps_counter:Bool,
-	?memory_counter:Bool,
-	?auto_pause:Bool,
-}
+typedef PreferencesSaveData = Dynamic;
 
 class PreferencesSaveField
 {
