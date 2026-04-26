@@ -1,8 +1,8 @@
 package;
 
-import pitstop.play.songs.ArgueParkSong;
-import pitstop.play.SongClass;
+import pitstop.play.songs.*;
 import pitstop.play.stages.*;
+import pitstop.play.SongClass;
 import pitstop.play.StageGroup;
 import Section.SwagSection;
 import Song.SwagSong;
@@ -638,33 +638,10 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("beatShit", curBeat);
 		FlxG.watch.addQuick("stepShit", curStep);
 
-		if (curSong == 'fresh')
-			switch (curBeat)
-			{
-				case 16:
-					camZooming = true;
-					gfSpeed = 2;
-				case 48:
-					gfSpeed = 1;
-				case 80:
-					gfSpeed = 2;
-				case 112:
-					gfSpeed = 1;
-			}
-
-		if (curSong == 'bopeebo')
-			switch (curBeat)
-			{
-				case 128, 129, 130:
-					vocals.volume = 0;
-			}
-
 		// better streaming of shit
 
 		if (!inCutscene && !_exiting && health <= 0 && !practiceMode)
-		{
 			gameOver();
-		}
 
 		while (unspawnNotes[0] != null && unspawnNotes[0].strumTime - Conductor.songPosition < 1800 / SONG.speed)
 		{
@@ -1401,15 +1378,6 @@ class PlayState extends MusicBeatState
 				dad.dance();
 		}
 
-		if (curBeat % 8 == 7 && curSong == 'bopeebo')
-			boyfriend.playAnim('hey', true);
-
-		if (curBeat % 16 == 15 && curSong == 'tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
-		{
-			boyfriend.playAnim('hey', true);
-			dad.playAnim('cheer', true);
-		}
-
 		for (spriteGroup in [backgroundSprites, midgroundSprites, foregroundSprites])
 		{
 			spriteGroup.forEach((spr) ->
@@ -1445,6 +1413,15 @@ class PlayState extends MusicBeatState
 
 		switch (curSong)
 		{
+			case 'tutorial':
+				appendSongClass(new TutorialSong());
+
+			case 'bopeebo':
+				appendSongClass(new BopeeboSong());
+
+			case 'fresh':
+				appendSongClass(new FreshSong());
+
 			case 'argue park':
 				appendSongClass(new ArgueParkSong());
 		}
