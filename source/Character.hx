@@ -86,6 +86,7 @@ class Character extends FlxAnimate
 				anim.addByPrefix('scared', 'BF idle shaking', 24, true);
 
 				loadOffsetFile(curCharacter);
+				loadOffsetFile('bf-dead');
 
 				playAnim('idle');
 
@@ -98,6 +99,21 @@ class Character extends FlxAnimate
 				playAnim('danceRight');
 
 				loadOffsetFile(curCharacter);
+
+			case 'bf-park':
+				frames = Paths.getSparrowAtlas('characters/bf-park');
+				quickAnimAdd('idle', 'bf anim idle');
+
+				loadOffsetFile(curCharacter);
+
+				frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
+				quickAnimAdd('firstDeath', "BF dies");
+				anim.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
+				quickAnimAdd('deathConfirm', "BF Dead confirm");
+
+				loadOffsetFile('bf-dead');
+
+				playAnim('idle');
 		}
 
 		dance();
