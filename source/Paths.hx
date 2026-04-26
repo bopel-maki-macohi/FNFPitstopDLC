@@ -101,14 +101,14 @@ class Paths
 		return 'songs:assets/songs/${song.toLowerCase()}$songSuffix/$file.$SOUND_EXT';
 	}
 
-	inline static public function voices(song:String, ?difficulty:Int = 1)
+	inline static public function voices(song:String, ?difficulty:Int = 1, ?suffix:String = '')
 	{
-		return songFile('Voices', song, difficulty);
+		return songFile('Voices$suffix', song, difficulty);
 	}
 
-	inline static public function inst(song:String, ?difficulty:Int = 1)
+	inline static public function inst(song:String, ?difficulty:Int = 1, ?suffix:String = '')
 	{
-		return songFile('Inst', song, difficulty);
+		return songFile('Inst$suffix', song, difficulty);
 	}
 
 	inline static public function image(key:String, ?library:String)
