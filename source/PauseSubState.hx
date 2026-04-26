@@ -129,7 +129,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		var startDelay:Float = 0.3;
 
-		for (text in [levelDifficulty, levelInfo, deathCounter, songRoleText, practiceText])
+		for (text in [levelInfo, levelDifficulty, deathCounter, songRoleText, practiceText])
 		{
 			text.alpha = 0;
 			text.x = FlxG.width - (text.width + 20);
