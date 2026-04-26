@@ -1,5 +1,6 @@
 package;
 
+import pitstop.audio.VoicesGroup;
 import pitstop.play.notes.*;
 import pitstop.play.scoring.*;
 import pitstop.play.songs.*;
@@ -46,7 +47,7 @@ class PlayState extends MusicBeatState
 	public static var deathCounter:Int = 0;
 	public static var practiceMode:Bool = false;
 
-	public var vocals:FlxSound;
+	public var vocals:VoicesGroup;
 	public var vocalsFinished:Bool = false;
 
 	public var dad:Character;
@@ -378,11 +379,14 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 
 		FlxG.sound.playMusic(Paths.inst(curSong, storyDifficulty), 1, false);
-		if (paused)
-			FlxG.sound.music.pause();
-
-		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
+		
+		if (paused)
+		{
+			FlxG.sound.music.pause();
+			vocals.pause();
+		}
+		FlxG.sound.music.onComplete = endSong;
 
 		#if discord_rpc
 		// Song duration in a float, useful for the time left feature
@@ -398,12 +402,8 @@ class PlayState extends MusicBeatState
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
-		vocals = new FlxSound();
-		if (SONG.needsVoices)
-			vocals.loadEmbedded(Paths.voices(curSong, storyDifficulty));
+		vocals = new VoicesGroup(curSong, storyDifficulty);
 		vocals.onComplete = () -> vocalsFinished = true;
-
-		FlxG.sound.list.add(vocals);
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
@@ -618,11 +618,7 @@ class PlayState extends MusicBeatState
 			song.update(elapsed);
 
 		if (FlxG.sound.music != null)
-		{
 			FlxG.sound.music.volume = FlxG.sound.volume;
-			if (vocals != null)
-				vocals.volume = FlxG.sound.music.volume;
-		}
 
 		if (health > 2)
 			health = 2;
@@ -859,9 +855,6 @@ class PlayState extends MusicBeatState
 
 				dad.holdTimer = 0;
 
-				if (SONG.needsVoices)
-					vocals.volume = 1;
-
 				murderNote(daNote);
 			}
 
@@ -944,6 +937,7 @@ class PlayState extends MusicBeatState
 		seenCutscene = false;
 		deathCounter = 0;
 		canPause = false;
+
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 
@@ -994,8 +988,6 @@ class PlayState extends MusicBeatState
 	// gives score and pops up rating
 	public function popUpScore(strumtime:Float, daNote:Note):Void
 	{
-		vocals.volume = 1;
-
 		var ratingSprite:FlxSprite = new FlxSprite();
 		var rating:RatingClass = Score.grade(Math.abs(strumtime - Conductor.songPosition));
 
@@ -1251,7 +1243,7 @@ class PlayState extends MusicBeatState
 
 	function noteMissBasic(direction:Int = 1)
 	{
-		vocals.volume = 0;
+		vocals.bfVocals.volume = 0;
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 
 		boyfriend.playAnim(singAnimations[direction] + 'miss', true);
@@ -1305,7 +1297,7 @@ class PlayState extends MusicBeatState
 		playerStrums.forEach((spr) -> if (Math.abs(note.noteData) == spr.ID) spr.animation.play('confirm', true));
 
 		note.wasGoodHit = true;
-		vocals.volume = 1;
+		vocals.bfVocals.volume = FlxG.sound.volume;
 
 		if (!note.isSustainNote)
 			murderNote(note);

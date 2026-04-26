@@ -22,5 +22,3 @@
     - Percentage
     - Enum
     - Number
-
-- Split vocals support
