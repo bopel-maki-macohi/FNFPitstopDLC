@@ -371,11 +371,14 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 
 		FlxG.sound.playMusic(Paths.inst(curSong, storyDifficulty), 1, false);
-		if (paused)
-			FlxG.sound.music.pause();
-
-		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
+		
+		if (paused)
+		{
+			FlxG.sound.music.pause();
+			vocals.pause();
+		}
+		FlxG.sound.music.onComplete = endSong;
 
 		#if discord_rpc
 		// Song duration in a float, useful for the time left feature
