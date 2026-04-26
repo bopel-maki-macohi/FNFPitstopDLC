@@ -354,8 +354,10 @@ class PlayState extends MusicBeatState
 
 		previousFrameTime = FlxG.game.ticks;
 
-		if (!paused)
-			FlxG.sound.playMusic(Paths.inst(SONG.song, storyDifficulty), 1, false);
+		FlxG.sound.playMusic(Paths.inst(SONG.song, storyDifficulty), 1, false);
+		if (paused)
+			FlxG.sound.music.pause();
+
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 
