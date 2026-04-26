@@ -86,8 +86,6 @@ class TitleState extends MusicBeatState
 
 		if (DefineUtil.isDefined('FREEPLAY'))
 			FlxG.switchState(() -> new FreeplayState());
-		else if (DefineUtil.isDefined('CHARTING'))
-			FlxG.switchState(() -> new ChartingState());
 		else if (DefineUtil.isDefined('SONG') && DefineUtil.isDefined('STORYWEEK'))
 		{
 			var song = DefineUtil.getDefine('SONG').toLowerCase();
@@ -99,8 +97,13 @@ class TitleState extends MusicBeatState
 			PlayState.storyDifficulty = 1;
 			PlayState.storyWeek = Std.parseInt(DefineUtil.getDefine('STORYWEEK', '1'));
 
-			LoadingState.loadAndSwitchState(new PlayState());
+			if (DefineUtil.isDefined('CHARTING'))
+				FlxG.switchState(() -> new ChartingState());
+			else
+				LoadingState.loadAndSwitchState(new PlayState());
 		}
+		else if (DefineUtil.isDefined('CHARTING'))
+			FlxG.switchState(() -> new ChartingState());
 		else
 		{
 			new FlxTimer().start(1, function(tmr:FlxTimer)
