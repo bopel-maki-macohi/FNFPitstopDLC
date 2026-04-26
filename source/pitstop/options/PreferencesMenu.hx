@@ -58,7 +58,7 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 			camFollow.y = selected.y;
 		});
 
-		textBox = new FlxSprite().makeGraphic(FlxG.width, Math.round(FlxG.height * .1), FlxColor.BLACK);
+		textBox = new FlxSprite().makeGraphic(FlxG.width, Math.round(FlxG.height * .15), FlxColor.BLACK);
 		add(textBox);
 
 		textBox.alpha = .4;
