@@ -2,9 +2,8 @@ package pitstop.audio;
 
 import flixel.sound.FlxSound;
 import lime.utils.Assets;
-import flixel.sound.FlxSoundGroup;
 
-class VoicesGroup extends FlxSoundGroup
+class VoicesGroup extends FunkinSoundGroup
 {
 	public function new(song:String, difficulty:Int)
 	{
@@ -22,7 +21,7 @@ class VoicesGroup extends FlxSoundGroup
 			add(new FlxSound().loadEmbedded(bfVocalPath));
 		if (dadVocalsExists)
 			add(new FlxSound().loadEmbedded(dadVocalPath));
-        
+
 		if (regularVocalsExists)
 			add(new FlxSound().loadEmbedded(regularVocalPath));
 	}
