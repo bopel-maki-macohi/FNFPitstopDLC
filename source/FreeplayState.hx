@@ -271,6 +271,8 @@ class FreeplayState extends MusicBeatState
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+
+		changeDiff(0);
 	}
 
 	function positionHighscore()
