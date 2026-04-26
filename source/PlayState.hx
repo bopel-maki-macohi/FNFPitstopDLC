@@ -234,8 +234,9 @@ class PlayState extends MusicBeatState
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 
+		initHUD();
 		if (PreferencesMenu.getPref('hud'))
-			initHUD();
+			initOptionalHUD();
 
 		startingSong = true;
 
@@ -261,6 +262,12 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
+		healthBar.cameras = [camHUD];
+		healthBarBG.cameras = [camHUD];
+	}
+
+	function initOptionalHUD()
+	{
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
@@ -274,11 +281,9 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		healthBar.cameras = [camHUD];
-		healthBarBG.cameras = [camHUD];
+		scoreTxt.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
-		scoreTxt.cameras = [camHUD];
 	}
 
 	function initDiscord():Void
