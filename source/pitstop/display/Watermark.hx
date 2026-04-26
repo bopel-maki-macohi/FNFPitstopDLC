@@ -17,6 +17,9 @@ class Watermark extends TextField
 	{
 		super();
 
+		this.x = 5;
+		this.y = 5;
+
 		this.width = FlxG.width;
 		this.height = FlxG.height;
 
