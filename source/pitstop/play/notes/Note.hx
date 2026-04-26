@@ -228,7 +228,7 @@ class Note extends FlxSprite
 		if (tooLate)
 		{
 			if (alpha > 0.3)
-				alpha -= .1 * elapsed;
+				alpha -= .3 * elapsed;
 		}
 	}
 }
