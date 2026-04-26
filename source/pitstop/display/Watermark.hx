@@ -41,11 +41,10 @@ class Watermark extends TextField
 		{
 			if (condition)
 				entrys.push(line);
-			else
-				entrys.push('');
 		}
 
-		addEntry('Pitstop DLC v${Application.current.meta.get('version')}\n', true);
+		addEntry('Pitstop DLC v${Application.current.meta.get('version')}', true);
+		addEntry('\n', PreferencesMenu.getPref('fps-counter') || PreferencesMenu.getPref('memory-counter'));
 		addEntry('FPS: $currentFPS', PreferencesMenu.getPref('fps-counter'));
 		addEntry('Memory: ${Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2))}mb', PreferencesMenu.getPref('memory-counter'));
 
