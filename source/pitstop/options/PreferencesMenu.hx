@@ -79,7 +79,7 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 		makePref('Camera Zooming on Beat', 'camera-zoom', true);
 		makePref('FPS Counter', 'fps-counter', true);
 		makePref('Memory Counter', 'memory-counter', true);
-		makePref('Auto Pause', 'auto-pause', false);
+		makePref('Auto Pause', 'auto-pause', true);
 		makePref('Ghost Tapping', 'ghost-tapping', false);
 
 		for (key => value in prefsValMap)
