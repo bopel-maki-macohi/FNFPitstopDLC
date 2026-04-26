@@ -140,7 +140,7 @@ class PreferencesMenu extends pitstop.options.OptionsState.Page
 
 		makePref(new Preference('flashing-menu', 'Flashing Menu BG', true).setDescription('Toggles the Menu BG flashing when you select something.'));
 
-		makePref(new Preference('camera-zoom', 'Camera Zooming on Beat', false).setDescription('Toggles the Camera bopping on beat in gameplay.'));
+		makePref(new Preference('camera-zoom', 'Camera Zooming on Beat', true).setDescription('Toggles the Camera bopping on beat in gameplay.'));
 
 		makePref(new Preference('debug-display', 'Debug Display (DD)', false).setDescription('Toggle the Debug Display.'));
 		makePref(new Preference('fps-counter', 'DD FPS Counter', true).setDescription('Toggle the Debug Display FPS Counter.'));
