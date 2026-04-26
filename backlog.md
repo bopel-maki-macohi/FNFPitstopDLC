@@ -9,6 +9,10 @@
 
 - Freeplay Menu Rework
 
+- Pause Menu Update
+    - Song Artist(s)
+    - Song Charter(s)
+
 - More Preference Types
     - Percentage
     - Enum
