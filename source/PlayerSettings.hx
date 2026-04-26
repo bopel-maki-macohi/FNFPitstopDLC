@@ -8,7 +8,7 @@ import flixel.input.actions.FlxActionInput;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.util.FlxSignal;
 
-// import ui.DeviceManager;
+// import pitstop.options.DeviceManager;
 // import props.Player;
 class PlayerSettings
 {

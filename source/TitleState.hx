@@ -18,7 +18,7 @@ import flixel.util.FlxTimer;
 import openfl.Assets;
 import pitstop.shaders.BuildingShaders;
 import pitstop.shaders.ColorSwap;
-import ui.PreferencesMenu;
+import pitstop.options.PreferencesMenu;
 import pitstop.macros.DefineUtil;
 
 using StringTools;

@@ -16,7 +16,7 @@ import flixel.text.FlxText;
 import flixel.tweens.*;
 import flixel.ui.FlxBar;
 import flixel.util.*;
-import ui.PreferencesMenu;
+import pitstop.options.PreferencesMenu;
 
 using StringTools;
 

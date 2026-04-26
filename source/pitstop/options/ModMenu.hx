@@ -1,4 +1,4 @@
-package ui;
+package pitstop.options;
 
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -9,7 +9,7 @@ import polymod.Polymod;
 import sys.FileSystem;
 #end
 
-class ModMenu extends ui.OptionsState.Page
+class ModMenu extends pitstop.options.OptionsState.Page
 {
 	var grpMods:FlxTypedGroup<ModMenuItem>;
 	var enabledMods:Array<String> = [];

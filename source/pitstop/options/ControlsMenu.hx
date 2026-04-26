@@ -1,4 +1,4 @@
-package ui;
+package pitstop.options;
 
 import Controls;
 import flixel.FlxCamera;
@@ -9,11 +9,11 @@ import flixel.group.FlxGroup;
 import flixel.input.actions.FlxActionInput;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
-import ui.AtlasText;
-import ui.MenuList;
-import ui.TextMenuList;
+import pitstop.options.AtlasText;
+import pitstop.options.MenuList;
+import pitstop.options.TextMenuList;
 
-class ControlsMenu extends ui.OptionsState.Page
+class ControlsMenu extends pitstop.options.OptionsState.Page
 {
 	inline static public var COLUMNS = 2;
 	static var controlList = Control.createAll();

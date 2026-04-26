@@ -1,4 +1,4 @@
-package ui;
+package pitstop.options;
 
 import pitstop.save.PreferencesSaveData;
 import flixel.FlxCamera;
@@ -7,10 +7,10 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
-import ui.AtlasText.AtlasFont;
-import ui.TextMenuList.TextMenuItem;
+import pitstop.options.AtlasText.AtlasFont;
+import pitstop.options.TextMenuList.TextMenuItem;
 
-class PreferencesMenu extends ui.OptionsState.Page
+class PreferencesMenu extends pitstop.options.OptionsState.Page
 {
 	public static var preferences:Map<String, Dynamic> = new Map();
 

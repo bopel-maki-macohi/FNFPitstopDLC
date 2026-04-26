@@ -3,7 +3,7 @@ package pitstop.play.notes;
 import pitstop.shaders.HSVShader;
 import flixel.FlxSprite;
 import pitstop.shaders.ColorSwap;
-import ui.PreferencesMenu;
+import pitstop.options.PreferencesMenu;
 
 using StringTools;
 

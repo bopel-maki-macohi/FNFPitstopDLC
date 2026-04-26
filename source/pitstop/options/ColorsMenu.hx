@@ -1,4 +1,4 @@
-package ui;
+package pitstop.options;
 
 import flixel.FlxG;
 import flixel.addons.effects.chainable.FlxEffectSprite;
@@ -6,7 +6,7 @@ import flixel.addons.effects.chainable.FlxOutlineEffect;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 
-class ColorsMenu extends ui.OptionsState.Page
+class ColorsMenu extends pitstop.options.OptionsState.Page
 {
 	var curSelected:Int = 0;
 

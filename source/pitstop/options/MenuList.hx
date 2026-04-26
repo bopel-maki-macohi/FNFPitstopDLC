@@ -1,4 +1,4 @@
-package ui;
+package pitstop.options;
 
 import flixel.math.FlxPoint;
 import flixel.FlxG;

@@ -1,7 +1,7 @@
-package ui;
+package pitstop.options;
 
-import ui.AtlasText;
-import ui.MenuList;
+import pitstop.options.AtlasText;
+import pitstop.options.MenuList;
 
 import flixel.FlxG;
 import flixel.FlxSprite;

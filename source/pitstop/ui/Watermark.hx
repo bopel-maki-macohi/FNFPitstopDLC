@@ -3,7 +3,7 @@ package pitstop.ui;
 import flixel.FlxG;
 import flixel.system.FlxAssets;
 import openfl.display.Shape;
-import ui.PreferencesMenu;
+import pitstop.options.PreferencesMenu;
 import flixel.math.FlxMath;
 import openfl.system.System;
 import lime.app.Application;

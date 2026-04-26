@@ -1,6 +1,6 @@
-package ui;
+package pitstop.options;
 
-import ui.MenuList;
+import pitstop.options.MenuList;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 

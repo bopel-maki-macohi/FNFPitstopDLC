@@ -15,11 +15,11 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
-import ui.AtlasMenuList;
-import ui.MenuList;
-import ui.OptionsState;
-import ui.PreferencesMenu;
-import ui.Prompt;
+import pitstop.options.AtlasMenuList;
+import pitstop.options.MenuList;
+import pitstop.options.OptionsState;
+import pitstop.options.PreferencesMenu;
+import pitstop.options.Prompt;
 
 using StringTools;
 

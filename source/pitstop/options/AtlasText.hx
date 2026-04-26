@@ -1,4 +1,4 @@
-package ui;
+package pitstop.options;
 
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
