@@ -69,6 +69,8 @@ class Main extends Sprite
 
 		FlxG.save.bind('funkinDLC', 'PitstopCrew');
 
+		FlxG.sound.changeVolume(0);
+
 		Application.current.onExit.add(l ->
 		{
 			FlxG.save.flush();
