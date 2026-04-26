@@ -179,6 +179,9 @@ class ChartingState extends MusicBeatState
 		super.create();
 	}
 
+	var UI_Artist:FlxUIInputText;
+	var UI_Charter:FlxUIInputText;
+
 	function addSong2UI():Void
 	{
 		var tabGroup = new FlxUI(null, UI_box);
